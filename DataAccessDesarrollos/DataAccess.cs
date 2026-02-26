@@ -42,7 +42,6 @@ namespace DataAccessDesarrollos
                     Trace.TraceWarning("QASConfig.StoreProcedures is null or empty. Check web.config section and type name.");
                 }
 
-                // Diagnostic: report how many were loaded
                 Trace.TraceInformation("Stored procedures loaded: {0}", storedProcedureCollection?.Count ?? 0);
                 if (storedProcedureCollection != null)
                 {
