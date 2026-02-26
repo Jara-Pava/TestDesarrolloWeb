@@ -40,6 +40,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Web.Resources.v22.1, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -311,6 +312,7 @@
     <Content Include="Root.master" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Usuarios.aspx" />
     <Content Include="Web.config" />
     <Content Include="Images\Responsiva.pdf" />
     <None Include="Web.Debug.config">
@@ -361,6 +363,22 @@
     <Compile Include="UserControls\Navigation.ascx.designer.cs">
       <DependentUpon>Navigation.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Usuarios.aspx.cs">
+      <DependentUpon>Usuarios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Usuarios.aspx.designer.cs">
+      <DependentUpon>Usuarios.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccessDesarrollos\DataAccessDesarrollos.csproj">
+      <Project>{7ebc7106-359f-430e-8a04-5573ba81783d}</Project>
+      <Name>DataAccessDesarrollos</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
