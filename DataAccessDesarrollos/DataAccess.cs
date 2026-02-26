@@ -83,13 +83,12 @@ namespace DataAccessDesarrollos
             }
         }
 
-        public string GetStoredProcedureName(string code)
+        public string GetStoredProcedureName(string name)
         {
-            if (string.IsNullOrWhiteSpace(code) || storedProcedureCollection == null) return null;
-            var sp = storedProcedureCollection.Find(s => string.Equals(s.Code, code, StringComparison.OrdinalIgnoreCase));
+            if (string.IsNullOrWhiteSpace(name) || storedProcedureCollection == null) return null;
+            var sp = storedProcedureCollection.Find(s => string.Equals(s.Name, name, StringComparison.OrdinalIgnoreCase));
             return sp?.Name;
         }
-
         public List<T> ExecuteReaderByCode<T>(string spCode, Func<SqlDataReader, T> mapper, Action<SqlCommand> parameterize = null)
         {
             var list = new List<T>();
@@ -133,7 +132,6 @@ namespace DataAccessDesarrollos
                     }
                 }
             }
-
             return list;
         }
 
