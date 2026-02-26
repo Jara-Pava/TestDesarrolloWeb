@@ -9,5 +9,6 @@ namespace DataAccessDesarrollos.Interfaces
     public interface IUsuarioSistema
     {
         List<Usuario> ObtenerTodosUsuarios();
+        bool CrearUsuario(Usuario usuario);
     }
 }
