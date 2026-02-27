@@ -15,58 +15,94 @@ namespace DesarrollosQAS
     {
 
         /// <summary>
-        /// txtNombre control.
+        /// btMostrarModalCrearUsuario control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtNombre;
+        protected global::DevExpress.Web.ASPxButton btMostrarModalCrearUsuario;
 
         /// <summary>
-        /// txtSigla control.
+        /// pcCrearUsuario control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtSigla;
+        protected global::DevExpress.Web.ASPxPopupControl pcCrearUsuario;
 
         /// <summary>
-        /// txtEmail control.
+        /// PanelCrearUsuario control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtEmail;
+        protected global::DevExpress.Web.ASPxPanel PanelCrearUsuario;
 
         /// <summary>
-        /// chkActivo control.
+        /// ASPxFormLayoutCrearUsuario control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxCheckBox chkActivo;
+        protected global::DevExpress.Web.ASPxFormLayout ASPxFormLayoutCrearUsuario;
 
         /// <summary>
-        /// btnGuardarNuevo control.
+        /// tbNombre control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxButton btnGuardarNuevo;
+        protected global::DevExpress.Web.ASPxTextBox tbNombre;
 
         /// <summary>
-        /// lblMensaje control.
+        /// tbSigla control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxLabel lblMensaje;
+        protected global::DevExpress.Web.ASPxTextBox tbSigla;
+
+        /// <summary>
+        /// tbEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxTextBox tbEmail;
+
+        /// <summary>
+        /// chbActivo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxCheckBox chbActivo;
+
+        /// <summary>
+        /// btnCrearUsuario control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxButton btnCrearUsuario;
+
+        /// <summary>
+        /// btCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxButton btCancel;
 
         /// <summary>
         /// gridUsuarios control.
