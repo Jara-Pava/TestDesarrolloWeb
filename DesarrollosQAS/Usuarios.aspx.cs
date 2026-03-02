@@ -1,5 +1,6 @@
 ﻿using DataAccessDesarrollos;
 using DataAccessDesarrollos.Repositorios;
+using DevExpress.Web;
 using DevExpress.Web.Data;
 using System;
 using System.Collections.Generic;
@@ -67,7 +68,6 @@ namespace DesarrollosQAS
                     string.IsNullOrWhiteSpace(usuario.sigla_red) ||
                     string.IsNullOrWhiteSpace(usuario.Email))
                 {
-                    // ✅ TAMBIÉN REDIRIGIR EN CASO DE ERROR DE VALIDACIÓN
                     Session[SESSION_ERROR_MESSAGE] = "Por favor, completa todos los campos requeridos.";
                     RedirectConJavaScript("Usuarios.aspx");
                     return;
@@ -78,7 +78,6 @@ namespace DesarrollosQAS
 
                 if (ok)
                 {
-                    // Guardar mensaje de éxito en sesión
                     Session[SESSION_SUCCESS_MESSAGE] = $"El usuario '{usuario.nombre}' fue creado exitosamente.";
                     RedirectConJavaScript("Usuarios.aspx");
                 }
@@ -143,17 +142,18 @@ namespace DesarrollosQAS
                 {
                     throw new ApplicationException("No se pudo crear el usuario.");
                 }
+
                 e.Cancel = true;
                 gridUsuarios.CancelEdit();
                 Session[SESSION_SUCCESS_MESSAGE] = $"Usuario '{u.nombre}' creado exitosamente.";
-                RedirectConJavaScript("Usuarios.aspx");
+                ASPxWebControl.RedirectOnCallback("Usuarios.aspx");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error en RowInserting: {0}", ex);
                 e.Cancel = true;
                 Session[SESSION_ERROR_MESSAGE] = $"Error al insertar: {ex.Message}";
-                RedirectConJavaScript("Usuarios.aspx");
+                ASPxWebControl.RedirectOnCallback("Usuarios.aspx");
             }
         }
 
@@ -179,15 +179,14 @@ namespace DesarrollosQAS
                 e.Cancel = true;
                 gridUsuarios.CancelEdit();
                 Session[SESSION_SUCCESS_MESSAGE] = $"Usuario '{u.nombre}' actualizado exitosamente.";
-                RedirectConJavaScript("Usuarios.aspx");
+                ASPxWebControl.RedirectOnCallback("Usuarios.aspx");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error al actualizar usuario: {0}", ex);
                 e.Cancel = true;
-
                 Session[SESSION_ERROR_MESSAGE] = $"Error al actualizar: {ex.Message}";
-                RedirectConJavaScript("Usuarios.aspx");
+                ASPxWebControl.RedirectOnCallback("Usuarios.aspx");
             }
         }
 
@@ -205,15 +204,14 @@ namespace DesarrollosQAS
 
                 e.Cancel = true;
                 Session[SESSION_SUCCESS_MESSAGE] = "Usuario eliminado exitosamente.";
-                RedirectConJavaScript("Usuarios.aspx");
+                ASPxWebControl.RedirectOnCallback("Usuarios.aspx");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error al eliminar usuario: {0}", ex);
                 e.Cancel = true;
-
                 Session[SESSION_ERROR_MESSAGE] = $"Error al eliminar: {ex.Message}";
-                RedirectConJavaScript("Usuarios.aspx");
+                ASPxWebControl.RedirectOnCallback("Usuarios.aspx");
             }
         }
     }
