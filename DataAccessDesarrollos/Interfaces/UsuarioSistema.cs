@@ -10,5 +10,7 @@ namespace DataAccessDesarrollos.Interfaces
     {
         List<Usuario> ObtenerTodosUsuarios();
         bool CrearUsuario(Usuario usuario);
+        bool ActualizarUsuario(Usuario usuario);
+        bool EliminarUsuario(int id);
     }
 }

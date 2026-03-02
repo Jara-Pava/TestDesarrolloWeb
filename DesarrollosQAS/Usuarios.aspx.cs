@@ -4,7 +4,7 @@ using DevExpress.Web.Data;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Web.UI;
+using System.Text;
 
 namespace DesarrollosQAS
 {
@@ -24,12 +24,6 @@ namespace DesarrollosQAS
             List<Usuario> usuarios = repo.ObtenerTodosUsuarios();
             gridUsuarios.DataSource = usuarios;
             gridUsuarios.DataBind();
-        }
-
-        protected void gridUsuarios_DataBinding(object sender, EventArgs e)
-        {
-            var repo = new UsuarioSistemaRepository();
-            gridUsuarios.DataSource = repo.ObtenerTodosUsuarios();
         }
 
         protected void btnCrearUsuario_Click(object sender, EventArgs e)
@@ -58,24 +52,18 @@ namespace DesarrollosQAS
                 if (ok)
                 {
                     LimpiarFormulario();
-                    BindGrid();
                     MostrarMensajeExito($"El usuario '{usuario.nombre}' fue creado exitosamente.");
+                    DataBind();
                 }
                 else
                 {
-                    MostrarMensajeError("No se pudo crear el usuario. Por favor, verifica que no exista un usuario con la misma sigla de red o email.");
+                    MostrarMensajeError("No se pudo crear el usuario.");
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Trace.TraceError("Error al crear usuario: {0}", ex);
-                MostrarMensajeError($"Ocurrió un error al crear el usuario: {ex.Message}");
+                MostrarMensajeError($"Error: {ex.Message}");
             }
-        }
-
-        protected void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            LimpiarFormulario();
         }
 
         private void LimpiarFormulario()
@@ -98,24 +86,89 @@ namespace DesarrollosQAS
             lblMensajeError.Text = mensaje;
             pcMensajeError.ShowOnPageLoad = true;
         }
+        protected void gridUsuarios_DataBinding(object sender, EventArgs e)
+        {
+            var repo = new UsuarioSistemaRepository();
+            gridUsuarios.DataSource = repo.ObtenerTodosUsuarios();
+        }
+
 
         protected void gridUsuarios_RowInserting(object sender, ASPxDataInsertingEventArgs e)
         {
-            var u = new Usuario
+            try
             {
-                nombre = Convert.ToString(e.NewValues["nombre"]),
-                sigla_red = Convert.ToString(e.NewValues["sigla_red"]),
-                activo = e.NewValues["activo"] != null && (bool)e.NewValues["activo"],
-                Email = Convert.ToString(e.NewValues["Email"])
-            };
+                var u = new Usuario
+                {
+                    nombre = Convert.ToString(e.NewValues["nombre"]),
+                    sigla_red = Convert.ToString(e.NewValues["sigla_red"]),
+                    activo = e.NewValues["activo"] != null && (bool)e.NewValues["activo"],
+                    Email = Convert.ToString(e.NewValues["Email"])
+                };
 
-            var repo = new UsuarioSistemaRepository();
-            if (!repo.CrearUsuario(u))
-                throw new ApplicationException("No se pudo crear el usuario.");
+                var repo = new UsuarioSistemaRepository();
+                if (!repo.CrearUsuario(u))
+                {
+                    throw new ApplicationException("No se pudo crear el usuario.");
+                }
 
-            e.Cancel = true;
-            gridUsuarios.CancelEdit();
-            BindGrid();
+                e.Cancel = true;
+                gridUsuarios.CancelEdit();
+            }
+            catch (Exception ex)
+            {
+                MostrarMensajeError($"Error al insertar: {ex.Message}");
+                e.Cancel = true;
+            }
+        }
+
+        protected void gridUsuarios_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
+        {
+            try
+            {
+                var u = new Usuario
+                {
+                    id_usuario = Convert.ToInt32(e.Keys["id_usuario"]),
+                    nombre = Convert.ToString(e.NewValues["nombre"]),
+                    sigla_red = Convert.ToString(e.NewValues["sigla_red"]),
+                    activo = e.NewValues["activo"] != null && (bool)e.NewValues["activo"],
+                    Email = Convert.ToString(e.NewValues["Email"])
+                };
+
+                var repo = new UsuarioSistemaRepository();
+                if (!repo.ActualizarUsuario(u))
+                {
+                }
+
+                e.Cancel = true;
+                gridUsuarios.CancelEdit();
+                    throw new ApplicationException("No se pudo actualizar el usuario.");
+            }
+            catch (Exception ex)
+            {
+                MostrarMensajeError($"Error al actualizar: {ex.Message}");
+                e.Cancel = true;
+            }
+        }
+
+        protected void gridUsuarios_RowDeleting(object sender, ASPxDataDeletingEventArgs e)
+        {
+            try
+            {
+                int id = Convert.ToInt32(e.Keys["id_usuario"]);
+                var repo = new UsuarioSistemaRepository();
+
+                if (!repo.EliminarUsuario(id))
+                {
+                    throw new ApplicationException("No se pudo eliminar el usuario.");
+                }
+                DataBind();
+                e.Cancel = true;
+            }
+            catch (Exception ex)
+            {
+                MostrarMensajeError($"Error al eliminar: {ex.Message}");
+                e.Cancel = true;
+            }
         }
     }
 }

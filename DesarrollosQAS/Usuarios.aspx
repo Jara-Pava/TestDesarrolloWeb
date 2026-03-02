@@ -7,12 +7,14 @@
         }
     </script>
 
+    <!-- Botón para mostrar el popup de creación de usuario -->
     <div style="margin: 16px 0; width: 160px; text-align: left">
         <dx:ASPxButton ID="btMostrarModalCrearUsuario" runat="server" Text="Crear Usuario" AutoPostBack="False" UseSubmitBehavior="false" Width="100%">
             <ClientSideEvents Click="function(s, e) { MostrarModalCrearUsuario(); }" />
         </dx:ASPxButton>
     </div>
-    
+
+    <!-- Popup para Crear Usuario -->
     <dx:ASPxPopupControl ID="pcCrearUsuario" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcCrearUsuario" HeaderText="Dar de Alta a un Usuario"
         AllowDragging="True" PopupAnimationType="Fade" EnableViewState="False" AutoUpdatePosition="True">
@@ -153,15 +155,18 @@
         </FooterContentTemplate>
     </dx:ASPxPopupControl>
 
+    <!-- Grid de Usuarios -->
     <dx:ASPxGridView ID="gridUsuarios" runat="server"
         KeyFieldName="id_usuario"
         Width="100%"
         ForeColor="Black"
         OnDataBinding="gridUsuarios_DataBinding"
-        OnRowInserting="gridUsuarios_RowInserting">
+        OnRowInserting="gridUsuarios_RowInserting"
+        OnRowUpdating="gridUsuarios_RowUpdating"
+        OnRowDeleting="gridUsuarios_RowDeleting">
         <Columns>
             <dx:GridViewCommandColumn Caption="Acciones" Width="140px"
-                ShowNewButtonInHeader="true" ShowEditButton="true" ShowDeleteButton="true" />
+                ShowEditButton="true" ShowDeleteButton="true" />
             <dx:GridViewDataTextColumn FieldName="id_usuario" Caption="ID" Visible="false" ReadOnly="true" />
             <dx:GridViewDataTextColumn FieldName="nombre" Caption="Nombre" />
             <dx:GridViewDataTextColumn FieldName="sigla_red" Caption="Sigla Red" />
@@ -169,5 +174,9 @@
             <dx:GridViewDataTextColumn FieldName="Email" Caption="Email" />
         </Columns>
         <SettingsPager PageSize="10" />
+        <SettingsEditing Mode="EditForm" />
+        <SettingsPopup>
+            <EditForm Modal="true" />
+        </SettingsPopup>
     </dx:ASPxGridView>
 </asp:Content>
