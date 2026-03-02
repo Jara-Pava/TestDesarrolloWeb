@@ -3,7 +3,16 @@
 <asp:Content ContentPlaceHolderID="Content" runat="server">
     <script type="text/javascript">
         function MostrarModalCrearUsuario() {
+            // Limpiar formulario antes de mostrar
+            ASPxClientEdit.ClearGroup('entryGroup');
             pcCrearUsuario.Show();
+        }
+
+        function LimpiarYCerrarPopup() {
+            // Limpiar validaciones
+            ASPxClientEdit.ClearGroup('entryGroup');
+            // Cerrar popup
+            pcCrearUsuario.Hide();
         }
     </script>
 
@@ -13,12 +22,14 @@
             <ClientSideEvents Click="function(s, e) { MostrarModalCrearUsuario(); }" />
         </dx:ASPxButton>
     </div>
-
+    
     <!-- Popup para Crear Usuario -->
     <dx:ASPxPopupControl ID="pcCrearUsuario" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcCrearUsuario" HeaderText="Dar de Alta a un Usuario"
-        AllowDragging="True" PopupAnimationType="Fade" EnableViewState="False" AutoUpdatePosition="True">
-        <ClientSideEvents PopUp="function(s,e) { ASPxClientEdit.ClearGroup('entryGroup'); tbNombre.Focus(); }" />
+        AllowDragging="True" PopupAnimationType="Fade" EnableViewState="False" AutoUpdatePosition="True" ShowOnPageLoad="false">
+        <ClientSideEvents 
+            PopUp="function(s,e) { ASPxClientEdit.ClearGroup('entryGroup'); tbNombre.Focus(); }"
+            CloseUp="function(s,e) { ASPxClientEdit.ClearGroup('entryGroup'); }" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
                 <dx:ASPxPanel ID="PanelCrearUsuario" runat="server" DefaultButton="btnCrearUsuario">
@@ -91,7 +102,7 @@
                                                         <ClientSideEvents Click="function(s, e) { if(!ASPxClientEdit.ValidateGroup('entryGroup')) { e.processOnServer = false; } }" />
                                                     </dx:ASPxButton>
                                                     <dx:ASPxButton ID="btCancel" runat="server" Text="Cancelar" Width="80px" AutoPostBack="False" Style="display: inline-block;">
-                                                        <ClientSideEvents Click="function(s, e) { pcCrearUsuario.Hide(); }" />
+                                                        <ClientSideEvents Click="function(s, e) { LimpiarYCerrarPopup(); }" />
                                                     </dx:ASPxButton>
                                                 </div>
                                             </dx:LayoutItemNestedControlContainer>
@@ -110,7 +121,7 @@
     <!-- Popup de Éxito -->
     <dx:ASPxPopupControl ID="pcMensajeExito" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExito" 
-        HeaderText="✓ Operación Exitosa" PopupAnimationType="Fade" ShowFooter="true">
+        HeaderText="✓ Operación Exitosa" PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
         <HeaderStyle BackColor="#28a745" ForeColor="White" Font-Bold="true" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
@@ -134,7 +145,7 @@
     <!-- Popup de Error -->
     <dx:ASPxPopupControl ID="pcMensajeError" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeError" 
-        HeaderText="✗ Error" PopupAnimationType="Fade" ShowFooter="true">
+        HeaderText="✗ Error" PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
         <HeaderStyle BackColor="#dc3545" ForeColor="White" Font-Bold="true" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">

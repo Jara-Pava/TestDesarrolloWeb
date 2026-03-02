@@ -4,17 +4,42 @@ using DevExpress.Web.Data;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
+using System.Web;
+using System.Web.UI;
 
 namespace DesarrollosQAS
 {
     public partial class Usuarios : System.Web.UI.Page
     {
+        // Claves de sesión para mensajes
+        private const string SESSION_SUCCESS_MESSAGE = "UsuarioSuccessMsg";
+        private const string SESSION_ERROR_MESSAGE = "UsuarioErrorMsg";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 BindGrid();
+                pcCrearUsuario.ShowOnPageLoad = false;
+                pcMensajeExito.ShowOnPageLoad = false;
+                pcMensajeError.ShowOnPageLoad = false;
+                MostrarMensajesDeSesion();
+            }
+        }
+
+        private void MostrarMensajesDeSesion()
+        {
+            if (Session[SESSION_SUCCESS_MESSAGE] != null)
+            {
+                string mensaje = Session[SESSION_SUCCESS_MESSAGE].ToString();
+                Session.Remove(SESSION_SUCCESS_MESSAGE);
+                MostrarMensajeExito(mensaje);
+            }
+            else if (Session[SESSION_ERROR_MESSAGE] != null)
+            {
+                string mensaje = Session[SESSION_ERROR_MESSAGE].ToString();
+                Session.Remove(SESSION_ERROR_MESSAGE);
+                MostrarMensajeError(mensaje);
             }
         }
 
@@ -42,7 +67,9 @@ namespace DesarrollosQAS
                     string.IsNullOrWhiteSpace(usuario.sigla_red) ||
                     string.IsNullOrWhiteSpace(usuario.Email))
                 {
-                    MostrarMensajeError("Por favor, completa todos los campos requeridos.");
+                    // ✅ TAMBIÉN REDIRIGIR EN CASO DE ERROR DE VALIDACIÓN
+                    Session[SESSION_ERROR_MESSAGE] = "Por favor, completa todos los campos requeridos.";
+                    RedirectConJavaScript("Usuarios.aspx");
                     return;
                 }
 
@@ -51,27 +78,33 @@ namespace DesarrollosQAS
 
                 if (ok)
                 {
-                    LimpiarFormulario();
-                    MostrarMensajeExito($"El usuario '{usuario.nombre}' fue creado exitosamente.");
-                    DataBind();
+                    // Guardar mensaje de éxito en sesión
+                    Session[SESSION_SUCCESS_MESSAGE] = $"El usuario '{usuario.nombre}' fue creado exitosamente.";
+                    RedirectConJavaScript("Usuarios.aspx");
                 }
                 else
                 {
-                    MostrarMensajeError("No se pudo crear el usuario.");
+                    Session[SESSION_ERROR_MESSAGE] = "No se pudo crear el usuario. Verifica que no exista un usuario con la misma sigla de red o email.";
+                    RedirectConJavaScript("Usuarios.aspx");
                 }
             }
             catch (Exception ex)
             {
-                MostrarMensajeError($"Error: {ex.Message}");
+                System.Diagnostics.Trace.TraceError("Error al crear usuario: {0}", ex);
+                Session[SESSION_ERROR_MESSAGE] = $"Error: {ex.Message}";
+                RedirectConJavaScript("Usuarios.aspx");
             }
         }
 
-        private void LimpiarFormulario()
+        private void RedirectConJavaScript(string url)
         {
-            tbNombre.Text = string.Empty;
-            tbSigla.Text = string.Empty;
-            tbEmail.Text = string.Empty;
-            chbActivo.Checked = true;
+            ScriptManager.RegisterStartupScript(
+                this,
+                GetType(),
+                "redirect",
+                $"window.location.href = '{url}';",
+                true
+            );
         }
 
         private void MostrarMensajeExito(string mensaje)
@@ -86,12 +119,12 @@ namespace DesarrollosQAS
             lblMensajeError.Text = mensaje;
             pcMensajeError.ShowOnPageLoad = true;
         }
+
         protected void gridUsuarios_DataBinding(object sender, EventArgs e)
         {
             var repo = new UsuarioSistemaRepository();
             gridUsuarios.DataSource = repo.ObtenerTodosUsuarios();
         }
-
 
         protected void gridUsuarios_RowInserting(object sender, ASPxDataInsertingEventArgs e)
         {
@@ -110,14 +143,17 @@ namespace DesarrollosQAS
                 {
                     throw new ApplicationException("No se pudo crear el usuario.");
                 }
-
                 e.Cancel = true;
                 gridUsuarios.CancelEdit();
+                Session[SESSION_SUCCESS_MESSAGE] = $"Usuario '{u.nombre}' creado exitosamente.";
+                RedirectConJavaScript("Usuarios.aspx");
             }
             catch (Exception ex)
             {
-                MostrarMensajeError($"Error al insertar: {ex.Message}");
+                System.Diagnostics.Trace.TraceError("Error en RowInserting: {0}", ex);
                 e.Cancel = true;
+                Session[SESSION_ERROR_MESSAGE] = $"Error al insertar: {ex.Message}";
+                RedirectConJavaScript("Usuarios.aspx");
             }
         }
 
@@ -137,16 +173,21 @@ namespace DesarrollosQAS
                 var repo = new UsuarioSistemaRepository();
                 if (!repo.ActualizarUsuario(u))
                 {
+                    throw new ApplicationException("No se pudo actualizar el usuario.");
                 }
 
                 e.Cancel = true;
                 gridUsuarios.CancelEdit();
-                    throw new ApplicationException("No se pudo actualizar el usuario.");
+                Session[SESSION_SUCCESS_MESSAGE] = $"Usuario '{u.nombre}' actualizado exitosamente.";
+                RedirectConJavaScript("Usuarios.aspx");
             }
             catch (Exception ex)
             {
-                MostrarMensajeError($"Error al actualizar: {ex.Message}");
+                System.Diagnostics.Trace.TraceError("Error al actualizar usuario: {0}", ex);
                 e.Cancel = true;
+
+                Session[SESSION_ERROR_MESSAGE] = $"Error al actualizar: {ex.Message}";
+                RedirectConJavaScript("Usuarios.aspx");
             }
         }
 
@@ -161,13 +202,18 @@ namespace DesarrollosQAS
                 {
                     throw new ApplicationException("No se pudo eliminar el usuario.");
                 }
-                DataBind();
+
                 e.Cancel = true;
+                Session[SESSION_SUCCESS_MESSAGE] = "Usuario eliminado exitosamente.";
+                RedirectConJavaScript("Usuarios.aspx");
             }
             catch (Exception ex)
             {
-                MostrarMensajeError($"Error al eliminar: {ex.Message}");
+                System.Diagnostics.Trace.TraceError("Error al eliminar usuario: {0}", ex);
                 e.Cancel = true;
+
+                Session[SESSION_ERROR_MESSAGE] = $"Error al eliminar: {ex.Message}";
+                RedirectConJavaScript("Usuarios.aspx");
             }
         }
     }
