@@ -306,6 +306,7 @@
     <Content Include="Images\verPonderado.png" />
     <Content Include="Images\VolverNegro.png" />
     <Content Include="Images\XSALogo462x306.png" />
+    <Content Include="SolicitudesRH.aspx" />
     <Content Include="UserControls\Navigation.ascx" />
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +356,13 @@
     </Compile>
     <Compile Include="Root.master.designer.cs">
       <DependentUpon>Root.master</DependentUpon>
+    </Compile>
+    <Compile Include="SolicitudesRH.aspx.cs">
+      <DependentUpon>SolicitudesRH.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SolicitudesRH.aspx.designer.cs">
+      <DependentUpon>SolicitudesRH.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Navigation.ascx.cs">
       <DependentUpon>Navigation.ascx</DependentUpon>
