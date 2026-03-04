@@ -25,6 +25,13 @@ namespace DataAccessDesarrollos
         public string Estancia { get; set; }
         public DateTime FechaSolicitud { get; set; }
         public bool aprobado { get; set; }
+
+        // Propiedades para mostrar nombres
+        public string NombreTipoSolicitud { get; set; }
+        public string NombreSolicitante { get; set; }
+        public string NombreProyecto { get; set; }
+        public string NombrePlanta { get; set; }
+        public string NombreContratista { get; set; }
     }
 
     public class TipoVisitante
@@ -52,6 +59,7 @@ namespace DataAccessDesarrollos
     public class EmpresaContratista
     {
         public int id_contratista { get; set; }
+        public string Nombre { get; set; }
         public string RFC { get; set; }
         public string Responsable { get; set; }
         public string Email { get; set; }

@@ -19,12 +19,16 @@ namespace DesarrollosQAS
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Los catálogos SIEMPRE deben cargarse para que los ComboBox funcionen correctamente
+            CargarCatalogos();
+
             if (!IsPostBack)
             {
-                CargarCatalogos();
                 BindGrid();
-                MostrarMensajesDeSesion();
             }
+
+            // Mostrar mensajes después de cargar todo
+            MostrarMensajesDeSesion();
         }
 
         private void MostrarMensajesDeSesion()
@@ -50,36 +54,40 @@ namespace DesarrollosQAS
                 var repo = new SolicitudRHRepository();
 
                 // Cargar tipos de solicitud
-                //var tipoSolicitudColumn = gridSolicitudesRH.Columns["id_TipoSolicitud"] as GridViewDataComboBoxColumn;
-                //if (tipoSolicitudColumn != null)
-                //{
-                //    tipoSolicitudColumn.PropertiesComboBox.DataSource = repo.ObtenerTiposSolicitud();
-                //    tipoSolicitudColumn.PropertiesComboBox.DataBind();
-                //}
+                var tipoSolicitudColumn = gridSolicitudesRH.Columns["id_TipoSolicitud"] as GridViewDataComboBoxColumn;
+                if (tipoSolicitudColumn != null)
+                {
+                    tipoSolicitudColumn.PropertiesComboBox.DataSource = repo.ObtenerTiposSolicitud();
+                    tipoSolicitudColumn.PropertiesComboBox.TextField = "Visita";
+                    tipoSolicitudColumn.PropertiesComboBox.ValueField = "ID_TipoVisita";
+                }
 
-                //// Cargar proyectos
-                //var proyectoColumn = gridSolicitudesRH.Columns["id_Proyecto"] as GridViewDataComboBoxColumn;
-                //if (proyectoColumn != null)
-                //{
-                //    proyectoColumn.PropertiesComboBox.DataSource = repo.ObtenerProyectos();
-                //    proyectoColumn.PropertiesComboBox.DataBind();
-                //}
+                // Cargar proyectos
+                var proyectoColumn = gridSolicitudesRH.Columns["id_Proyecto"] as GridViewDataComboBoxColumn;
+                if (proyectoColumn != null)
+                {
+                    proyectoColumn.PropertiesComboBox.DataSource = repo.ObtenerProyectos();
+                    proyectoColumn.PropertiesComboBox.TextField = "NombreProyecto";
+                    proyectoColumn.PropertiesComboBox.ValueField = "ID_Proyecto";
+                }
 
-                //// Cargar plantas
-                //var plantaColumn = gridSolicitudesRH.Columns["id_Planta"] as GridViewDataComboBoxColumn;
-                //if (plantaColumn != null)
-                //{
-                //    plantaColumn.PropertiesComboBox.DataSource = repo.ObtenerPlantas();
-                //    plantaColumn.PropertiesComboBox.DataBind();
-                //}
+                // Cargar plantas
+                var plantaColumn = gridSolicitudesRH.Columns["id_Planta"] as GridViewDataComboBoxColumn;
+                if (plantaColumn != null)
+                {
+                    plantaColumn.PropertiesComboBox.DataSource = repo.ObtenerPlantas();
+                    plantaColumn.PropertiesComboBox.TextField = "NombrePlanta";
+                    plantaColumn.PropertiesComboBox.ValueField = "ID_Planta";
+                }
 
-                //// Cargar contratistas
-                //var contratistaColumn = gridSolicitudesRH.Columns["id_Contratista"] as GridViewDataComboBoxColumn;
-                //if (contratistaColumn != null)
-                //{
-                //    contratistaColumn.PropertiesComboBox.DataSource = repo.ObtenerContratistas();
-                //    contratistaColumn.PropertiesComboBox.DataBind();
-                //}
+                // Cargar contratistas
+                var contratistaColumn = gridSolicitudesRH.Columns["id_Contratista"] as GridViewDataComboBoxColumn;
+                if (contratistaColumn != null)
+                {
+                    contratistaColumn.PropertiesComboBox.DataSource = repo.ObtenerContratistas();
+                    contratistaColumn.PropertiesComboBox.TextField = "Responsable";
+                    contratistaColumn.PropertiesComboBox.ValueField = "id_contratista";
+                }
             }
             catch (Exception ex)
             {
@@ -116,7 +124,7 @@ namespace DesarrollosQAS
                     FechaFin = e.NewValues["FechaFin"] != null ? Convert.ToDateTime(e.NewValues["FechaFin"]) : default(DateTime),
                     RFC = Convert.ToString(e.NewValues["RFC"]),
                     id_Contratista = e.NewValues["id_Contratista"] != null ? Convert.ToInt32(e.NewValues["id_Contratista"]) : 0,
-                    Responsable = Convert.ToString(e.NewValues["Resposable"]),
+                    Responsable = Convert.ToString(e.NewValues["Responsable"]),
                     AreaTrabajo = Convert.ToString(e.NewValues["AreaTrabajo"]),
                     Actividad = Convert.ToString(e.NewValues["Actividad"]),
                     Estancia = Convert.ToString(e.NewValues["Estancia"]),
@@ -160,7 +168,7 @@ namespace DesarrollosQAS
                     FechaFin = e.NewValues["FechaFin"] != null ? Convert.ToDateTime(e.NewValues["FechaFin"]) : default(DateTime),
                     RFC = Convert.ToString(e.NewValues["RFC"]),
                     id_Contratista = e.NewValues["id_Contratista"] != null ? Convert.ToInt32(e.NewValues["id_Contratista"]) : 0,
-                    Responsable = Convert.ToString(e.NewValues["Resposable"]),
+                    Responsable = Convert.ToString(e.NewValues["Responsable"]),
                     AreaTrabajo = Convert.ToString(e.NewValues["AreaTrabajo"]),
                     Actividad = Convert.ToString(e.NewValues["Actividad"]),
                     Estancia = Convert.ToString(e.NewValues["Estancia"]),

@@ -5,7 +5,7 @@
     <asp:Table runat="server" Width="90%" HorizontalAlign="Center">
         <asp:TableRow>
             <asp:TableCell>
-                .<div style="padding-top: 8px">
+                <div style="padding-top: 8px">
                     <dx:ASPxLabel runat="server" ID="ASPxLabel7" Text="Solicitudes de Visitas" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
                 </div>
                 <hr />
@@ -21,7 +21,7 @@
                         <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
                     </Styles>
                     <Columns>
-                        <dx:GridViewCommandColumn Caption="Acciones" Width="140px"
+                        <dx:GridViewCommandColumn Caption="Acciones" Width="140px" ShowNewButtonInHeader="true"
                             ShowEditButton="true" ShowDeleteButton="true" />
 
                         <dx:GridViewDataTextColumn FieldName="ID_Solicitud" Caption="ID" Visible="false" ReadOnly="true" />
@@ -29,15 +29,15 @@
                         <dx:GridViewDataTextColumn FieldName="Visitante" Caption="Visitante" Width="150px" />
 
                         <dx:GridViewDataComboBoxColumn FieldName="id_TipoSolicitud" Caption="Tipo Solicitud" Width="120px">
-                            <PropertiesComboBox TextField="Nombre" ValueField="ID" ValueType="System.Int32" />
+                            <PropertiesComboBox TextField="Visita" ValueField="ID_TipoVisita" ValueType="System.Int32" />
                         </dx:GridViewDataComboBoxColumn>
 
                         <dx:GridViewDataComboBoxColumn FieldName="id_Proyecto" Caption="Proyecto" Width="150px">
-                            <PropertiesComboBox TextField="Nombre" ValueField="ID" ValueType="System.Int32" />
+                            <PropertiesComboBox TextField="NombreProyecto" ValueField="ID_Proyecto" ValueType="System.Int32" />
                         </dx:GridViewDataComboBoxColumn>
 
                         <dx:GridViewDataComboBoxColumn FieldName="id_Planta" Caption="Planta" Width="120px">
-                            <PropertiesComboBox TextField="Nombre" ValueField="ID" ValueType="System.Int32" />
+                            <PropertiesComboBox TextField="NombrePlanta" ValueField="ID_Planta" ValueType="System.Int32" />
                         </dx:GridViewDataComboBoxColumn>
 
                         <dx:GridViewDataDateColumn FieldName="FechaInicio" Caption="Fecha Inicio" Width="110px">
@@ -51,7 +51,7 @@
                         <dx:GridViewDataTextColumn FieldName="RFC" Caption="RFC" Width="120px" />
 
                         <dx:GridViewDataComboBoxColumn FieldName="id_Contratista" Caption="Contratista" Width="150px">
-                            <PropertiesComboBox TextField="Nombre" ValueField="ID" ValueType="System.Int32" />
+                            <PropertiesComboBox TextField="Responsable" ValueField="id_contratista" ValueType="System.Int32" />
                         </dx:GridViewDataComboBoxColumn>
 
                         <dx:GridViewDataTextColumn FieldName="Responsable" Caption="Responsable" Width="150px" />
@@ -62,7 +62,7 @@
 
                         <dx:GridViewDataTextColumn FieldName="Estancia" Caption="Estancia" Width="100px" />
 
-                        <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha Solicitud" Width="110px" ReadOnly="true">
+                        <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha Solicitud" Width="110px">
                             <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
                         </dx:GridViewDataDateColumn>
 
