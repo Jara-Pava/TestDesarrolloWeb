@@ -22,12 +22,12 @@
             <ClientSideEvents Click="function(s, e) { MostrarModalCrearUsuario(); }" />
         </dx:ASPxButton>
     </div>
-    
+
     <!-- Popup para Crear Usuario -->
     <dx:ASPxPopupControl ID="pcCrearUsuario" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcCrearUsuario" HeaderText="Dar de Alta a un Usuario"
         AllowDragging="True" PopupAnimationType="Fade" EnableViewState="False" AutoUpdatePosition="True" ShowOnPageLoad="false">
-        <ClientSideEvents 
+        <ClientSideEvents
             PopUp="function(s,e) { ASPxClientEdit.ClearGroup('entryGroup'); tbNombre.Focus(); }"
             CloseUp="function(s,e) { ASPxClientEdit.ClearGroup('entryGroup'); }" />
         <ContentCollection>
@@ -120,13 +120,13 @@
 
     <!-- Popup de Éxito -->
     <dx:ASPxPopupControl ID="pcMensajeExito" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
-        PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExito" 
+        PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExito"
         HeaderText="✓ Operación Exitosa" PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
         <HeaderStyle BackColor="#28a745" ForeColor="White" Font-Bold="true" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
                 <div style="padding: 20px; text-align: center;">
-                    <dx:ASPxImage ID="imgExito" runat="server" Width="48px" Height="48px" style="margin-bottom: 15px;">
+                    <dx:ASPxImage ID="imgExito" runat="server" Width="48px" Height="48px" Style="margin-bottom: 15px;">
                         <Border BorderWidth="0" />
                     </dx:ASPxImage>
                     <dx:ASPxLabel ID="lblMensajeExito" runat="server" Font-Size="14px" ClientInstanceName="lblMensajeExito" />
@@ -144,13 +144,13 @@
 
     <!-- Popup de Error -->
     <dx:ASPxPopupControl ID="pcMensajeError" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
-        PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeError" 
+        PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeError"
         HeaderText="✗ Error" PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
         <HeaderStyle BackColor="#dc3545" ForeColor="White" Font-Bold="true" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
                 <div style="padding: 20px; text-align: center;">
-                    <dx:ASPxImage ID="imgError" runat="server" Width="48px" Height="48px" style="margin-bottom: 15px;">
+                    <dx:ASPxImage ID="imgError" runat="server" Width="48px" Height="48px" Style="margin-bottom: 15px;">
                         <Border BorderWidth="0" />
                     </dx:ASPxImage>
                     <dx:ASPxLabel ID="lblMensajeError" runat="server" Font-Size="14px" ClientInstanceName="lblMensajeError" />
@@ -176,8 +176,11 @@
         OnRowUpdating="gridUsuarios_RowUpdating"
         OnRowDeleting="gridUsuarios_RowDeleting">
         <Columns>
-            <dx:GridViewCommandColumn Caption="Acciones" Width="140px"
-                ShowEditButton="true" ShowDeleteButton="true" />
+            <dx:GridViewCommandColumn Caption="Acciones" Width="100px"
+                ShowEditButton="true"
+                ShowDeleteButton="true"
+                ButtonRenderMode="Image">
+            </dx:GridViewCommandColumn>
             <dx:GridViewDataTextColumn FieldName="id_usuario" Caption="ID" Visible="false" ReadOnly="true" />
             <dx:GridViewDataTextColumn FieldName="nombre" Caption="Nombre" />
             <dx:GridViewDataTextColumn FieldName="sigla_red" Caption="Sigla Red" />
@@ -189,5 +192,19 @@
         <SettingsPopup>
             <EditForm Modal="true" />
         </SettingsPopup>
+        <SettingsCommandButton>
+            <EditButton>
+                <Image IconID="edit_edit_16x16" ToolTip="Editar" />
+            </EditButton>
+            <DeleteButton>
+                <Image IconID="edit_delete_16x16" ToolTip="Eliminar" />
+            </DeleteButton>
+            <UpdateButton>
+                <Image IconID="actions_apply_16x16" ToolTip="Guardar" />
+            </UpdateButton>
+            <CancelButton>
+                <Image IconID="actions_cancel_16x16" ToolTip="Cancelar" />
+            </CancelButton>
+        </SettingsCommandButton>
     </dx:ASPxGridView>
 </asp:Content>

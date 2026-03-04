@@ -21,8 +21,12 @@
                         <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
                     </Styles>
                     <Columns>
-                        <dx:GridViewCommandColumn Caption="Acciones" Width="140px" ShowNewButtonInHeader="true"
-                            ShowEditButton="true" ShowDeleteButton="true" />
+                        <dx:GridViewCommandColumn Caption="Acciones" Width="100px"
+                            ShowNewButtonInHeader="true"
+                            ShowEditButton="true"
+                            ShowDeleteButton="true"
+                            ButtonRenderMode="Image">
+                        </dx:GridViewCommandColumn>
 
                         <dx:GridViewDataTextColumn FieldName="ID_Solicitud" Caption="ID" Visible="false" ReadOnly="true" />
 
@@ -76,6 +80,23 @@
                     <SettingsPopup>
                         <EditForm Modal="true" Width="600px" />
                     </SettingsPopup>
+                    <SettingsCommandButton>
+                        <NewButton>
+                            <Image IconID="actions_add_16x16" ToolTip="Nuevo" />
+                        </NewButton>
+                        <EditButton>
+                            <Image IconID="edit_edit_16x16" ToolTip="Editar" />
+                        </EditButton>
+                        <DeleteButton>
+                            <Image IconID="edit_delete_16x16" ToolTip="Eliminar" />
+                        </DeleteButton>
+                        <UpdateButton>
+                            <Image IconID="actions_apply_16x16" ToolTip="Guardar" />
+                        </UpdateButton>
+                        <CancelButton>
+                            <Image IconID="actions_cancel_16x16" ToolTip="Cancelar" />
+                        </CancelButton>
+                    </SettingsCommandButton>
                 </dx:ASPxGridView>
             </asp:TableCell>
         </asp:TableRow>
