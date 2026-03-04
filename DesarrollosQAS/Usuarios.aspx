@@ -14,10 +14,32 @@
             // Cerrar popup
             pcCrearUsuario.Hide();
         }
+
+        // Manejar mensajes después de operaciones del grid
+        function OnGridEndCallback(s, e) {
+            // Verificar si hay un mensaje del servidor
+            if (s.cpMessageType && s.cpMessage) {
+                if (s.cpMessageType === "success") {
+                    lblMensajeExito.SetText(s.cpMessage);
+                    pcMensajeExito.Show();
+                } else if (s.cpMessageType === "error") {
+                    lblMensajeError.SetText(s.cpMessage);
+                    pcMensajeError.Show();
+                }
+
+                // Limpiar las propiedades
+                delete s.cpMessageType;
+                delete s.cpMessage;
+            }
+        }
     </script>
 
+    <div style="padding-top: 8px">
+        <dx:ASPxLabel runat="server" ID="ASPxLabel1" Text="Usuarios" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
+    </div>
+
     <!-- Botón para mostrar el popup de creación de usuario -->
-    <div style="margin: 16px 0; width: 160px; text-align: left">
+    <div style="margin: 16px 0; width: 160px; text-align: left; background">
         <dx:ASPxButton ID="btMostrarModalCrearUsuario" runat="server" Text="Crear Usuario" AutoPostBack="False" UseSubmitBehavior="false" Width="100%">
             <ClientSideEvents Click="function(s, e) { MostrarModalCrearUsuario(); }" />
         </dx:ASPxButton>
@@ -27,6 +49,7 @@
     <dx:ASPxPopupControl ID="pcCrearUsuario" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcCrearUsuario" HeaderText="Dar de Alta a un Usuario"
         AllowDragging="True" PopupAnimationType="Fade" EnableViewState="False" AutoUpdatePosition="True" ShowOnPageLoad="false">
+        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
         <ClientSideEvents
             PopUp="function(s,e) { ASPxClientEdit.ClearGroup('entryGroup'); tbNombre.Focus(); }"
             CloseUp="function(s,e) { ASPxClientEdit.ClearGroup('entryGroup'); }" />
@@ -44,6 +67,7 @@
                                                     <ValidationSettings EnableCustomValidation="True" ValidationGroup="entryGroup" SetFocusOnError="True"
                                                         ErrorDisplayMode="Text" ErrorTextPosition="Bottom">
                                                         <RequiredField ErrorText="Nombre requerido" IsRequired="True" />
+                                                        <RegularExpression ValidationExpression="^(?!\s+$).+" ErrorText="El nombre no puede contener solo espacios" />
                                                         <ErrorFrameStyle Font-Size="10px">
                                                             <ErrorTextPaddings PaddingLeft="0px" />
                                                         </ErrorFrameStyle>
@@ -122,7 +146,7 @@
     <dx:ASPxPopupControl ID="pcMensajeExito" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExito"
         HeaderText="✓ Operación Exitosa" PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
-        <HeaderStyle BackColor="#28a745" ForeColor="White" Font-Bold="true" />
+        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
                 <div style="padding: 20px; text-align: center;">
@@ -146,7 +170,7 @@
     <dx:ASPxPopupControl ID="pcMensajeError" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeError"
         HeaderText="✗ Error" PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
-        <HeaderStyle BackColor="#dc3545" ForeColor="White" Font-Bold="true" />
+        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
                 <div style="padding: 20px; text-align: center;">
@@ -174,7 +198,13 @@
         OnDataBinding="gridUsuarios_DataBinding"
         OnRowInserting="gridUsuarios_RowInserting"
         OnRowUpdating="gridUsuarios_RowUpdating"
-        OnRowDeleting="gridUsuarios_RowDeleting">
+        OnRowDeleting="gridUsuarios_RowDeleting"
+        OnHtmlRowPrepared="gridUsuarios_HtmlRowPrepared"
+        OnCellEditorInitialize="gridUsuarios_CellEditorInitialize">
+        <ClientSideEvents EndCallback="OnGridEndCallback" />
+        <Styles>
+            <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
+        </Styles>
         <Columns>
             <dx:GridViewCommandColumn Caption="Acciones" Width="100px"
                 ShowEditButton="true"
@@ -182,10 +212,30 @@
                 ButtonRenderMode="Image">
             </dx:GridViewCommandColumn>
             <dx:GridViewDataTextColumn FieldName="id_usuario" Caption="ID" Visible="false" ReadOnly="true" />
-            <dx:GridViewDataTextColumn FieldName="nombre" Caption="Nombre" />
-            <dx:GridViewDataTextColumn FieldName="sigla_red" Caption="Sigla Red" />
+            <dx:GridViewDataTextColumn FieldName="nombre" Caption="Nombre">
+                <PropertiesTextEdit>
+                    <ValidationSettings>
+                        <RequiredField IsRequired="true" ErrorText="Nombre requerido" />
+                        <RegularExpression ValidationExpression="^(?!\s+$).+" ErrorText="El nombre no puede contener solo espacios" />
+                    </ValidationSettings>
+                </PropertiesTextEdit>
+            </dx:GridViewDataTextColumn>
+            <dx:GridViewDataTextColumn FieldName="sigla_red" Caption="Sigla Red">
+                <PropertiesTextEdit>
+                    <ValidationSettings>
+                        <RequiredField IsRequired="true" ErrorText="Sigla de Red requerida" />
+                    </ValidationSettings>
+                </PropertiesTextEdit>
+            </dx:GridViewDataTextColumn>
             <dx:GridViewDataCheckColumn FieldName="activo" Caption="Activo" />
-            <dx:GridViewDataTextColumn FieldName="Email" Caption="Email" />
+            <dx:GridViewDataTextColumn FieldName="Email" Caption="Email">
+                <PropertiesTextEdit>
+                    <ValidationSettings>
+                        <RequiredField IsRequired="true" ErrorText="Email requerido" />
+                        <RegularExpression ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$" ErrorText="Email no válido" />
+                    </ValidationSettings>
+                </PropertiesTextEdit>
+            </dx:GridViewDataTextColumn>
         </Columns>
         <SettingsPager PageSize="10" />
         <SettingsEditing Mode="EditForm" />

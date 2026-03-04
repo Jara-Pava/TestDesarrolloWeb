@@ -15,6 +15,15 @@ namespace DesarrollosQAS
     {
 
         /// <summary>
+        /// ASPxLabel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxLabel ASPxLabel1;
+
+        /// <summary>
         /// btMostrarModalCrearUsuario control.
         /// </summary>
         /// <remarks>
