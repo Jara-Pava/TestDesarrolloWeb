@@ -24,96 +24,6 @@ namespace DesarrollosQAS
         protected global::DevExpress.Web.ASPxLabel ASPxLabel1;
 
         /// <summary>
-        /// btMostrarModalCrearUsuario control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxButton btMostrarModalCrearUsuario;
-
-        /// <summary>
-        /// pcCrearUsuario control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxPopupControl pcCrearUsuario;
-
-        /// <summary>
-        /// PanelCrearUsuario control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxPanel PanelCrearUsuario;
-
-        /// <summary>
-        /// ASPxFormLayoutCrearUsuario control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxFormLayout ASPxFormLayoutCrearUsuario;
-
-        /// <summary>
-        /// tbNombre control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox tbNombre;
-
-        /// <summary>
-        /// tbSigla control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox tbSigla;
-
-        /// <summary>
-        /// tbEmail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox tbEmail;
-
-        /// <summary>
-        /// chbActivo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxCheckBox chbActivo;
-
-        /// <summary>
-        /// btnCrearUsuario control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxButton btnCrearUsuario;
-
-        /// <summary>
-        /// btCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxButton btCancel;
-
-        /// <summary>
         /// pcMensajeExito control.
         /// </summary>
         /// <remarks>
@@ -121,15 +31,6 @@ namespace DesarrollosQAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.ASPxPopupControl pcMensajeExito;
-
-        /// <summary>
-        /// imgExito control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxImage imgExito;
 
         /// <summary>
         /// lblMensajeExito control.
@@ -148,15 +49,6 @@ namespace DesarrollosQAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.ASPxPopupControl pcMensajeError;
-
-        /// <summary>
-        /// imgError control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxImage imgError;
 
         /// <summary>
         /// lblMensajeError control.
