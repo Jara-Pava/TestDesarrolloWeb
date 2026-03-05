@@ -56,8 +56,8 @@
     <!-- Popup de Éxito -->
     <dx:ASPxPopupControl ID="pcMensajeExito" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExito"
-        HeaderText="✓ Operación Exitosa" PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
-        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
+        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
+        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true"/>
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
                 <div style="padding: 20px; text-align: center;">
@@ -67,7 +67,7 @@
         </ContentCollection>
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarExito" runat="server" Text="Aceptar" Width="100px" AutoPostBack="False">
+                <dx:ASPxButton ID="btnCerrarExito" runat="server" Text="Aceptar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
                     <ClientSideEvents Click="function(s, e) { pcMensajeExito.Hide(); }" />
                 </dx:ASPxButton>
             </div>
@@ -77,8 +77,8 @@
     <!-- Popup de Error -->
     <dx:ASPxPopupControl ID="pcMensajeError" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeError"
-        HeaderText="✗ Error" PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
-        <HeaderStyle BackColor="#dc3545" ForeColor="White" Font-Bold="true" />
+        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
+        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
                 <div style="padding: 20px; text-align: center;">
@@ -88,7 +88,7 @@
         </ContentCollection>
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarError" runat="server" Text="Cerrar" Width="100px" AutoPostBack="False">
+                <dx:ASPxButton ID="btnCerrarError" runat="server" Text="Cerrar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
                     <ClientSideEvents Click="function(s, e) { pcMensajeError.Hide(); }" />
                 </dx:ASPxButton>
             </div>

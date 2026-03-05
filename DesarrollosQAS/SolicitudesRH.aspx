@@ -40,7 +40,7 @@
                 <!-- Popup de Éxito -->
                 <dx:ASPxPopupControl ID="pcMensajeExitoSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
                     PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExitoSolicitud"
-                    HeaderText="✓ Operación Exitosa" PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
+                    HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
                     <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
                     <ContentCollection>
                         <dx:PopupControlContentControl runat="server">
@@ -51,7 +51,7 @@
                     </ContentCollection>
                     <FooterContentTemplate>
                         <div style="text-align: center; padding: 10px;">
-                            <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="Aceptar" Width="100px" AutoPostBack="False">
+                            <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="Aceptar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
                                 <ClientSideEvents Click="function(s, e) { pcMensajeExitoSolicitud.Hide(); }" />
                             </dx:ASPxButton>
                         </div>
@@ -72,7 +72,7 @@
                     </ContentCollection>
                     <FooterContentTemplate>
                         <div style="text-align: center; padding: 10px;">
-                            <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="Cerrar" Width="100px" AutoPostBack="False">
+                            <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="Cerrar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
                                 <ClientSideEvents Click="function(s, e) { pcMensajeErrorSolicitud.Hide(); }" />
                             </dx:ASPxButton>
                         </div>
