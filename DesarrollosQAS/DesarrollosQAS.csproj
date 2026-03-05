@@ -125,6 +125,7 @@
     <Content Include="Content\Images\Scheduler.svg" />
     <Content Include="Content\Images\search-selected.svg" />
     <Content Include="Content\Images\search.svg" />
+    <Content Include="Content\Images\shield.svg" />
     <Content Include="Content\Images\sign-out.svg" />
     <Content Include="Content\Images\user.svg" />
     <Content Include="Content\Layout.css" />

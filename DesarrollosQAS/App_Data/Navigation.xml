@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <namespace Url="javascript:void(0);" Title="DevExpress.Web.ASPxCallback Namespace">
-	<page Url="../Default.aspx" Title="Home" Image="../Images/home.svg" Name="home"/>
-	<page Url="../Usuarios.aspx" Title="Usuarios" Image="../Images/usuarios.svg" Name="usuarios"/>
-	<page Url="../SolicitudesRH.aspx" Title="SolicitudesRH" Image="../Images/usuarios.svg" Name="solicitudes"/>
+	<!--<page Url="../Default.aspx" Title="Home" Image="../Images/home.svg" Name="home"/>-->
+	<group Title="Seguridad" Image="../Images/shield.svg" Name="seguridad">
+		<page Url="../Usuarios.aspx" Title="Usuarios" Image="../Images/usuarios.svg" Name="usuarios"/>
+	</group>
+	<page Url="../SolicitudesRH.aspx" Title="SolicitudesRH" Image="../Images/home.svg" Name="solicitudes"/>
 </namespace>
