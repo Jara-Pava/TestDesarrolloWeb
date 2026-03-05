@@ -34,17 +34,37 @@ namespace DesarrollosQAS
             gridUsuarios.DataSource = repo.ObtenerTodosUsuarios();
         }
 
-        protected void gridUsuarios_CellEditorInitialize(object sender, ASPxGridViewEditorEventArgs e)
+        protected void gridUsuarios_HtmlEditFormCreated(object sender, ASPxGridViewEditFormEventArgs e)
         {
-            // Deshabilitar Sigla Red en modo edición (no en creación)
-            if (e.Column.FieldName == "sigla_red" && gridUsuarios.IsEditing && !gridUsuarios.IsNewRowEditing)
+            // Deshabilitar el campo sigla_red solo en modo edición (no en modo inserción)
+            if (!gridUsuarios.IsNewRowEditing)
             {
-                ASPxTextBox editor = e.Editor as ASPxTextBox;
-                if (editor != null)
+                ASPxTextBox txtSiglaRed = gridUsuarios.FindEditFormTemplateControl("txtSiglaRed") as ASPxTextBox;
+                if (txtSiglaRed != null)
                 {
-                    editor.ClientEnabled = false;
-                    editor.ReadOnly = true;
-                    editor.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+                    txtSiglaRed.ClientEnabled = false;
+                    txtSiglaRed.BackColor = System.Drawing.ColorTranslator.FromHtml("#f0f0f0");
+                }
+            }
+        }
+
+        protected void gridUsuarios_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
+        {
+            if (e.ButtonID == "btnDelete")
+            {
+                try
+                {
+                    int id = Convert.ToInt32(gridUsuarios.GetRowValues(e.VisibleIndex, "id_usuario"));
+                    var repo = new UsuarioSistemaRepository();
+                    repo.EliminarUsuario(id);
+
+                    gridUsuarios.DataBind();
+                    MostrarExito("Usuario eliminado exitosamente.");
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Trace.TraceError("Error al eliminar usuario: {0}", ex);
+                    MostrarError($"Error al eliminar: {ex.Message}");
                 }
             }
         }
@@ -56,6 +76,10 @@ namespace DesarrollosQAS
                 string nombre = e.NewValues["nombre"]?.ToString()?.Trim();
                 string siglaRed = e.NewValues["sigla_red"]?.ToString()?.Trim();
                 string email = e.NewValues["Email"]?.ToString()?.Trim();
+
+                // Obtener el valor del checkbox desde el template
+                ASPxCheckBox chkActivo = gridUsuarios.FindEditFormTemplateControl("chkActivo") as ASPxCheckBox;
+                bool activo = chkActivo != null ? chkActivo.Checked : true;
 
                 if (!ValidarNombre(nombre, out string errorNombre))
                 {
@@ -86,7 +110,7 @@ namespace DesarrollosQAS
                     nombre = nombre,
                     sigla_red = siglaRed,
                     Email = email,
-                    activo = e.NewValues["activo"] != null && (bool)e.NewValues["activo"]
+                    activo = activo
                 };
 
                 var repo = new UsuarioSistemaRepository();
@@ -134,13 +158,17 @@ namespace DesarrollosQAS
 
                 string siglaRedOriginal = e.OldValues["sigla_red"]?.ToString();
 
+                // Obtener el valor del checkbox desde el template
+                ASPxCheckBox chkActivo = gridUsuarios.FindEditFormTemplateControl("chkActivo") as ASPxCheckBox;
+                bool activo = chkActivo != null ? chkActivo.Checked : false;
+
                 var usuario = new Usuario
                 {
                     id_usuario = Convert.ToInt32(e.Keys["id_usuario"]),
                     nombre = nombre,
                     sigla_red = siglaRedOriginal,
                     Email = email,
-                    activo = e.NewValues["activo"] != null && (bool)e.NewValues["activo"]
+                    activo = activo
                 };
 
                 var repo = new UsuarioSistemaRepository();
@@ -160,28 +188,6 @@ namespace DesarrollosQAS
                 e.Cancel = true;
                 gridUsuarios.CancelEdit();
                 MostrarError($"Error al actualizar: {ex.Message}");
-            }
-        }
-
-        protected void gridUsuarios_RowDeleting(object sender, DevExpress.Web.Data.ASPxDataDeletingEventArgs e)
-        {
-            try
-            {
-                int id = Convert.ToInt32(e.Keys["id_usuario"]);
-                var repo = new UsuarioSistemaRepository();
-                repo.EliminarUsuario(id);
-
-                e.Cancel = true;
-                gridUsuarios.CancelEdit();
-                gridUsuarios.DataBind();
-                MostrarExito("Usuario eliminado exitosamente.");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Trace.TraceError("Error al eliminar usuario: {0}", ex);
-                e.Cancel = true;
-                gridUsuarios.CancelEdit();
-                MostrarError($"Error al eliminar: {ex.Message}");
             }
         }
 
