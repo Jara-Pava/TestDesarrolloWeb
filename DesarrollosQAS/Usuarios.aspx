@@ -51,7 +51,7 @@
     <div style="padding-top: 8px">
         <dx:ASPxLabel runat="server" ID="ASPxLabel1" Text="Usuarios" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
     </div>
-    <hr />
+    <br />
 
     <!-- Popup de Éxito -->
     <dx:ASPxPopupControl ID="pcMensajeExito" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
@@ -106,8 +106,8 @@
         OnRowUpdating="gridUsuarios_RowUpdating"
         OnCustomButtonCallback="gridUsuarios_CustomButtonCallback"
         OnHtmlEditFormCreated="gridUsuarios_HtmlEditFormCreated">
-        <ClientSideEvents 
-            EndCallback="OnGridEndCallback" 
+        <ClientSideEvents
+            EndCallback="OnGridEndCallback"
             CustomButtonClick="OnCustomButtonClick" />
         <Styles>
             <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
@@ -119,7 +119,7 @@
                 ButtonRenderMode="Image">
                 <CustomButtons>
                     <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Eliminar">
-                        <Image IconID="edit_delete_16x16" ToolTip="Eliminar" />
+                        <Image Url="~/Images/delete.png" Width="25px" Height="25px" ToolTip="Eliminar" />
                     </dx:GridViewCommandColumnCustomButton>
                 </CustomButtons>
             </dx:GridViewCommandColumn>
@@ -152,7 +152,7 @@
             </dx:GridViewDataTextColumn>
             <dx:GridViewDataCheckColumn FieldName="activo" Caption="Activo" />
         </Columns>
-        
+
         <Templates>
             <EditForm>
                 <div style="padding: 20px;">
@@ -162,9 +162,9 @@
                                 <dx:ASPxLabel ID="lblSiglaRed" runat="server" Text="Sigla Red:" AssociatedControlID="txtSiglaRed" />
                                 <span style="color: red;">*</span>
                                 <br />
-                                <dx:ASPxTextBox ID="txtSiglaRed" runat="server" Width="95%" 
+                                <dx:ASPxTextBox ID="txtSiglaRed" runat="server" Width="95%"
                                     ClientInstanceName="txtSiglaRed"
-                                    Text='<%# Bind("sigla_red") %>' 
+                                    Text='<%# Bind("sigla_red") %>'
                                     NullText="Ingrese sigla de red">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
                                     <ValidationSettings ValidationGroup="EditForm" Display="Dynamic">
@@ -176,8 +176,8 @@
                                 <dx:ASPxLabel ID="lblNombre" runat="server" Text="Nombre:" AssociatedControlID="txtNombre" />
                                 <span style="color: red;">*</span>
                                 <br />
-                                <dx:ASPxTextBox ID="txtNombre" runat="server" Width="95%" 
-                                    Text='<%# Bind("nombre") %>' 
+                                <dx:ASPxTextBox ID="txtNombre" runat="server" Width="95%"
+                                    Text='<%# Bind("nombre") %>'
                                     NullText="Ingrese nombre completo">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
                                     <ValidationSettings ValidationGroup="EditForm" Display="Dynamic">
@@ -192,8 +192,8 @@
                                 <dx:ASPxLabel ID="lblEmail" runat="server" Text="Email:" AssociatedControlID="txtEmail" />
                                 <span style="color: red;">*</span>
                                 <br />
-                                <dx:ASPxTextBox ID="txtEmail" runat="server" Width="95%" 
-                                    Text='<%# Bind("Email") %>' 
+                                <dx:ASPxTextBox ID="txtEmail" runat="server" Width="95%"
+                                    Text='<%# Bind("Email") %>'
                                     NullText="ejemplo@correo.com">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
                                     <ValidationSettings ValidationGroup="EditForm" Display="Dynamic">
@@ -205,49 +205,50 @@
                             <td style="width: 50%; padding: 10px; vertical-align: top;">
                                 <dx:ASPxLabel ID="lblActivo" runat="server" Text="Activo:" AssociatedControlID="chkActivo" />
                                 <br />
-                                <dx:ASPxCheckBox ID="chkActivo" runat="server" 
+                                <dx:ASPxCheckBox ID="chkActivo" runat="server"
                                     Checked='<%# Eval("activo") == null ? true : (bool)Eval("activo") %>'
-                                    Text="" />
+                                    Text="" Enabled="true"/>
                             </td>
                         </tr>
                     </table>
-                    
+
                     <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd;">
-                        <dx:ASPxButton ID="btnUpdate" runat="server" Text="Guardar" Width="120px" AutoPostBack="false">
-                            <Image IconID="actions_apply_16x16" />
-                            <ClientSideEvents Click="GuardarUsuario" />
-                        </dx:ASPxButton>
-                        <dx:ASPxButton ID="btnCancel" runat="server" Text="Cancelar" Width="120px" AutoPostBack="false" Style="margin-left: 10px;">
-                            <Image IconID="actions_cancel_16x16" />
+                        <dx:ASPxButton ID="btnCancel" runat="server" Text="Cancelar" Width="120px" ToolTip="Cancelar" AutoPostBack="false" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                            <%--<Image Url="~/Images/cancel.png" Width="25px" Height="25px" ToolTip="Cancelar" />--%>
                             <ClientSideEvents Click="CancelarEdicion" />
+                        </dx:ASPxButton>
+                        <dx:ASPxButton ID="btnUpdate" runat="server" Text="Guardar" Width="120px" ToolTip="Guardar" AutoPostBack="false" Style="margin-left: 80px;" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                            <%--<Image Url="~/Images/comprobar.png" Width="25px" Height="25px" ToolTip="Guardar" />--%>
+                            <ClientSideEvents Click="GuardarUsuario" />
                         </dx:ASPxButton>
                     </div>
                 </div>
             </EditForm>
         </Templates>
-        
+
         <SettingsPager PageSize="10" />
         <SettingsEditing Mode="PopupEditForm" />
         <SettingsPopup>
             <EditForm Modal="true"
                 Width="650px"
                 HorizontalAlign="WindowCenter"
-                VerticalAlign="WindowCenter" />
+                VerticalAlign="WindowCenter" ShowCloseButton="false"/>
+
         </SettingsPopup>
-        <SettingsText PopupEditFormCaption="Gestión de Usuario" />
-        
+        <SettingsText PopupEditFormCaption=" " />
+
         <SettingsCommandButton>
             <NewButton>
-                <Image IconID="actions_add_16x16" ToolTip="Nuevo Usuario" />
+                <Image Url="~/Images/add.png" Width="30px" Height="30px" ToolTip="Nueva Solicitud" />
             </NewButton>
             <EditButton>
-                <Image IconID="edit_edit_16x16" ToolTip="Editar" />
+                <Image Url="~/Images/edits.png" Width="25px" Height="25px" ToolTip="Editar" />
             </EditButton>
             <UpdateButton>
-                <Image IconID="actions_apply_16x16" ToolTip="Guardar" />
+                 <Image Url="~/Images/comprobar.png" Width="25px" Height="25px" ToolTip="Guardar" />
             </UpdateButton>
             <CancelButton>
-                <Image IconID="actions_cancel_16x16" ToolTip="Cancelar" />
+                 <Image Url="~/Images/cancel.png" Width="25px" Height="25px" ToolTip="Cancelar" />
             </CancelButton>
         </SettingsCommandButton>
     </dx:ASPxGridView>

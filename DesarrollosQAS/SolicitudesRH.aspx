@@ -1,6 +1,33 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SolicitudesRH.aspx.cs" MasterPageFile="~/Root.master" Inherits="DesarrollosQAS.SolicitudesRH" %>
 
 <asp:Content ContentPlaceHolderID="Content" runat="server">
+    <script type="text/javascript">
+
+        // Manejar mensajes después de operaciones del grid
+        function OnGridSolicitudesEndCallback(s, e) {
+            if (s.cpMessageType && s.cpMessage) {
+                if (s.cpMessageType === "success") {
+                    lblMensajeExitoSolicitud.SetText(s.cpMessage);
+                    pcMensajeExitoSolicitud.Show();
+                } else if (s.cpMessageType === "error") {
+                    lblMensajeErrorSolicitud.SetText(s.cpMessage);
+                    pcMensajeErrorSolicitud.Show();
+                }
+
+                delete s.cpMessageType;
+                delete s.cpMessage;
+            }
+        }
+
+        // Confirmar antes de eliminar
+        function OnCustomButtonClickSolicitud(s, e) {
+            if (e.buttonID === 'btnDeleteSolicitud') {
+                e.processOnServer = confirm('¿Está seguro que desea eliminar esta solicitud?\n\nEsta acción no se puede deshacer.');
+            }
+        }
+
+    </script>
+
     <!-- Grid de Solicitudes RH -->
     <asp:Table runat="server" Width="90%" HorizontalAlign="Center">
         <asp:TableRow>
@@ -8,15 +35,62 @@
                 <div style="padding-top: 8px">
                     <dx:ASPxLabel runat="server" ID="ASPxLabel7" Text="Solicitudes de Visitas" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
                 </div>
-                <hr />
+                <br />
+
+                <!-- Popup de Éxito -->
+                <dx:ASPxPopupControl ID="pcMensajeExitoSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
+                    PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExitoSolicitud"
+                    HeaderText="✓ Operación Exitosa" PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
+                    <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
+                    <ContentCollection>
+                        <dx:PopupControlContentControl runat="server">
+                            <div style="padding: 20px; text-align: center;">
+                                <dx:ASPxLabel ID="lblMensajeExitoSolicitud" runat="server" Font-Size="14px" ClientInstanceName="lblMensajeExitoSolicitud" />
+                            </div>
+                        </dx:PopupControlContentControl>
+                    </ContentCollection>
+                    <FooterContentTemplate>
+                        <div style="text-align: center; padding: 10px;">
+                            <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="Aceptar" Width="100px" AutoPostBack="False">
+                                <ClientSideEvents Click="function(s, e) { pcMensajeExitoSolicitud.Hide(); }" />
+                            </dx:ASPxButton>
+                        </div>
+                    </FooterContentTemplate>
+                </dx:ASPxPopupControl>
+
+                <!-- Popup de Error -->
+                <dx:ASPxPopupControl ID="pcMensajeErrorSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
+                    PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeErrorSolicitud"
+                    HeaderText="✗ Error" PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
+                    <HeaderStyle BackColor="#dc3545" ForeColor="White" Font-Bold="true" />
+                    <ContentCollection>
+                        <dx:PopupControlContentControl runat="server">
+                            <div style="padding: 20px; text-align: center;">
+                                <dx:ASPxLabel ID="lblMensajeErrorSolicitud" runat="server" Font-Size="14px" ClientInstanceName="lblMensajeErrorSolicitud" />
+                            </div>
+                        </dx:PopupControlContentControl>
+                    </ContentCollection>
+                    <FooterContentTemplate>
+                        <div style="text-align: center; padding: 10px;">
+                            <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="Cerrar" Width="100px" AutoPostBack="False">
+                                <ClientSideEvents Click="function(s, e) { pcMensajeErrorSolicitud.Hide(); }" />
+                            </dx:ASPxButton>
+                        </div>
+                    </FooterContentTemplate>
+                </dx:ASPxPopupControl>
+
                 <dx:ASPxGridView ID="gridSolicitudesRH" runat="server"
                     KeyFieldName="ID_Solicitud"
                     Width="100%"
                     ForeColor="Black"
+                    ClientInstanceName="gridSolicitudesRH"
                     OnDataBinding="gridSolicitudesRH_DataBinding"
                     OnRowInserting="gridSolicitudesRH_RowInserting"
                     OnRowUpdating="gridSolicitudesRH_RowUpdating"
-                    OnRowDeleting="gridSolicitudesRH_RowDeleting">
+                    OnCustomButtonCallback="gridSolicitudesRH_CustomButtonCallback">
+                    <ClientSideEvents
+                        EndCallback="OnGridSolicitudesEndCallback"
+                        CustomButtonClick="OnCustomButtonClickSolicitud" />
                     <Styles>
                         <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
                     </Styles>
@@ -24,17 +98,21 @@
                         <dx:GridViewCommandColumn Caption="Acciones" Width="100px"
                             ShowNewButtonInHeader="true"
                             ShowEditButton="true"
-                            ShowDeleteButton="true"
                             ButtonRenderMode="Image">
+                            <CustomButtons>
+                                <dx:GridViewCommandColumnCustomButton ID="btnDeleteSolicitud" Text="Eliminar">
+                                  <Image Url="~/Images/delete.png" Width="25px" Height="25px" ToolTip="Eliminar" />
+                                </dx:GridViewCommandColumnCustomButton>
+                            </CustomButtons>
                         </dx:GridViewCommandColumn>
 
                         <dx:GridViewDataTextColumn FieldName="ID_Solicitud" Caption="ID" Visible="false" ReadOnly="true" />
 
-                        <dx:GridViewDataTextColumn FieldName="Visitante" Caption="Visitante" Width="150px" />
-
                         <dx:GridViewDataComboBoxColumn FieldName="id_TipoSolicitud" Caption="Tipo Solicitud" Width="120px">
                             <PropertiesComboBox TextField="Visita" ValueField="ID_TipoVisita" ValueType="System.Int32" />
                         </dx:GridViewDataComboBoxColumn>
+
+                        <dx:GridViewDataTextColumn FieldName="Visitante" Caption="Visitante" Width="150px" />
 
                         <dx:GridViewDataComboBoxColumn FieldName="id_Proyecto" Caption="Proyecto" Width="150px">
                             <PropertiesComboBox TextField="NombreProyecto" ValueField="ID_Proyecto" ValueType="System.Int32" />
@@ -44,31 +122,27 @@
                             <PropertiesComboBox TextField="NombrePlanta" ValueField="ID_Planta" ValueType="System.Int32" />
                         </dx:GridViewDataComboBoxColumn>
 
+                        <dx:GridViewDataComboBoxColumn FieldName="id_Contratista" Caption="Contratista" Width="150px">
+                            <PropertiesComboBox TextField="Responsable" ValueField="id_contratista" ValueType="System.Int32" />
+                        </dx:GridViewDataComboBoxColumn>
+
+                        <dx:GridViewDataTextColumn FieldName="AreaTrabajo" Caption="Área de Trabajo" Width="150px" />
+
+                        <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="150px" />
+                        <dx:GridViewDataTextColumn FieldName="Estancia" Caption="Estancia" Width="100px" />
                         <dx:GridViewDataDateColumn FieldName="FechaInicio" Caption="Fecha Inicio" Width="110px">
                             <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
                         </dx:GridViewDataDateColumn>
-
                         <dx:GridViewDataDateColumn FieldName="FechaFin" Caption="Fecha Fin" Width="110px">
+                            <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
+                        </dx:GridViewDataDateColumn>
+                        <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha Solicitud" Width="110px" ReadOnly="true">
                             <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
                         </dx:GridViewDataDateColumn>
 
                         <dx:GridViewDataTextColumn FieldName="RFC" Caption="RFC" Width="120px" />
 
-                        <dx:GridViewDataComboBoxColumn FieldName="id_Contratista" Caption="Contratista" Width="150px">
-                            <PropertiesComboBox TextField="Responsable" ValueField="id_contratista" ValueType="System.Int32" />
-                        </dx:GridViewDataComboBoxColumn>
-
                         <dx:GridViewDataTextColumn FieldName="Responsable" Caption="Responsable" Width="150px" />
-
-                        <dx:GridViewDataTextColumn FieldName="AreaTrabajo" Caption="Área de Trabajo" Width="150px" />
-
-                        <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="150px" />
-
-                        <dx:GridViewDataTextColumn FieldName="Estancia" Caption="Estancia" Width="100px" />
-
-                        <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha Solicitud" Width="110px">
-                            <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
-                        </dx:GridViewDataDateColumn>
 
                         <dx:GridViewDataCheckColumn FieldName="aprobado" Caption="Aprobado" Width="80px" />
 
@@ -76,20 +150,21 @@
                     <SettingsPager PageSize="10">
                         <PageSizeItemSettings ShowAllItem="true" Visible="true"></PageSizeItemSettings>
                     </SettingsPager>
-                    <SettingsEditing Mode="EditForm" />
+                    <SettingsEditing Mode="PopupEditForm" />
                     <SettingsPopup>
-                        <EditForm Modal="true" Width="600px" />
+                        <EditForm Modal="true"
+                            Width="700px"
+                            HorizontalAlign="WindowCenter"
+                            VerticalAlign="WindowCenter" />
                     </SettingsPopup>
-                    <SettingsCommandButton>
+                    <SettingsText PopupEditFormCaption=" " />
+                     <SettingsCommandButton>
                         <NewButton>
-                            <Image IconID="actions_add_16x16" ToolTip="Nuevo" />
+                            <Image Url="~/Images/add.png" Width="30px" Height="30px" ToolTip="Nueva Solicitud" />
                         </NewButton>
                         <EditButton>
-                            <Image IconID="edit_edit_16x16" ToolTip="Editar" />
+                            <Image Url="~/Images/edits.png" Width="25px" Height="25px" ToolTip="Editar" />
                         </EditButton>
-                        <DeleteButton>
-                            <Image IconID="edit_delete_16x16" ToolTip="Eliminar" />
-                        </DeleteButton>
                         <UpdateButton>
                             <Image IconID="actions_apply_16x16" ToolTip="Guardar" />
                         </UpdateButton>

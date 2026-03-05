@@ -251,6 +251,7 @@
     <Content Include="Images\Planes.svg" />
     <Content Include="Images\Procesos.png" />
     <Content Include="Images\Propiedad.svg" />
+    <Content Include="Images\proteger.png" />
     <Content Include="Images\Proveedores.svg" />
     <Content Include="Images\proyecto.svg" />
     <Content Include="Images\ProyectoColor.png" />

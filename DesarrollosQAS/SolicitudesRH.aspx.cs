@@ -3,20 +3,11 @@ using DataAccessDesarrollos.Repositorios;
 using DevExpress.Web;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace DesarrollosQAS
 {
     public partial class SolicitudesRH : System.Web.UI.Page
     {
-        // Claves de sesión para mensajes
-        private const string SESSION_SUCCESS_MESSAGE = "SolicitudRHSuccessMsg";
-        private const string SESSION_ERROR_MESSAGE = "SolicitudRHErrorMsg";
-
         protected void Page_Load(object sender, EventArgs e)
         {
             // Los catálogos SIEMPRE deben cargarse para que los ComboBox funcionen correctamente
@@ -27,24 +18,10 @@ namespace DesarrollosQAS
                 BindGrid();
             }
 
-            // Mostrar mensajes después de cargar todo
-            MostrarMensajesDeSesion();
-        }
-
-        private void MostrarMensajesDeSesion()
-        {
-            if (Session[SESSION_SUCCESS_MESSAGE] != null)
-            {
-                string mensaje = Session[SESSION_SUCCESS_MESSAGE].ToString();
-                Session.Remove(SESSION_SUCCESS_MESSAGE);
-                // Aquí puedes mostrar el mensaje de éxito en un control de tu página
-            }
-            else if (Session[SESSION_ERROR_MESSAGE] != null)
-            {
-                string mensaje = Session[SESSION_ERROR_MESSAGE].ToString();
-                Session.Remove(SESSION_ERROR_MESSAGE);
-                // Aquí puedes mostrar el mensaje de error en un control de tu página
-            }
+            // Aplicar estilos al popup en cada carga
+            gridSolicitudesRH.StylesPopup.EditForm.Header.BackColor = System.Drawing.ColorTranslator.FromHtml("#353943");
+            gridSolicitudesRH.StylesPopup.EditForm.Header.ForeColor = System.Drawing.Color.White;
+            gridSolicitudesRH.StylesPopup.EditForm.Header.Font.Bold = true;
         }
 
         private void CargarCatalogos()
@@ -92,6 +69,7 @@ namespace DesarrollosQAS
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error al cargar catálogos: {0}", ex);
+                MostrarError($"Error al cargar catálogos: {ex.Message}");
             }
         }
 
@@ -107,6 +85,27 @@ namespace DesarrollosQAS
         {
             var repo = new SolicitudRHRepository();
             gridSolicitudesRH.DataSource = repo.ObtenerTodasSolicitudesRH();
+        }
+
+        protected void gridSolicitudesRH_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
+        {
+            if (e.ButtonID == "btnDeleteSolicitud")
+            {
+                try
+                {
+                    int id = Convert.ToInt32(gridSolicitudesRH.GetRowValues(e.VisibleIndex, "ID_Solicitud"));
+                    var repo = new SolicitudRHRepository();
+                    repo.EliminarSolicitudRH(id);
+
+                    gridSolicitudesRH.DataBind();
+                    MostrarExito("Solicitud eliminada exitosamente.");
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Trace.TraceError("Error al eliminar solicitud: {0}", ex);
+                    MostrarError($"Error al eliminar: {ex.Message}");
+                }
+            }
         }
 
         protected void gridSolicitudesRH_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
@@ -140,15 +139,15 @@ namespace DesarrollosQAS
 
                 e.Cancel = true;
                 gridSolicitudesRH.CancelEdit();
-                Session[SESSION_SUCCESS_MESSAGE] = "Solicitud creada exitosamente.";
-                ASPxWebControl.RedirectOnCallback("SolicitudesRH.aspx");
+                gridSolicitudesRH.DataBind();
+                MostrarExito("Solicitud creada exitosamente.");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error en RowInserting: {0}", ex);
                 e.Cancel = true;
-                Session[SESSION_ERROR_MESSAGE] = $"Error al insertar: {ex.Message}";
-                ASPxWebControl.RedirectOnCallback("SolicitudesRH.aspx");
+                gridSolicitudesRH.CancelEdit();
+                MostrarError($"Error al insertar: {ex.Message}");
             }
         }
 
@@ -183,38 +182,32 @@ namespace DesarrollosQAS
 
                 e.Cancel = true;
                 gridSolicitudesRH.CancelEdit();
-                Session[SESSION_SUCCESS_MESSAGE] = "Solicitud actualizada exitosamente.";
-                ASPxWebControl.RedirectOnCallback("SolicitudesRH.aspx");
+                gridSolicitudesRH.DataBind();
+                MostrarExito("Solicitud actualizada exitosamente.");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error al actualizar solicitud: {0}", ex);
                 e.Cancel = true;
-                Session[SESSION_ERROR_MESSAGE] = $"Error al actualizar: {ex.Message}";
-                ASPxWebControl.RedirectOnCallback("SolicitudesRH.aspx");
-            }
-        }
-
-        protected void gridSolicitudesRH_RowDeleting(object sender, DevExpress.Web.Data.ASPxDataDeletingEventArgs e)
-        {
-            try
-            {
-                int id = Convert.ToInt32(e.Keys["ID_Solicitud"]);
-                var repo = new SolicitudRHRepository();
-                repo.EliminarSolicitudRH(id);
-
-                e.Cancel = true;
                 gridSolicitudesRH.CancelEdit();
-                Session[SESSION_SUCCESS_MESSAGE] = "Solicitud eliminada exitosamente.";
-                ASPxWebControl.RedirectOnCallback("SolicitudesRH.aspx");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Trace.TraceError("Error al eliminar solicitud: {0}", ex);
-                e.Cancel = true;
-                Session[SESSION_ERROR_MESSAGE] = $"Error al eliminar: {ex.Message}";
-                ASPxWebControl.RedirectOnCallback("SolicitudesRH.aspx");
+                MostrarError($"Error al actualizar: {ex.Message}");
             }
         }
+
+        #region Métodos de Mensajes
+
+        private void MostrarExito(string mensaje)
+        {
+            gridSolicitudesRH.JSProperties["cpMessageType"] = "success";
+            gridSolicitudesRH.JSProperties["cpMessage"] = mensaje;
+        }
+
+        private void MostrarError(string mensaje)
+        {
+            gridSolicitudesRH.JSProperties["cpMessageType"] = "error";
+            gridSolicitudesRH.JSProperties["cpMessage"] = mensaje;
+        }
+
+        #endregion
     }
 }
