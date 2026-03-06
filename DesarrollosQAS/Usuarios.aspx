@@ -57,7 +57,7 @@
     <dx:ASPxPopupControl ID="pcMensajeExito" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExito"
         HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
-        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true"/>
+        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
                 <div style="padding: 20px; text-align: center;">
@@ -127,38 +127,27 @@
             <dx:GridViewDataTextColumn FieldName="sigla_red" Caption="Sigla Red">
                 <PropertiesTextEdit NullText="Ingrese sigla de red">
                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                    <ValidationSettings>
-                        <RequiredField IsRequired="true" ErrorText="Sigla de Red requerida" />
-                    </ValidationSettings>
                 </PropertiesTextEdit>
             </dx:GridViewDataTextColumn>
             <dx:GridViewDataTextColumn FieldName="nombre" Caption="Nombre">
                 <PropertiesTextEdit NullText="Ingrese nombre completo">
                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                    <ValidationSettings>
-                        <RequiredField IsRequired="true" ErrorText="Nombre requerido" />
-                        <RegularExpression ValidationExpression="^(?!\s+$).+" ErrorText="El nombre no puede contener solo espacios" />
-                    </ValidationSettings>
                 </PropertiesTextEdit>
             </dx:GridViewDataTextColumn>
             <dx:GridViewDataTextColumn FieldName="Email" Caption="Email">
                 <PropertiesTextEdit NullText="ejemplo@correo.com">
                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                    <ValidationSettings>
-                        <RequiredField IsRequired="true" ErrorText="Email requerido" />
-                        <RegularExpression ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$" ErrorText="Email no válido" />
-                    </ValidationSettings>
                 </PropertiesTextEdit>
             </dx:GridViewDataTextColumn>
             <dx:GridViewDataCheckColumn FieldName="activo" Caption="Activo" />
         </Columns>
-
+        <Settings GridLines="Both" />
         <Templates>
             <EditForm>
                 <div style="padding: 20px;">
                     <table style="width: 100%; border-collapse: collapse;">
                         <tr>
-                            <td style="width: 50%; padding: 10px; vertical-align: top;">
+                            <td colspan="1" style="padding: 10px; vertical-align: top;">
                                 <dx:ASPxLabel ID="lblSiglaRed" runat="server" Text="Sigla Red:" AssociatedControlID="txtSiglaRed" />
                                 <span style="color: red;">*</span>
                                 <br />
@@ -167,12 +156,16 @@
                                     Text='<%# Bind("sigla_red") %>'
                                     NullText="Ingrese sigla de red">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic">
+                                    <%--                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Bottom">
                                         <RequiredField IsRequired="true" ErrorText="Sigla de Red requerida" />
+                                        <RegularExpression ValidationExpression="^[a-zA-Z0-9]+$" ErrorText="Solo puede contener letras y números, sin espacios." />
+                                    </ValidationSettings>--%>
+                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
+                                        <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
                                 </dx:ASPxTextBox>
                             </td>
-                            <td style="width: 50%; padding: 10px; vertical-align: top;">
+                            <td colspan="1" style="padding: 10px; vertical-align: top;">
                                 <dx:ASPxLabel ID="lblNombre" runat="server" Text="Nombre:" AssociatedControlID="txtNombre" />
                                 <span style="color: red;">*</span>
                                 <br />
@@ -180,45 +173,53 @@
                                     Text='<%# Bind("nombre") %>'
                                     NullText="Ingrese nombre completo">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic">
+                                    <%--<ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Bottom">
                                         <RequiredField IsRequired="true" ErrorText="Nombre requerido" />
                                         <RegularExpression ValidationExpression="^(?!\s+$).+" ErrorText="El nombre no puede contener solo espacios" />
+                                    </ValidationSettings>--%>
+                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
+                                        <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
                                 </dx:ASPxTextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td style="width: 50%; padding: 10px; vertical-align: top;">
+                            <td colspan="2" style="padding: 10px; vertical-align: top;">
                                 <dx:ASPxLabel ID="lblEmail" runat="server" Text="Email:" AssociatedControlID="txtEmail" />
                                 <span style="color: red;">*</span>
                                 <br />
-                                <dx:ASPxTextBox ID="txtEmail" runat="server" Width="95%"
+                                <dx:ASPxTextBox ID="txtEmail" runat="server" Width="97.5%"
                                     Text='<%# Bind("Email") %>'
                                     NullText="ejemplo@correo.com">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic">
+<%--                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Bottom">
                                         <RequiredField IsRequired="true" ErrorText="Email requerido" />
                                         <RegularExpression ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$" ErrorText="Email no válido" />
+                                    </ValidationSettings>--%>
+                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
+                                        <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
                                 </dx:ASPxTextBox>
                             </td>
-                            <td style="width: 50%; padding: 10px; vertical-align: top;">
+                        </tr>
+                        <tr>
+                            <td style="width: 50%; padding: 10px; vertical-align: top">
                                 <dx:ASPxLabel ID="lblActivo" runat="server" Text="Activo:" AssociatedControlID="chkActivo" />
-                                <br />
                                 <dx:ASPxCheckBox ID="chkActivo" runat="server"
                                     Checked='<%# Eval("activo") == null ? true : (bool)Eval("activo") %>'
-                                    Text="" Enabled="true"/>
+                                    Text="" Enabled="false" />
+                            </td>
+                            <td style="width: 50%; padding: 10px; vertical-align: top;">
+                                <!-- Celda vacía para mantener el diseño balanceado -->
                             </td>
                         </tr>
                     </table>
 
                     <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd;">
                         <dx:ASPxButton ID="btnCancel" runat="server" Text="Cancelar" Width="120px" ToolTip="Cancelar" AutoPostBack="false" BackColor="#353943" ForeColor="White" Font-Bold="true">
-                            <%--<Image Url="~/Images/cancel.png" Width="25px" Height="25px" ToolTip="Cancelar" />--%>
                             <ClientSideEvents Click="CancelarEdicion" />
                         </dx:ASPxButton>
                         <dx:ASPxButton ID="btnUpdate" runat="server" Text="Guardar" Width="120px" ToolTip="Guardar" AutoPostBack="false" Style="margin-left: 80px;" BackColor="#353943" ForeColor="White" Font-Bold="true">
-                            <%--<Image Url="~/Images/comprobar.png" Width="25px" Height="25px" ToolTip="Guardar" />--%>
                             <ClientSideEvents Click="GuardarUsuario" />
                         </dx:ASPxButton>
                     </div>
@@ -232,7 +233,7 @@
             <EditForm Modal="true"
                 Width="650px"
                 HorizontalAlign="WindowCenter"
-                VerticalAlign="WindowCenter" ShowCloseButton="false"/>
+                VerticalAlign="WindowCenter" ShowCloseButton="false" />
 
         </SettingsPopup>
         <SettingsText PopupEditFormCaption=" " />
@@ -245,10 +246,10 @@
                 <Image Url="~/Images/edits.png" Width="25px" Height="25px" ToolTip="Editar" />
             </EditButton>
             <UpdateButton>
-                 <Image Url="~/Images/comprobar.png" Width="25px" Height="25px" ToolTip="Guardar" />
+                <Image Url="~/Images/comprobar.png" Width="25px" Height="25px" ToolTip="Guardar" />
             </UpdateButton>
             <CancelButton>
-                 <Image Url="~/Images/cancel.png" Width="25px" Height="25px" ToolTip="Cancelar" />
+                <Image Url="~/Images/cancel.png" Width="25px" Height="25px" ToolTip="Cancelar" />
             </CancelButton>
         </SettingsCommandButton>
     </dx:ASPxGridView>

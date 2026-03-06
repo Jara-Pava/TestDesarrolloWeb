@@ -19,11 +19,30 @@
             }
         }
 
-        // Confirmar antes de eliminar
+        // Confirmar antes de eliminar - Mostrar popup personalizado
         function OnCustomButtonClickSolicitud(s, e) {
             if (e.buttonID === 'btnDeleteSolicitud') {
-                e.processOnServer = confirm('¿Está seguro que desea eliminar esta solicitud?\n\nEsta acción no se puede deshacer.');
+                e.processOnServer = false; // Cancelar el proceso del servidor
+                currentDeleteIndex = e.visibleIndex; // Guardar el índice de la fila
+                pcConfirmarEliminacion.Show(); // Mostrar popup de confirmación
             }
+        }
+
+        // Variable global para guardar el índice de la fila a eliminar
+        var currentDeleteIndex = -1;
+
+        // Confirmar eliminación desde el popup
+        function ConfirmarEliminacion() {
+            if (currentDeleteIndex >= 0) {
+                gridSolicitudesRH.PerformCallback('DELETE|' + currentDeleteIndex);
+                pcConfirmarEliminacion.Hide();
+            }
+        }
+
+        // Cancelar eliminación
+        function CancelarEliminacion() {
+            currentDeleteIndex = -1;
+            pcConfirmarEliminacion.Hide();
         }
 
     </script>
@@ -36,6 +55,33 @@
                     <dx:ASPxLabel runat="server" ID="ASPxLabel7" Text="Solicitudes de Visitas" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
                 </div>
                 <br />
+
+                <!-- Popup de Confirmación de Eliminación -->
+                <dx:ASPxPopupControl ID="pcConfirmarEliminacion" runat="server" Width="450" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
+                    PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcConfirmarEliminacion"
+                    HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
+                    <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
+                    <ContentCollection>
+                        <dx:PopupControlContentControl runat="server">
+                            <div style="padding: 30px; text-align: center;">
+                                <dx:ASPxLabel runat="server" Text="¿Está seguro que desea eliminar esta solicitud?" Font-Size="16px" Font-Bold="true" />
+                                <br /><br />
+                            </div>
+                        </dx:PopupControlContentControl>
+                    </ContentCollection>
+                    <FooterContentTemplate>
+                        <div style="text-align: center; padding: 10px;">
+                            <dx:ASPxButton ID="btnConfirmarEliminar" runat="server" Text="Sí, Eliminar" Width="120px" AutoPostBack="False" 
+                                BackColor="#353943" ForeColor="White" Font-Bold="true" Style="margin-left: 10px;">
+                                <ClientSideEvents Click="ConfirmarEliminacion" />
+                            </dx:ASPxButton>
+                            <dx:ASPxButton ID="btnCancelarEliminar" runat="server" Text="Cancelar" Width="120px" AutoPostBack="False" 
+                                BackColor="#353943" ForeColor="White" Font-Bold="true" Style="margin-left: 90px;">
+                                <ClientSideEvents Click="CancelarEliminacion" />
+                            </dx:ASPxButton>
+                        </div>
+                    </FooterContentTemplate>
+                </dx:ASPxPopupControl>
 
                 <!-- Popup de Éxito -->
                 <dx:ASPxPopupControl ID="pcMensajeExitoSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
@@ -61,8 +107,8 @@
                 <!-- Popup de Error -->
                 <dx:ASPxPopupControl ID="pcMensajeErrorSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
                     PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeErrorSolicitud"
-                    HeaderText="✗ Error" PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
-                    <HeaderStyle BackColor="#dc3545" ForeColor="White" Font-Bold="true" />
+                    HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
+                    <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
                     <ContentCollection>
                         <dx:PopupControlContentControl runat="server">
                             <div style="padding: 20px; text-align: center;">
@@ -87,7 +133,9 @@
                     OnDataBinding="gridSolicitudesRH_DataBinding"
                     OnRowInserting="gridSolicitudesRH_RowInserting"
                     OnRowUpdating="gridSolicitudesRH_RowUpdating"
-                    OnCustomButtonCallback="gridSolicitudesRH_CustomButtonCallback">
+                    OnCustomButtonCallback="gridSolicitudesRH_CustomButtonCallback"
+                    OnCustomCallback="gridSolicitudesRH_CustomCallback"
+                    OnHtmlEditFormCreated="gridUsuarios_HtmlEditFormCreated">
                     <ClientSideEvents
                         EndCallback="OnGridSolicitudesEndCallback"
                         CustomButtonClick="OnCustomButtonClickSolicitud" />
@@ -129,13 +177,17 @@
                         <dx:GridViewDataTextColumn FieldName="AreaTrabajo" Caption="Área de Trabajo" Width="150px" />
 
                         <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="150px" />
+                        
                         <dx:GridViewDataTextColumn FieldName="Estancia" Caption="Estancia" Width="100px" />
+                        
                         <dx:GridViewDataDateColumn FieldName="FechaInicio" Caption="Fecha Inicio" Width="110px">
                             <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
                         </dx:GridViewDataDateColumn>
+                        
                         <dx:GridViewDataDateColumn FieldName="FechaFin" Caption="Fecha Fin" Width="110px">
                             <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
                         </dx:GridViewDataDateColumn>
+                        
                         <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha Solicitud" Width="110px" ReadOnly="true">
                             <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
                         </dx:GridViewDataDateColumn>
@@ -150,12 +202,13 @@
                     <SettingsPager PageSize="10">
                         <PageSizeItemSettings ShowAllItem="true" Visible="true"></PageSizeItemSettings>
                     </SettingsPager>
-                    <SettingsEditing Mode="PopupEditForm" />
+                    <SettingsEditing Mode="PopupEditForm"/>
                     <SettingsPopup>
                         <EditForm Modal="true"
                             Width="700px"
                             HorizontalAlign="WindowCenter"
-                            VerticalAlign="WindowCenter" />
+                            VerticalAlign="WindowCenter" 
+                            ShowCloseButton="false"/>
                     </SettingsPopup>
                     <SettingsText PopupEditFormCaption=" " />
                      <SettingsCommandButton>

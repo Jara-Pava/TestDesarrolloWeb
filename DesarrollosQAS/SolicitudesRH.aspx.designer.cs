@@ -24,6 +24,15 @@ namespace DesarrollosQAS
         protected global::DevExpress.Web.ASPxLabel ASPxLabel7;
 
         /// <summary>
+        /// pcConfirmarEliminacion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxPopupControl pcConfirmarEliminacion;
+
+        /// <summary>
         /// pcMensajeExitoSolicitud control.
         /// </summary>
         /// <remarks>

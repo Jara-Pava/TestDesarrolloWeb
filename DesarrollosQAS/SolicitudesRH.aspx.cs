@@ -24,6 +24,30 @@ namespace DesarrollosQAS
             gridSolicitudesRH.StylesPopup.EditForm.Header.Font.Bold = true;
         }
 
+        protected void gridSolicitudesRH_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+        {
+            if (e.Parameters.StartsWith("DELETE|"))
+            {
+                try
+                {
+                    string[] parts = e.Parameters.Split('|');
+                    int visibleIndex = Convert.ToInt32(parts[1]);
+
+                    int id = Convert.ToInt32(gridSolicitudesRH.GetRowValues(visibleIndex, "ID_Solicitud"));
+                    var repo = new SolicitudRHRepository();
+                    repo.EliminarSolicitudRH(id);
+
+                    gridSolicitudesRH.DataBind();
+                    MostrarExito("Solicitud eliminada exitosamente.");
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Trace.TraceError("Error al eliminar solicitud: {0}", ex);
+                    MostrarError($"Error al eliminar: {ex.Message}");
+                }
+            }
+        }
+
         private void CargarCatalogos()
         {
             try
@@ -81,6 +105,20 @@ namespace DesarrollosQAS
             gridSolicitudesRH.DataBind();
         }
 
+        protected void gridUsuarios_HtmlEditFormCreated(object sender, ASPxGridViewEditFormEventArgs e)
+        {
+            // Deshabilitar y ocultar fecha Solicitud en modo edición e inserción
+            if (!gridSolicitudesRH.IsNewRowEditing || gridSolicitudesRH.IsEditing)
+            {
+                ASPxDateEdit fechaSolicitudEditor = gridSolicitudesRH.FindEditFormTemplateControl("FechaSolicitud") as ASPxDateEdit;
+                if (fechaSolicitudEditor != null)
+                {
+                    fechaSolicitudEditor.Enabled = false;
+                    fechaSolicitudEditor.Visible = false;
+                }
+            }
+        }
+
         protected void gridSolicitudesRH_DataBinding(object sender, EventArgs e)
         {
             var repo = new SolicitudRHRepository();
@@ -89,23 +127,7 @@ namespace DesarrollosQAS
 
         protected void gridSolicitudesRH_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
         {
-            if (e.ButtonID == "btnDeleteSolicitud")
-            {
-                try
-                {
-                    int id = Convert.ToInt32(gridSolicitudesRH.GetRowValues(e.VisibleIndex, "ID_Solicitud"));
-                    var repo = new SolicitudRHRepository();
-                    repo.EliminarSolicitudRH(id);
-
-                    gridSolicitudesRH.DataBind();
-                    MostrarExito("Solicitud eliminada exitosamente.");
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Trace.TraceError("Error al eliminar solicitud: {0}", ex);
-                    MostrarError($"Error al eliminar: {ex.Message}");
-                }
-            }
+            // Este método ya no elimina directamente, solo se usa para el evento del cliente
         }
 
         protected void gridSolicitudesRH_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
@@ -115,7 +137,7 @@ namespace DesarrollosQAS
                 var solicitud = new SolicitudRH
                 {
                     id_TipoSolicitud = e.NewValues["id_TipoSolicitud"] != null ? Convert.ToInt32(e.NewValues["id_TipoSolicitud"]) : 0,
-                    id_Solicitante = 0, // Asignar el ID del usuario actual desde sesión o contexto
+                    id_Solicitante = 0,
                     id_Proyecto = e.NewValues["id_Proyecto"] != null ? Convert.ToInt32(e.NewValues["id_Proyecto"]) : 0,
                     id_Planta = e.NewValues["id_Planta"] != null ? Convert.ToInt32(e.NewValues["id_Planta"]) : 0,
                     Visitante = Convert.ToString(e.NewValues["Visitante"]),
@@ -128,7 +150,7 @@ namespace DesarrollosQAS
                     Actividad = Convert.ToString(e.NewValues["Actividad"]),
                     Estancia = Convert.ToString(e.NewValues["Estancia"]),
                     FechaSolicitud = DateTime.Now,
-                    aprobado = e.NewValues["aprobado"] != null && (bool)e.NewValues["aprobado"]
+                    aprobado = false
                 };
 
                 var repo = new SolicitudRHRepository();
@@ -155,11 +177,13 @@ namespace DesarrollosQAS
         {
             try
             {
+                bool aprobadoOriginal = e.OldValues["aprobado"] != null && (bool)e.OldValues["aprobado"];
+
                 var solicitud = new SolicitudRH
                 {
                     ID_Solicitud = Convert.ToInt32(e.Keys["ID_Solicitud"]),
                     id_TipoSolicitud = e.NewValues["id_TipoSolicitud"] != null ? Convert.ToInt32(e.NewValues["id_TipoSolicitud"]) : 0,
-                    id_Solicitante = 0, // Mantener el solicitante original o actualizar según la lógica
+                    id_Solicitante = 0,
                     id_Proyecto = e.NewValues["id_Proyecto"] != null ? Convert.ToInt32(e.NewValues["id_Proyecto"]) : 0,
                     id_Planta = e.NewValues["id_Planta"] != null ? Convert.ToInt32(e.NewValues["id_Planta"]) : 0,
                     Visitante = Convert.ToString(e.NewValues["Visitante"]),
@@ -171,7 +195,7 @@ namespace DesarrollosQAS
                     AreaTrabajo = Convert.ToString(e.NewValues["AreaTrabajo"]),
                     Actividad = Convert.ToString(e.NewValues["Actividad"]),
                     Estancia = Convert.ToString(e.NewValues["Estancia"]),
-                    aprobado = e.NewValues["aprobado"] != null && (bool)e.NewValues["aprobado"]
+                    aprobado = aprobadoOriginal
                 };
 
                 var repo = new SolicitudRHRepository();
