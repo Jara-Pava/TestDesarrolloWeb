@@ -278,6 +278,7 @@
     <Content Include="Images\Seguridad.svg" />
     <Content Include="Images\SeguridadColor.png" />
     <Content Include="Images\si.png" />
+    <Content Include="Images\solicitud.png" />
     <Content Include="Images\SubCategoriaColor.png" />
     <Content Include="Images\subirFile.png" />
     <Content Include="Images\submit.png" />
@@ -308,6 +309,8 @@
     <Content Include="Images\verPonderado.png" />
     <Content Include="Images\VolverNegro.png" />
     <Content Include="Images\XSALogo462x306.png" />
+    <Content Include="SolicitudesEspeciales.aspx" />
+    <Content Include="SolicitudEspecial.aspx" />
     <Content Include="SolicitudesRH.aspx" />
     <Content Include="UserControls\Navigation.ascx" />
   </ItemGroup>
@@ -358,6 +361,20 @@
     </Compile>
     <Compile Include="Root.master.designer.cs">
       <DependentUpon>Root.master</DependentUpon>
+    </Compile>
+    <Compile Include="SolicitudesEspeciales.aspx.cs">
+      <DependentUpon>SolicitudesEspeciales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SolicitudesEspeciales.aspx.designer.cs">
+      <DependentUpon>SolicitudesEspeciales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SolicitudEspecial.aspx.cs">
+      <DependentUpon>SolicitudEspecial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SolicitudEspecial.aspx.designer.cs">
+      <DependentUpon>SolicitudEspecial.aspx</DependentUpon>
     </Compile>
     <Compile Include="SolicitudesRH.aspx.cs">
       <DependentUpon>SolicitudesRH.aspx</DependentUpon>

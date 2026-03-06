@@ -5,4 +5,6 @@
 		<page Url="../Usuarios.aspx" Title="Usuarios" Image="../Images/usuarios.svg" Name="usuarios"/>
 	</group>
 	<page Url="../SolicitudesRH.aspx" Title="SolicitudesRH" Image="../Images/home.svg" Name="solicitudes"/>
+	<page Url="../SolicitudesEspeciales.aspx" Title="Solicitudes Especiales" Image="../Images/solicitud.png" Name="solicitudesEspeciales"/>
+	<page Url="../SolicitudEspecial.aspx" Title="Solicitud Especial" Image="../Images/solicitud.png" Name="solicitudEspecial"/>
 </namespace>
