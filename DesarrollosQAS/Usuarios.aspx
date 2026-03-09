@@ -67,7 +67,7 @@
         </ContentCollection>
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarExito" runat="server" Text="Aceptar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                <dx:ASPxButton ID="btnCerrarExito" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
                     <ClientSideEvents Click="function(s, e) { pcMensajeExito.Hide(); }" />
                 </dx:ASPxButton>
             </div>
@@ -88,7 +88,7 @@
         </ContentCollection>
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarError" runat="server" Text="Cerrar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                <dx:ASPxButton ID="btnCerrarError" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
                     <ClientSideEvents Click="function(s, e) { pcMensajeError.Hide(); }" />
                 </dx:ASPxButton>
             </div>

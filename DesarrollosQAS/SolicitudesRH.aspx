@@ -97,7 +97,7 @@
                     </ContentCollection>
                     <FooterContentTemplate>
                         <div style="text-align: center; padding: 10px;">
-                            <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="Aceptar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                            <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
                                 <ClientSideEvents Click="function(s, e) { pcMensajeExitoSolicitud.Hide(); }" />
                             </dx:ASPxButton>
                         </div>
@@ -118,7 +118,7 @@
                     </ContentCollection>
                     <FooterContentTemplate>
                         <div style="text-align: center; padding: 10px;">
-                            <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="Cerrar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                            <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
                                 <ClientSideEvents Click="function(s, e) { pcMensajeErrorSolicitud.Hide(); }" />
                             </dx:ASPxButton>
                         </div>
@@ -160,7 +160,7 @@
                             <PropertiesComboBox TextField="Visita" ValueField="ID_TipoVisita" ValueType="System.Int32" />
                         </dx:GridViewDataComboBoxColumn>
 
-                        <dx:GridViewDataTextColumn FieldName="Visitante" Caption="Visitante" Width="150px" />
+                        <dx:GridViewDataTextColumn FieldName="Visitante" Caption="Visitante" Width="50%" />
 
                         <dx:GridViewDataComboBoxColumn FieldName="id_Proyecto" Caption="Proyecto" Width="150px">
                             <PropertiesComboBox TextField="NombreProyecto" ValueField="ID_Proyecto" ValueType="System.Int32" />

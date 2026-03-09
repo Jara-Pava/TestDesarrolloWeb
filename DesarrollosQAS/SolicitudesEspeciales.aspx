@@ -124,7 +124,7 @@
         </ContentCollection>
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="Aceptar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
                     <ClientSideEvents Click="function(s, e) { pcMensajeExitoSolicitud.Hide(); }" />
                 </dx:ASPxButton>
             </div>
@@ -145,7 +145,7 @@
         </ContentCollection>
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="Cerrar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
                     <ClientSideEvents Click="function(s, e) { pcMensajeErrorSolicitud.Hide(); }" />
                 </dx:ASPxButton>
             </div>
@@ -168,6 +168,7 @@
         <Styles>
             <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
         </Styles>
+        <SettingsResizing ColumnResizeMode="Control"/>
         <Columns>
             <dx:GridViewCommandColumn Caption="Acciones" Width="100px" ButtonRenderMode="Image">
                 <HeaderTemplate>
@@ -181,23 +182,24 @@
                 </HeaderTemplate>
                 <CustomButtons>
                     <dx:GridViewCommandColumnCustomButton ID="btnEditSolicitud" Text="Editar">
-                        <Image Url="~/Images/edits.png" Width="25px" Height="25px" ToolTip="Editar" />
+                        <Image Url="~/Images/edits.png" Width="18px" Height="18px" ToolTip="Editar" />
                     </dx:GridViewCommandColumnCustomButton>
                     <dx:GridViewCommandColumnCustomButton ID="btnDeleteSolicitud" Text="Eliminar">
-                        <Image Url="~/Images/delete.png" Width="25px" Height="25px" ToolTip="Eliminar" />
+                        <Image Url="~/Images/delete.png" Width="18px" Height="18px" ToolTip="Eliminar" />
                     </dx:GridViewCommandColumnCustomButton>
                 </CustomButtons>
             </dx:GridViewCommandColumn>
 
             <dx:GridViewDataTextColumn FieldName="ID_Solicitud" Caption="ID" Visible="false" ReadOnly="true" />
 
-            <dx:GridViewDataComboBoxColumn FieldName="id_TipoSolicitud" Caption="Tipo Solicitud" Width="120px">
-                <PropertiesComboBox TextField="Visita" ValueField="ID_TipoVisita" ValueType="System.Int32" />
+            <dx:GridViewDataComboBoxColumn FieldName="id_TipoSolicitud" Caption="Tipo Solicitud" Width="180px">
+                <PropertiesComboBox TextField="Visita" ValueField="ID_TipoVisita" ValueType="System.Int32"></PropertiesComboBox>
             </dx:GridViewDataComboBoxColumn>
 
-            <dx:GridViewDataTextColumn FieldName="Visitante" Caption="Visitante" Width="150px" />
+            <dx:GridViewDataTextColumn FieldName="Visitante" Caption="Visitante" Width="200px" HeaderStyle-HorizontalAlign="Center">
+            </dx:GridViewDataTextColumn>
 
-            <dx:GridViewDataComboBoxColumn FieldName="id_Proyecto" Caption="Proyecto" Width="150px">
+            <dx:GridViewDataComboBoxColumn FieldName="id_Proyecto" Caption="Proyecto" Width="120px">
                 <PropertiesComboBox TextField="NombreProyecto" ValueField="ID_Proyecto" ValueType="System.Int32" />
             </dx:GridViewDataComboBoxColumn>
 
@@ -211,7 +213,7 @@
 
             <dx:GridViewDataTextColumn FieldName="AreaTrabajo" Caption="Área de Trabajo" Width="150px" />
 
-            <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="150px" />
+            <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="250px" HeaderStyle-HorizontalAlign="Center" />
 
             <dx:GridViewDataTextColumn FieldName="Estancia" Caption="Estancia" Width="100px" />
 
@@ -223,18 +225,18 @@
                 <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
             </dx:GridViewDataDateColumn>
 
-            <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha Solicitud" Width="110px" ReadOnly="true">
+            <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha Solicitud" Width="130px" ReadOnly="true" CellStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center">
                 <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
             </dx:GridViewDataDateColumn>
 
             <dx:GridViewDataTextColumn FieldName="RFC" Caption="RFC" Width="120px" />
 
-            <dx:GridViewDataTextColumn FieldName="Responsable" Caption="Responsable" Width="150px" />
+            <dx:GridViewDataTextColumn FieldName="Responsable" Caption="Responsable" Width="200px" />
 
             <dx:GridViewDataCheckColumn FieldName="aprobado" Caption="Aprobado" Width="80px" />
 
         </Columns>
-        <SettingsPager PageSize="10">
+        <SettingsPager PageSize="25">
             <PageSizeItemSettings ShowAllItem="true" Visible="true"></PageSizeItemSettings>
         </SettingsPager>
     </dx:ASPxGridView>

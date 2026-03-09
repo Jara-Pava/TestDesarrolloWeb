@@ -101,7 +101,7 @@ namespace DesarrollosQAS
                 System.Diagnostics.Trace.TraceError("Error al cargar catálogos: {0}", ex);
                 MostrarMensaje("Error al cargar los catálogos: " + ex.Message, false);
             }
-        }
+        } 
 
         private bool CargarDatosSolicitud(int id)
         {

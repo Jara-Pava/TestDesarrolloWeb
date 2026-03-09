@@ -5,6 +5,12 @@
         tr > .dxflCaptionCell_Office365 {
             padding-bottom: 15px !important;
         }
+         /*Centrar el caption del LayoutGroup*/ 
+         .dxflGroupBox_Office365 {
+            margin-bottom: 0px;
+            padding: 0 0 12px;
+            text-align: center;
+        }
     </style>
 
     <script type="text/javascript">
@@ -31,14 +37,49 @@
             e.processOnServer = true;
         }
 
-        // Función para cancelar
+        // Función para verificar si hay datos en el formulario
+        function FormularioTieneDatos() {
+            return (cboTipoSolicitud.GetValue() != null) ||
+                (cboProyecto.GetValue() != null) ||
+                (txtVisitante.GetText().trim() != '') ||
+                (cboPlanta.GetValue() != null) ||
+                (cboContratista.GetValue() != null) ||
+                (txtAreaTrabajo.GetText().trim() != '') ||
+                (txtActividad.GetText().trim() != '') ||
+                (txtResponsable.GetText().trim() != '') ||
+                (dteFechaInicio.GetValue() != null) ||
+                (dteFechaFin.GetValue() != null);
+        }
+
+        // Función para cancelar con confirmación
         function CancelarFormulario(s, e) {
+            if (FormularioTieneDatos()) {
+                e.processOnServer = false;
+                pcConfirmarCancelacion.Show();
+            } else {
+                window.location.href = 'SolicitudesEspeciales.aspx';
+            }
+        }
+
+        // Confirmar cancelación desde el popup
+        function ConfirmarCancelacion() {
+            pcConfirmarCancelacion.Hide();
             window.location.href = 'SolicitudesEspeciales.aspx';
+        }
+
+        // Cancelar la cancelación (quedarse en el formulario)
+        function CancelarLaCancelacion() {
+            pcConfirmarCancelacion.Hide();
         }
 
         // Función para regresar
         function RegresarFormulario(s, e) {
-            window.location.href = 'SolicitudesEspeciales.aspx';
+            if (FormularioTieneDatos()) {
+                e.processOnServer = false;
+                pcConfirmarCancelacion.Show();
+            } else {
+                window.location.href = 'SolicitudesEspeciales.aspx';
+            }
         }
     </script>
 
@@ -46,6 +87,34 @@
     <asp:HiddenField ID="hfMostrarMensaje" runat="server" Value="false" />
     <asp:HiddenField ID="hfTipoMensaje" runat="server" Value="" />
     <asp:HiddenField ID="hfTextoMensaje" runat="server" Value="" />
+
+    <!-- Popup de Confirmación de Cancelación -->
+    <dx:ASPxPopupControl ID="pcConfirmarCancelacion" runat="server" Width="450" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
+        PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcConfirmarCancelacion"
+        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
+        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
+        <ContentCollection>
+            <dx:PopupControlContentControl runat="server">
+                <div style="padding: 30px; text-align: center;">
+                    <dx:ASPxLabel runat="server" Text="¿Está seguro que desea cancelar? Se perderán los cambios no guardados." Font-Size="16px" Font-Bold="true" />
+                    <br />
+                    <br />
+                </div>
+            </dx:PopupControlContentControl>
+        </ContentCollection>
+        <FooterContentTemplate>
+            <div style="text-align: center; padding: 10px;">
+                <dx:ASPxButton ID="btnConfirmarCancelar" runat="server" Text="Sí" Width="120px" AutoPostBack="False"
+                    BackColor="Teal" ForeColor="White" Font-Bold="true" Style="margin-left: 10px;">
+                    <ClientSideEvents Click="ConfirmarCancelacion" />
+                </dx:ASPxButton>
+                <dx:ASPxButton ID="btnNoNoCancelar" runat="server" Text="No" Width="120px" AutoPostBack="False"
+                    BackColor="DarkRed" ForeColor="White" Font-Bold="true" Style="margin-left: 80px;">
+                    <ClientSideEvents Click="CancelarLaCancelacion" />
+                </dx:ASPxButton>
+            </div>
+        </FooterContentTemplate>
+    </dx:ASPxPopupControl>
 
     <!-- Popup de Éxito -->
     <dx:ASPxPopupControl ID="pcMensajeExitoSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
@@ -61,7 +130,7 @@
         </ContentCollection>
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="Aceptar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="Teal" ForeColor="White" Font-Bold="true">
                     <ClientSideEvents Click="function(s, e) { window.location.href='SolicitudesEspeciales.aspx'; }" />
                 </dx:ASPxButton>
             </div>
@@ -82,14 +151,14 @@
         </ContentCollection>
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="Cerrar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="Teal" ForeColor="White" Font-Bold="true">
                     <ClientSideEvents Click="function(s, e) { pcMensajeErrorSolicitud.Hide(); }" />
                 </dx:ASPxButton>
             </div>
         </FooterContentTemplate>
     </dx:ASPxPopupControl>
 
-    <div style="padding-top: 20px; padding-left: 20px; text-align: left">
+    <div style="padding-top: 20px; padding-left: 20px; text-align: right">
         <dx:ASPxButton runat="server" ID="btnRegresarSolicitudesEspeciales" Text="Regresar"
             Width="200px" CssClass="btn" BackColor="#353943" ForeColor="White" Font-Bold="true" AutoPostBack="false">
             <ClientSideEvents Click="RegresarFormulario" />
@@ -99,6 +168,7 @@
     <%--Template para solicitud especial--%>
     <dx:ASPxFormLayout runat="server" ID="exampleFormLayout" Paddings-PaddingTop="20px" RequiredMarkDisplayMode="RequiredOnly" EnableViewState="true" EncodeHtml="false" UseDefaultPaddings="false" Width="100%">
         <Styles LayoutGroupBox-Caption-Font-Size="X-Large" LayoutGroupBox-Caption-Font-Bold="true" LayoutGroupBox-Caption-ForeColor="#353943"></Styles>
+        <Styles LayoutGroupBox-Caption-BackgroundImage-HorizontalPosition="center"></Styles>
         <Items>
             <dx:LayoutGroup Caption="Solicitud Especial" ColumnCount="4" SettingsItemCaptions-Location="Top" CellStyle-Font-Size="14px">
                 <CellStyle Font-Size="14px" />
@@ -257,32 +327,18 @@
                         <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
                         <LayoutItemNestedControlCollection>
                             <dx:LayoutItemNestedControlContainer>
-                                <dx:ASPxCheckBox ID="chkAprobado" runat="server" ClientInstanceName="chkAprobado" ReadOnly="true"/>
+                                <dx:ASPxCheckBox ID="chkAprobado" runat="server" ClientInstanceName="chkAprobado" ReadOnly="true" />
                             </dx:LayoutItemNestedControlContainer>
                         </LayoutItemNestedControlCollection>
                     </dx:LayoutItem>
-
-                    <%--Botón Cancelar--%>
-                    <dx:LayoutItem HorizontalAlign="Left" ShowCaption="False" ColumnSpan="2">
-                        <Paddings PaddingTop="20" PaddingRight="12" />
-                        <LayoutItemNestedControlCollection>
-                            <dx:LayoutItemNestedControlContainer>
-                                <dx:ASPxButton runat="server" ID="btnCancelar" Text="Cancelar"
-                                    Width="200px" CssClass="btn" BackColor="#353943" ForeColor="White" Font-Bold="true"
-                                    AutoPostBack="false">
-                                    <ClientSideEvents Click="CancelarFormulario" />
-                                </dx:ASPxButton>
-                            </dx:LayoutItemNestedControlContainer>
-                        </LayoutItemNestedControlCollection>
-                    </dx:LayoutItem>
-
+                    
                     <%--Botón Guardar--%>
-                    <dx:LayoutItem HorizontalAlign="Right" ShowCaption="False" ColumnSpan="2">
-                        <Paddings PaddingTop="20" />
+                    <dx:LayoutItem HorizontalAlign="Left" ShowCaption="False" ColumnSpan="2">
+                        <Paddings PaddingTop="50" />
                         <LayoutItemNestedControlCollection>
                             <dx:LayoutItemNestedControlContainer>
                                 <dx:ASPxButton runat="server" ID="btnGuardar" Text="Guardar"
-                                    Width="200px" CssClass="btn" BackColor="#353943" ForeColor="White" Font-Bold="true"
+                                    Width="200px" CssClass="btn" BackColor="Teal" ForeColor="White" Font-Bold="true"
                                     AutoPostBack="true" ValidationGroup="Items" ClientInstanceName="btnGuardar">
                                     <ClientSideEvents Click="ValidarYGuardar" />
                                 </dx:ASPxButton>
@@ -290,6 +346,19 @@
                         </LayoutItemNestedControlCollection>
                     </dx:LayoutItem>
 
+                    <%--Botón Cancelar--%>
+                    <dx:LayoutItem HorizontalAlign="Right" ShowCaption="False" ColumnSpan="2">
+                        <Paddings PaddingTop="50" PaddingRight="12" />
+                        <LayoutItemNestedControlCollection>
+                            <dx:LayoutItemNestedControlContainer>
+                                <dx:ASPxButton runat="server" ID="btnCancelar" Text="Cancelar"
+                                    Width="200px" CssClass="btn" BackColor="DarkRed" ForeColor="White" Font-Bold="true"
+                                    AutoPostBack="false">
+                                    <ClientSideEvents Click="CancelarFormulario" />
+                                </dx:ASPxButton>
+                            </dx:LayoutItemNestedControlContainer>
+                        </LayoutItemNestedControlCollection>
+                    </dx:LayoutItem>
                 </Items>
             </dx:LayoutGroup>
         </Items>

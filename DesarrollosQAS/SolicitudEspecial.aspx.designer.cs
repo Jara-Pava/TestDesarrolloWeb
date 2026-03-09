@@ -42,6 +42,15 @@ namespace DesarrollosQAS
         protected global::System.Web.UI.WebControls.HiddenField hfTextoMensaje;
 
         /// <summary>
+        /// pcConfirmarCancelacion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxPopupControl pcConfirmarCancelacion;
+
+        /// <summary>
         /// pcMensajeExitoSolicitud control.
         /// </summary>
         /// <remarks>
@@ -195,15 +204,6 @@ namespace DesarrollosQAS
         protected global::DevExpress.Web.ASPxCheckBox chkAprobado;
 
         /// <summary>
-        /// btnCancelar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxButton btnCancelar;
-
-        /// <summary>
         /// btnGuardar control.
         /// </summary>
         /// <remarks>
@@ -211,5 +211,14 @@ namespace DesarrollosQAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.ASPxButton btnGuardar;
+
+        /// <summary>
+        /// btnCancelar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxButton btnCancelar;
     }
 }
