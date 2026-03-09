@@ -177,6 +177,24 @@ namespace DesarrollosQAS
         protected global::DevExpress.Web.ASPxTextBox txtResponsable;
 
         /// <summary>
+        /// txtEstancia control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxTextBox txtEstancia;
+
+        /// <summary>
+        /// txtRFC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxTextBox txtRFC;
+
+        /// <summary>
         /// dteFechaInicio control.
         /// </summary>
         /// <remarks>
@@ -193,15 +211,6 @@ namespace DesarrollosQAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.ASPxDateEdit dteFechaFin;
-
-        /// <summary>
-        /// chkAprobado control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxCheckBox chkAprobado;
 
         /// <summary>
         /// btnGuardar control.

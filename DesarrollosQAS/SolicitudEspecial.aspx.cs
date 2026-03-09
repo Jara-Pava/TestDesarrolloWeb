@@ -151,7 +151,7 @@ namespace DesarrollosQAS
             txtResponsable.Text = string.Empty;
             dteFechaInicio.Value = null;
             dteFechaFin.Value = null;
-            chkAprobado.Checked = false;
+            //chkAprobado.Checked = false;
         }
 
         private void BtnGuardar_Click(object sender, EventArgs e)
@@ -169,12 +169,12 @@ namespace DesarrollosQAS
                     Visitante = txtVisitante.Text.Trim(),
                     FechaInicio = dteFechaInicio.Value != null ? Convert.ToDateTime(dteFechaInicio.Value) : default(DateTime),
                     FechaFin = dteFechaFin.Value != null ? Convert.ToDateTime(dteFechaFin.Value) : default(DateTime),
-                    RFC = string.Empty,
+                    RFC = txtRFC.Text.Trim(),
                     id_Contratista = cboContratista.Value != null ? Convert.ToInt32(cboContratista.Value) : 0,
                     Responsable = txtResponsable.Text.Trim(),
                     AreaTrabajo = txtAreaTrabajo.Text.Trim(),
                     Actividad = txtActividad.Text.Trim(),
-                    Estancia = string.Empty,
+                    Estancia = txtEstancia.Text.Trim(),
                     aprobado = chkAprobado.Checked
                 };
 

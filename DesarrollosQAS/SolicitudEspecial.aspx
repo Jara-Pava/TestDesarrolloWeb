@@ -5,8 +5,8 @@
         tr > .dxflCaptionCell_Office365 {
             padding-bottom: 15px !important;
         }
-         /*Centrar el caption del LayoutGroup*/ 
-         .dxflGroupBox_Office365 {
+        /*Centrar el caption del LayoutGroup*/
+        .dxflGroupBox_Office365 {
             margin-bottom: 0px;
             padding: 0 0 12px;
             text-align: center;
@@ -181,7 +181,7 @@
                                 <dx:ASPxComboBox ID="cboTipoSolicitud" TextField="Visita" ValueField="ID_TipoVisita" ValueType="System.Int32" runat="server" Width="100%"
                                     ClientInstanceName="cboTipoSolicitud">
                                     <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText">
-                                        <RequiredField IsRequired="true" ErrorText="Requerido" />
+                                        <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
                                 </dx:ASPxComboBox>
                             </dx:LayoutItemNestedControlContainer>
@@ -196,7 +196,7 @@
                                 <dx:ASPxComboBox ID="cboProyecto" TextField="NombreProyecto" ValueField="ID_Proyecto" ValueType="System.Int32" runat="server" Width="100%"
                                     ClientInstanceName="cboProyecto">
                                     <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText">
-                                        <RequiredField IsRequired="true" ErrorText="Requerido" />
+                                        <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
                                 </dx:ASPxComboBox>
                             </dx:LayoutItemNestedControlContainer>
@@ -211,7 +211,7 @@
                                 <dx:ASPxTextBox ID="txtVisitante" runat="server" Width="100%"
                                     ClientInstanceName="txtVisitante">
                                     <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText">
-                                        <RequiredField IsRequired="true" ErrorText="Requerido" />
+                                        <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
                                 </dx:ASPxTextBox>
                             </dx:LayoutItemNestedControlContainer>
@@ -226,7 +226,7 @@
                                 <dx:ASPxComboBox ID="cboPlanta" TextField="NombrePlanta" ValueField="ID_Planta" ValueType="System.Int32" runat="server" Width="100%"
                                     ClientInstanceName="cboPlanta">
                                     <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText">
-                                        <RequiredField IsRequired="true" ErrorText="Requerido" />
+                                        <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
                                 </dx:ASPxComboBox>
                             </dx:LayoutItemNestedControlContainer>
@@ -241,7 +241,7 @@
                                 <dx:ASPxComboBox ID="cboContratista" TextField="Responsable" ValueField="id_contratista" ValueType="System.Int32" runat="server" Width="100%"
                                     ClientInstanceName="cboContratista">
                                     <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText">
-                                        <RequiredField IsRequired="true" ErrorText="Requerido" />
+                                        <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
                                 </dx:ASPxComboBox>
                             </dx:LayoutItemNestedControlContainer>
@@ -256,7 +256,7 @@
                                 <dx:ASPxTextBox ID="txtAreaTrabajo" runat="server" Width="100%"
                                     ClientInstanceName="txtAreaTrabajo">
                                     <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText">
-                                        <RequiredField IsRequired="true" ErrorText="Requerido" />
+                                        <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
                                 </dx:ASPxTextBox>
                             </dx:LayoutItemNestedControlContainer>
@@ -270,22 +270,54 @@
                                 <dx:ASPxMemo ID="txtActividad" runat="server" Width="100%" Rows="3"
                                     ClientInstanceName="txtActividad">
                                     <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText">
-                                        <RequiredField IsRequired="true" ErrorText="Requerido" />
+                                        <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
                                 </dx:ASPxMemo>
                             </dx:LayoutItemNestedControlContainer>
                         </LayoutItemNestedControlCollection>
                     </dx:LayoutItem>
 
+                    
                     <%--Textbox Responsable--%>
-                    <dx:LayoutItem Caption="Responsable" ColumnSpan="2">
+                    <dx:LayoutItem Caption="Responsable" ColumnSpan="4">
                         <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
                         <LayoutItemNestedControlCollection>
                             <dx:LayoutItemNestedControlContainer>
                                 <dx:ASPxTextBox ID="txtResponsable" runat="server" Width="100%"
                                     ClientInstanceName="txtResponsable">
                                     <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText">
-                                        <RequiredField IsRequired="true" ErrorText="Requerido" />
+                                        <RequiredField IsRequired="true" ErrorText=" " />
+                                    </ValidationSettings>
+                                </dx:ASPxTextBox>
+                            </dx:LayoutItemNestedControlContainer>
+                        </LayoutItemNestedControlCollection>
+                    </dx:LayoutItem>
+
+                    <%--Textbox Estancia--%>
+                    <dx:LayoutItem Caption="Estancia" ColumnSpan="2">
+                        <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
+                        <LayoutItemNestedControlCollection>
+                            <dx:LayoutItemNestedControlContainer>
+                                <dx:ASPxTextBox ID="txtEstancia" runat="server" Width="100%"
+                                    ClientInstanceName="txtEstancia">
+                                    <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText">
+                                        <RequiredField IsRequired="true" ErrorText=" " />
+                                    </ValidationSettings>
+                                </dx:ASPxTextBox>
+                            </dx:LayoutItemNestedControlContainer>
+                        </LayoutItemNestedControlCollection>
+                    </dx:LayoutItem>
+
+                    <%--Textbox RFC--%>
+                    <dx:LayoutItem Caption="RFC" ColumnSpan="2">
+                        <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
+                        <LayoutItemNestedControlCollection>
+                            <dx:LayoutItemNestedControlContainer>
+                                <dx:ASPxTextBox ID="txtRFC" runat="server" Width="100%"
+                                    ClientInstanceName="txtRFC">
+                                    <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText" ErrorTextPosition="Right">
+                                        <RequiredField IsRequired="true" ErrorText=" " />
+                                        <RegularExpression ValidationExpression="^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$" ErrorText=" " />
                                     </ValidationSettings>
                                 </dx:ASPxTextBox>
                             </dx:LayoutItemNestedControlContainer>
@@ -300,7 +332,7 @@
                                 <dx:ASPxDateEdit ID="dteFechaInicio" runat="server" EditFormat="Date" Width="100%"
                                     ClientInstanceName="dteFechaInicio">
                                     <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText">
-                                        <RequiredField IsRequired="true" ErrorText="Requerido" />
+                                        <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
                                 </dx:ASPxDateEdit>
                             </dx:LayoutItemNestedControlContainer>
@@ -315,7 +347,7 @@
                                 <dx:ASPxDateEdit ID="dteFechaFin" runat="server" EditFormat="Date" Width="100%"
                                     ClientInstanceName="dteFechaFin">
                                     <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText">
-                                        <RequiredField IsRequired="true" ErrorText="Requerido" />
+                                        <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
                                 </dx:ASPxDateEdit>
                             </dx:LayoutItemNestedControlContainer>
@@ -323,15 +355,15 @@
                     </dx:LayoutItem>
 
                     <%--CheckBox Aprobado--%>
-                    <dx:LayoutItem Caption="Aprobado" ColumnSpan="2" CaptionSettings-Location="Left">
+                    <%--<dx:LayoutItem Caption="Aprobado" ColumnSpan="4" CaptionSettings-Location="Left">
                         <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
                         <LayoutItemNestedControlCollection>
                             <dx:LayoutItemNestedControlContainer>
                                 <dx:ASPxCheckBox ID="chkAprobado" runat="server" ClientInstanceName="chkAprobado" ReadOnly="true" />
                             </dx:LayoutItemNestedControlContainer>
                         </LayoutItemNestedControlCollection>
-                    </dx:LayoutItem>
-                    
+                    </dx:LayoutItem>--%>
+
                     <%--Botón Guardar--%>
                     <dx:LayoutItem HorizontalAlign="Left" ShowCaption="False" ColumnSpan="2">
                         <Paddings PaddingTop="50" />
