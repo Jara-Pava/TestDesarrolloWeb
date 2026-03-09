@@ -96,13 +96,13 @@ namespace DesarrollosQAS
         protected global::DevExpress.Web.ASPxButton btnRegresarSolicitudesEspeciales;
 
         /// <summary>
-        /// exampleFormLayout control.
+        /// FormLayoutSolicitudEspecial control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxFormLayout exampleFormLayout;
+        protected global::DevExpress.Web.ASPxFormLayout FormLayoutSolicitudEspecial;
 
         /// <summary>
         /// cboTipoSolicitud control.
@@ -211,6 +211,15 @@ namespace DesarrollosQAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.ASPxDateEdit dteFechaFin;
+
+        /// <summary>
+        /// chkAprobado control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxCheckBox chkAprobado;
 
         /// <summary>
         /// btnGuardar control.

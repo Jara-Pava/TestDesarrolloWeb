@@ -3,6 +3,66 @@
 
 <asp:Content ContentPlaceHolderID="Content" runat="server">
     <script type="text/javascript">
+        // Función para redimensionar el grid cuando cambia el tamaño del contenedor
+        function RedimensionarGrid() {
+            if (typeof gridSolicitudesEspeciales !== 'undefined' && gridSolicitudesEspeciales) {
+                setTimeout(function () {
+                    gridSolicitudesEspeciales.AdjustControl();
+                }, 300);
+            }
+        }
+
+        // Detectar cambios de tamaño en la ventana
+        window.addEventListener('resize', RedimensionarGrid);
+
+        // Detectar cuando el menu se cierra/abre (si usas DevExpress Navigation)
+        // Ajusta según tu implementación específica del navbar
+        document.addEventListener('DOMContentLoaded', function () {
+            // Observar cambios en el DOM que puedan indicar que el menu cambió
+            var observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    if (mutation.type === 'attributes' &&
+                        (mutation.attributeName === 'class' || mutation.attributeName === 'style')) {
+                        RedimensionarGrid();
+                    }
+                });
+            });
+
+            // Observar el elemento que contiene el menu/sidebar
+            var sidebarElement = document.querySelector('.sidebar, .dx-drawer, [class*="menu"]');
+            if (sidebarElement) {
+                observer.observe(sidebarElement, {
+                    attributes: true,
+                    attributeFilter: ['class', 'style']
+                });
+            }
+
+            // También observar el contenedor principal
+            var mainContent = document.querySelector('.content, .main-content, [class*="content"]');
+            if (mainContent) {
+                observer.observe(mainContent, {
+                    attributes: true,
+                    attributeFilter: ['class', 'style']
+                });
+            }
+        });
+
+        // Manejar mensajes después de operaciones del grid
+        function OnGridSolicitudesEndCallback(s, e) {
+            if (s.cpMessageType && s.cpMessage) {
+                if (s.cpMessageType === "success") {
+                    lblMensajeExitoSolicitud.SetText(s.cpMessage);
+                    pcMensajeExitoSolicitud.Show();
+                } else if (s.cpMessageType === "error") {
+                    lblMensajeErrorSolicitud.SetText(s.cpMessage);
+                    pcMensajeErrorSolicitud.Show();
+                }
+
+                delete s.cpMessageType;
+                delete s.cpMessage;
+            }
+        }
+
 
         // Manejar mensajes después de operaciones del grid
         function OnGridSolicitudesEndCallback(s, e) {
@@ -85,7 +145,7 @@
     <!-- Popup de Confirmación de Eliminación -->
     <dx:ASPxPopupControl ID="pcConfirmarEliminacion" runat="server" Width="450" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcConfirmarEliminacion"
-        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
+        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
         <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
@@ -98,12 +158,12 @@
         </ContentCollection>
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnConfirmarEliminar" runat="server" Text="Sí, Eliminar" Width="120px" AutoPostBack="False"
-                    BackColor="#353943" ForeColor="White" Font-Bold="true" Style="margin-left: 10px;">
+                <dx:ASPxButton ID="btnConfirmarEliminar" runat="server" Text="Sí" Width="120px" AutoPostBack="False"
+                    BackColor="Teal" ForeColor="White" Font-Bold="true" Style="margin-left: 10px;">
                     <ClientSideEvents Click="ConfirmarEliminacion" />
                 </dx:ASPxButton>
-                <dx:ASPxButton ID="btnCancelarEliminar" runat="server" Text="Cancelar" Width="120px" AutoPostBack="False"
-                    BackColor="#353943" ForeColor="White" Font-Bold="true" Style="margin-left: 90px;">
+                <dx:ASPxButton ID="btnCancelarEliminar" runat="server" Text="No" Width="120px" AutoPostBack="False"
+                    BackColor="DarkRed" ForeColor="White" Font-Bold="true" Style="margin-left: 90px;">
                     <ClientSideEvents Click="CancelarEliminacion" />
                 </dx:ASPxButton>
             </div>
@@ -168,9 +228,10 @@
         <Styles>
             <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
         </Styles>
-        <SettingsResizing ColumnResizeMode="Control"/>
+        <Settings ShowColumnHeaders="true" HorizontalScrollBarMode="Visible" />
+        <SettingsResizing ColumnResizeMode="Control" />
         <Columns>
-            <dx:GridViewCommandColumn Caption="Acciones" Width="100px" ButtonRenderMode="Image">
+            <dx:GridViewCommandColumn Caption="Acciones" Width="80" ButtonRenderMode="Image">
                 <HeaderTemplate>
                     <div style="text-align: center;">
                         <dx:ASPxButton runat="server" ID="btnNuevoHeader" Text="" AutoPostBack="false"
@@ -190,54 +251,55 @@
                 </CustomButtons>
             </dx:GridViewCommandColumn>
 
-            <dx:GridViewDataTextColumn FieldName="ID_Solicitud" Caption="ID" Visible="false" ReadOnly="true" />
+            <dx:GridViewDataTextColumn FieldName="ID_Solicitud" Caption="ID" Visible="false" ReadOnly="true" Width="20" />
 
-            <dx:GridViewDataComboBoxColumn FieldName="id_TipoSolicitud" Caption="Tipo Solicitud" Width="180px">
+            <dx:GridViewDataComboBoxColumn FieldName="id_TipoSolicitud" Caption="Tipo <br/> Solicitud" Width="105">
                 <PropertiesComboBox TextField="Visita" ValueField="ID_TipoVisita" ValueType="System.Int32"></PropertiesComboBox>
             </dx:GridViewDataComboBoxColumn>
 
-            <dx:GridViewDataTextColumn FieldName="Visitante" Caption="Visitante" Width="200px" HeaderStyle-HorizontalAlign="Center">
+            <dx:GridViewDataTextColumn FieldName="Visitante" Caption="Visitante" HeaderStyle-HorizontalAlign="Center" Width="120">
             </dx:GridViewDataTextColumn>
 
-            <dx:GridViewDataComboBoxColumn FieldName="id_Proyecto" Caption="Proyecto" Width="120px">
+            <dx:GridViewDataComboBoxColumn FieldName="id_Proyecto" Caption="Proyecto" Width="100">
                 <PropertiesComboBox TextField="NombreProyecto" ValueField="ID_Proyecto" ValueType="System.Int32" />
             </dx:GridViewDataComboBoxColumn>
 
-            <dx:GridViewDataComboBoxColumn FieldName="id_Planta" Caption="Planta" Width="120px">
+            <dx:GridViewDataComboBoxColumn FieldName="id_Planta" Caption="Planta" Width="120">
                 <PropertiesComboBox TextField="NombrePlanta" ValueField="ID_Planta" ValueType="System.Int32" />
             </dx:GridViewDataComboBoxColumn>
 
-            <dx:GridViewDataComboBoxColumn FieldName="id_Contratista" Caption="Contratista" Width="150px">
+            <dx:GridViewDataComboBoxColumn FieldName="id_Contratista" Caption="Contratista" Width="100">
                 <PropertiesComboBox TextField="Responsable" ValueField="id_contratista" ValueType="System.Int32" />
             </dx:GridViewDataComboBoxColumn>
 
-            <dx:GridViewDataTextColumn FieldName="AreaTrabajo" Caption="Área de Trabajo" Width="150px" />
+            <dx:GridViewDataTextColumn FieldName="AreaTrabajo" Caption="Área<br/>de Trabajo" Width="80" />
 
-            <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="250px" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="130" HeaderStyle-HorizontalAlign="Center" />
 
-            <dx:GridViewDataTextColumn FieldName="Estancia" Caption="Estancia" Width="100px" />
+            <dx:GridViewDataTextColumn FieldName="Estancia" Caption="Estancia" Width="80" />
 
-            <dx:GridViewDataDateColumn FieldName="FechaInicio" Caption="Fecha Inicio" Width="110px">
+            <dx:GridViewDataDateColumn FieldName="FechaInicio" Caption="Fecha Inicio" Width="110">
                 <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
             </dx:GridViewDataDateColumn>
 
-            <dx:GridViewDataDateColumn FieldName="FechaFin" Caption="Fecha Fin" Width="110px">
+            <dx:GridViewDataDateColumn FieldName="FechaFin" Caption="Fecha Fin" Width="110">
                 <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
             </dx:GridViewDataDateColumn>
 
-            <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha Solicitud" Width="130px" ReadOnly="true" CellStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center">
+            <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha<br/>Solicitud" Width="100" ReadOnly="true" CellStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center">
                 <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
             </dx:GridViewDataDateColumn>
 
-            <dx:GridViewDataTextColumn FieldName="RFC" Caption="RFC" Width="120px" />
+            <dx:GridViewDataTextColumn FieldName="RFC" Caption="RFC" Width="120" />
 
-            <dx:GridViewDataTextColumn FieldName="Responsable" Caption="Responsable" Width="200px" />
+            <dx:GridViewDataTextColumn FieldName="Responsable" Caption="Responsable" Width="110" />
 
-            <dx:GridViewDataCheckColumn FieldName="aprobado" Caption="Aprobado" Width="80px" />
+            <dx:GridViewDataCheckColumn FieldName="aprobado" Caption="Aprobado" Width="80" CellStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center">
+                <HeaderStyle Wrap="False" />
+            </dx:GridViewDataCheckColumn>
 
         </Columns>
         <SettingsPager PageSize="25">
-            <PageSizeItemSettings ShowAllItem="true" Visible="true"></PageSizeItemSettings>
         </SettingsPager>
     </dx:ASPxGridView>
 

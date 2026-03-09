@@ -31,11 +31,12 @@ namespace DesarrollosQAS
             if (!IsPostBack)
             {
                 CargarCatalogos();
-
+                var layoutItemAprobado = FormLayoutSolicitudEspecial.FindItemByFieldName("layoutItemAprobado") as LayoutItem;
                 // Verificar si viene un ID por querystring (modo edición)
                 if (Request.QueryString["id"] != null && int.TryParse(Request.QueryString["id"], out int id))
                 {
                     IdSolicitud = id;
+
                     if (!CargarDatosSolicitud(id))
                     {
                         // Si no se encuentra la solicitud, redirigir
@@ -47,6 +48,11 @@ namespace DesarrollosQAS
                 else
                 {
                     // Modo creación - limpiar formulario
+                    layoutItemAprobado.Visible = true;
+                    chkAprobado.Visible = false;
+                    chkAprobado.Checked = false;
+                    chkAprobado.Enabled = false;
+                    layoutItemAprobado.Visible = false;
                     IdSolicitud = null;
                     LimpiarFormulario();
                 }
@@ -110,9 +116,19 @@ namespace DesarrollosQAS
                 var repo = new SolicitudRHRepository();
                 var solicitud = repo.ObtenerSolicitudRHPorId(id);
 
+                if (IdSolicitud.HasValue)
+                {
+                    chkAprobado.Visible = true;
+                    chkAprobado.Checked = solicitud.aprobado;
+                    chkAprobado.Enabled = true;
+                }
+                else {
+
+                }
+
                 if (solicitud != null)
                 {
-                    cboTipoSolicitud.Value= solicitud.id_TipoSolicitud;
+                    cboTipoSolicitud.Value = solicitud.id_TipoSolicitud;
                     cboProyecto.Value = solicitud.id_Proyecto;
                     txtVisitante.Text = solicitud.Visitante;
                     cboPlanta.Value = solicitud.id_Planta;
@@ -151,7 +167,7 @@ namespace DesarrollosQAS
             txtResponsable.Text = string.Empty;
             dteFechaInicio.Value = null;
             dteFechaFin.Value = null;
-            //chkAprobado.Checked = false;
+            chkAprobado.Checked = false;
         }
 
         private void BtnGuardar_Click(object sender, EventArgs e)
