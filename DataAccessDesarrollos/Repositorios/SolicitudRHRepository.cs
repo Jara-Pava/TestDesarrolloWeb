@@ -240,6 +240,54 @@ namespace DataAccessDesarrollos.Repositorios
             }
         }
 
+        // Obtener la solicitud por ID
+        // Obtener la solicitud por ID
+        public SolicitudRH ObtenerSolicitudRHPorId(int id)
+        {
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    var lista = da.ExecuteReaderByCode("rhsp_GetSolicitudById", rdr => new SolicitudRH
+                    {
+                        ID_Solicitud = rdr["ID_Solicitud"] != DBNull.Value ? Convert.ToInt32(rdr["ID_Solicitud"]) : 0,
+                        id_TipoSolicitud = rdr["id_TipoSolicitud"] != DBNull.Value ? Convert.ToInt32(rdr["id_TipoSolicitud"]) : 0,
+                        id_Solicitante = rdr["id_Solicitante"] != DBNull.Value ? Convert.ToInt32(rdr["id_Solicitante"]) : 0,
+                        id_Proyecto = rdr["id_Proyecto"] != DBNull.Value ? Convert.ToInt32(rdr["id_Proyecto"]) : 0,
+                        id_Planta = rdr["id_Planta"] != DBNull.Value ? Convert.ToInt32(rdr["id_Planta"]) : 0,
+                        Visitante = rdr["Visitante"] != DBNull.Value ? rdr["Visitante"].ToString() : string.Empty,
+                        FechaInicio = rdr["FechaInicio"] != DBNull.Value ? Convert.ToDateTime(rdr["FechaInicio"]) : default(DateTime),
+                        FechaFin = rdr["FechaFin"] != DBNull.Value ? Convert.ToDateTime(rdr["FechaFin"]) : default(DateTime),
+                        RFC = rdr["RFC"] != DBNull.Value ? rdr["RFC"].ToString() : string.Empty,
+                        id_Contratista = rdr["id_Contratista"] != DBNull.Value ? Convert.ToInt32(rdr["id_Contratista"]) : 0,
+                        Responsable = rdr["Responsable"] != DBNull.Value ? rdr["Responsable"].ToString() : string.Empty,
+                        AreaTrabajo = rdr["AreaTrabajo"] != DBNull.Value ? rdr["AreaTrabajo"].ToString() : string.Empty,
+                        Actividad = rdr["Actividad"] != DBNull.Value ? rdr["Actividad"].ToString() : string.Empty,
+                        Estancia = rdr["Estancia"] != DBNull.Value ? rdr["Estancia"].ToString() : string.Empty,
+                        FechaSolicitud = rdr["FechaSolicitud"] != DBNull.Value ? Convert.ToDateTime(rdr["FechaSolicitud"]) : default(DateTime),
+                        aprobado = rdr["aprobado"] != DBNull.Value ? Convert.ToBoolean(rdr["aprobado"]) : false,
+                        // Campos adicionales opcionales
+                        NombreTipoSolicitud = rdr["NombreTipoSolicitud"] != DBNull.Value ? rdr["NombreTipoSolicitud"].ToString() : string.Empty,
+                        NombreSolicitante = rdr["NombreSolicitante"] != DBNull.Value ? rdr["NombreSolicitante"].ToString() : string.Empty,
+                        NombreProyecto = rdr["NombreProyecto"] != DBNull.Value ? rdr["NombreProyecto"].ToString() : string.Empty,
+                        NombrePlanta = rdr["NombrePlanta"] != DBNull.Value ? rdr["NombrePlanta"].ToString() : string.Empty,
+                        NombreContratista = rdr["NombreContratista"] != DBNull.Value ? rdr["NombreContratista"].ToString() : string.Empty
+                    }, cmd =>
+                    {
+                        // AQUÍ ESTABA EL PROBLEMA: Faltaba agregar el parámetro
+                        cmd.Parameters.Add(new SqlParameter("@ID_Solicitud", id));
+                    });
+
+                    // Retornar el primer elemento o null si la lista está vacía
+                    return lista != null && lista.Count > 0 ? lista[0] : null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error ObtenerSolicitudRHPorId: {0}", ex);
+                return null;
+            }
+        }
         public List<TipoVisitante> ObtenerTiposSolicitud()
         {
             try

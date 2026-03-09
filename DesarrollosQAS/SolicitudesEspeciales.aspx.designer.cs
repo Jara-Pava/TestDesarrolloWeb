@@ -15,15 +15,6 @@ namespace DesarrollosQAS
     {
 
         /// <summary>
-        /// ASPxLabel7 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxLabel ASPxLabel7;
-
-        /// <summary>
         /// pcConfirmarEliminacion control.
         /// </summary>
         /// <remarks>
@@ -69,6 +60,24 @@ namespace DesarrollosQAS
         protected global::DevExpress.Web.ASPxLabel lblMensajeErrorSolicitud;
 
         /// <summary>
+        /// ASPxLabel7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxLabel ASPxLabel7;
+
+        /// <summary>
+        /// btnNuevaSolicitud control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxButton btnNuevaSolicitud;
+
+        /// <summary>
         /// gridSolicitudesEspeciales control.
         /// </summary>
         /// <remarks>
@@ -76,6 +85,15 @@ namespace DesarrollosQAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.ASPxGridView gridSolicitudesEspeciales;
+
+        /// <summary>
+        /// btnEditSolicitud control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.GridViewCommandColumnCustomButton btnEditSolicitud;
 
         /// <summary>
         /// btnDeleteSolicitud control.

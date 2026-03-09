@@ -33,6 +33,15 @@ namespace DesarrollosQAS
         protected global::DevExpress.Web.ASPxFormLayout exampleFormLayout;
 
         /// <summary>
+        /// txtIdSolicitud control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxTextBox txtIdSolicitud;
+
+        /// <summary>
         /// cboTipoSolicitud control.
         /// </summary>
         /// <remarks>
@@ -69,13 +78,13 @@ namespace DesarrollosQAS
         protected global::DevExpress.Web.ASPxComboBox cboPlanta;
 
         /// <summary>
-        /// txtContratista control.
+        /// cboContratista control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtContratista;
+        protected global::DevExpress.Web.ASPxComboBox cboContratista;
 
         /// <summary>
         /// txtAreaTrabajo control.

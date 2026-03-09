@@ -20,12 +20,52 @@
             }
         }
 
-        // Confirmar antes de eliminar - Mostrar popup personalizado
+        // Redirigir a nueva solicitud
+        function NuevaSolicitud() {
+            console.log('Navegando a nueva solicitud...');
+            window.location.href = 'SolicitudEspecial.aspx';
+        }
+
+        // Manejar botones personalizados (Editar y Eliminar)
         function OnCustomButtonClickSolicitud(s, e) {
+            console.log('Botón clickeado:', e.buttonID);
+            console.log('Visible Index:', e.visibleIndex);
+
+            // Botón Editar
+            if (e.buttonID === 'btnEditSolicitud') {
+                e.processOnServer = false;
+                var idSolicitud = s.GetRowKey(e.visibleIndex);
+                console.log('ID Solicitud:', idSolicitud);
+
+                if (idSolicitud) {
+                    var url = 'SolicitudEspecial.aspx?id=' + idSolicitud;
+                    console.log('Navegando a:', url);
+                    window.location.href = url;
+                } else {
+                    alert('No se pudo obtener el ID de la solicitud');
+                }
+                return;
+            }
+
+            // Botón Eliminar
             if (e.buttonID === 'btnDeleteSolicitud') {
-                e.processOnServer = false; // Cancelar el proceso del servidor
-                currentDeleteIndex = e.visibleIndex; // Guardar el índice de la fila
-                pcConfirmarEliminacion.Show(); // Mostrar popup de confirmación
+                e.processOnServer = false;
+                currentDeleteIndex = e.visibleIndex;
+                pcConfirmarEliminacion.Show();
+            }
+        }
+
+        // Permitir edición con doble clic
+        function OnRowDblClickSolicitud(s, e) {
+            console.log('Doble clic en fila, visibleIndex:', e.visibleIndex);
+
+            if (e.visibleIndex >= 0) {
+                var idSolicitud = s.GetRowKey(e.visibleIndex);
+                console.log('ID Solicitud (doble clic):', idSolicitud);
+
+                if (idSolicitud) {
+                    window.location.href = 'SolicitudEspecial.aspx?id=' + idSolicitud;
+                }
             }
         }
 
@@ -47,111 +87,121 @@
         }
 
     </script>
+    <!-- Popup de Confirmación de Eliminación -->
+    <dx:ASPxPopupControl ID="pcConfirmarEliminacion" runat="server" Width="450" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
+        PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcConfirmarEliminacion"
+        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
+        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
+        <ContentCollection>
+            <dx:PopupControlContentControl runat="server">
+                <div style="padding: 30px; text-align: center;">
+                    <dx:ASPxLabel runat="server" Text="¿Está seguro que desea eliminar esta solicitud?" Font-Size="16px" Font-Bold="true" />
+                    <br />
+                    <br />
+                </div>
+            </dx:PopupControlContentControl>
+        </ContentCollection>
+        <FooterContentTemplate>
+            <div style="text-align: center; padding: 10px;">
+                <dx:ASPxButton ID="btnConfirmarEliminar" runat="server" Text="Sí, Eliminar" Width="120px" AutoPostBack="False"
+                    BackColor="#353943" ForeColor="White" Font-Bold="true" Style="margin-left: 10px;">
+                    <ClientSideEvents Click="ConfirmarEliminacion" />
+                </dx:ASPxButton>
+                <dx:ASPxButton ID="btnCancelarEliminar" runat="server" Text="Cancelar" Width="120px" AutoPostBack="False"
+                    BackColor="#353943" ForeColor="White" Font-Bold="true" Style="margin-left: 90px;">
+                    <ClientSideEvents Click="CancelarEliminacion" />
+                </dx:ASPxButton>
+            </div>
+        </FooterContentTemplate>
+    </dx:ASPxPopupControl>
 
-    <!-- Grid de Solicitudes RH -->
+    <!-- Popup de Éxito -->
+    <dx:ASPxPopupControl ID="pcMensajeExitoSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
+        PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExitoSolicitud"
+        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
+        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
+        <ContentCollection>
+            <dx:PopupControlContentControl runat="server">
+                <div style="padding: 20px; text-align: center;">
+                    <dx:ASPxLabel ID="lblMensajeExitoSolicitud" runat="server" Font-Size="14px" ClientInstanceName="lblMensajeExitoSolicitud" />
+                </div>
+            </dx:PopupControlContentControl>
+        </ContentCollection>
+        <FooterContentTemplate>
+            <div style="text-align: center; padding: 10px;">
+                <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="Aceptar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                    <ClientSideEvents Click="function(s, e) { pcMensajeExitoSolicitud.Hide(); }" />
+                </dx:ASPxButton>
+            </div>
+        </FooterContentTemplate>
+    </dx:ASPxPopupControl>
+
+    <!-- Popup de Error -->
+    <dx:ASPxPopupControl ID="pcMensajeErrorSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
+        PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeErrorSolicitud"
+        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
+        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
+        <ContentCollection>
+            <dx:PopupControlContentControl runat="server">
+                <div style="padding: 20px; text-align: center;">
+                    <dx:ASPxLabel ID="lblMensajeErrorSolicitud" runat="server" Font-Size="14px" ClientInstanceName="lblMensajeErrorSolicitud" />
+                </div>
+            </dx:PopupControlContentControl>
+        </ContentCollection>
+        <FooterContentTemplate>
+            <div style="text-align: center; padding: 10px;">
+                <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="Cerrar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                    <ClientSideEvents Click="function(s, e) { pcMensajeErrorSolicitud.Hide(); }" />
+                </dx:ASPxButton>
+            </div>
+        </FooterContentTemplate>
+    </dx:ASPxPopupControl>
+
+    <!--Grid de Solicitudes RH -->
     <asp:Table runat="server" Width="90%" HorizontalAlign="Center">
         <asp:TableRow>
             <asp:TableCell>
-                <div style="padding-top: 8px">
-                    <dx:ASPxLabel runat="server" ID="ASPxLabel7" Text="Solicitudes de Visitas" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
+                <div style="padding-top: 8px; padding-bottom: 15px;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="text-align: left;">
+                                <dx:ASPxLabel runat="server" ID="ASPxLabel7" Text="Solicitudes de Visitas" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
+                            </td>
+                            <td style="text-align: right;">
+                                <dx:ASPxButton runat="server" ID="btnNuevaSolicitud" Text="Nueva Solicitud" AutoPostBack="false"
+                                    Width="200px" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                                    <Image Url="~/Images/add.png" Width="20px" Height="20px" />
+                                    <ClientSideEvents Click="NuevaSolicitud" />
+                                </dx:ASPxButton>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-                <br />
-
-                <!-- Popup de Confirmación de Eliminación -->
-                <dx:ASPxPopupControl ID="pcConfirmarEliminacion" runat="server" Width="450" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
-                    PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcConfirmarEliminacion"
-                    HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
-                    <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
-                    <ContentCollection>
-                        <dx:PopupControlContentControl runat="server">
-                            <div style="padding: 30px; text-align: center;">
-                                <dx:ASPxLabel runat="server" Text="¿Está seguro que desea eliminar esta solicitud?" Font-Size="16px" Font-Bold="true" />
-                                <br /><br />
-                            </div>
-                        </dx:PopupControlContentControl>
-                    </ContentCollection>
-                    <FooterContentTemplate>
-                        <div style="text-align: center; padding: 10px;">
-                            <dx:ASPxButton ID="btnConfirmarEliminar" runat="server" Text="Sí, Eliminar" Width="120px" AutoPostBack="False" 
-                                BackColor="#353943" ForeColor="White" Font-Bold="true" Style="margin-left: 10px;">
-                                <ClientSideEvents Click="ConfirmarEliminacion" />
-                            </dx:ASPxButton>
-                            <dx:ASPxButton ID="btnCancelarEliminar" runat="server" Text="Cancelar" Width="120px" AutoPostBack="False" 
-                                BackColor="#353943" ForeColor="White" Font-Bold="true" Style="margin-left: 90px;">
-                                <ClientSideEvents Click="CancelarEliminacion" />
-                            </dx:ASPxButton>
-                        </div>
-                    </FooterContentTemplate>
-                </dx:ASPxPopupControl>
-
-                <!-- Popup de Éxito -->
-                <dx:ASPxPopupControl ID="pcMensajeExitoSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
-                    PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExitoSolicitud"
-                    HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
-                    <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
-                    <ContentCollection>
-                        <dx:PopupControlContentControl runat="server">
-                            <div style="padding: 20px; text-align: center;">
-                                <dx:ASPxLabel ID="lblMensajeExitoSolicitud" runat="server" Font-Size="14px" ClientInstanceName="lblMensajeExitoSolicitud" />
-                            </div>
-                        </dx:PopupControlContentControl>
-                    </ContentCollection>
-                    <FooterContentTemplate>
-                        <div style="text-align: center; padding: 10px;">
-                            <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="Aceptar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
-                                <ClientSideEvents Click="function(s, e) { pcMensajeExitoSolicitud.Hide(); }" />
-                            </dx:ASPxButton>
-                        </div>
-                    </FooterContentTemplate>
-                </dx:ASPxPopupControl>
-
-                <!-- Popup de Error -->
-                <dx:ASPxPopupControl ID="pcMensajeErrorSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
-                    PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeErrorSolicitud"
-                    HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
-                    <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
-                    <ContentCollection>
-                        <dx:PopupControlContentControl runat="server">
-                            <div style="padding: 20px; text-align: center;">
-                                <dx:ASPxLabel ID="lblMensajeErrorSolicitud" runat="server" Font-Size="14px" ClientInstanceName="lblMensajeErrorSolicitud" />
-                            </div>
-                        </dx:PopupControlContentControl>
-                    </ContentCollection>
-                    <FooterContentTemplate>
-                        <div style="text-align: center; padding: 10px;">
-                            <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="Cerrar" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
-                                <ClientSideEvents Click="function(s, e) { pcMensajeErrorSolicitud.Hide(); }" />
-                            </dx:ASPxButton>
-                        </div>
-                    </FooterContentTemplate>
-                </dx:ASPxPopupControl>
-
                 <dx:ASPxGridView ID="gridSolicitudesEspeciales" runat="server"
                     KeyFieldName="ID_Solicitud"
                     Width="100%"
                     ForeColor="Black"
                     ClientInstanceName="gridSolicitudesEspeciales"
                     OnDataBinding="gridSolicitudesEspeciales_DataBinding"
-                    OnRowInserting="gridSolicitudesEspeciales_RowInserting"
-                    OnRowUpdating="gridSolicitudesEspeciales_RowUpdating"
                     OnCustomButtonCallback="gridSolicitudesEspeciales_CustomButtonCallback"
-                    OnCustomCallback="gridSolicitudesEspeciales_CustomCallback"
-                    OnHtmlEditFormCreated="gridSolicitudesEspeciales_HtmlEditFormCreated">
+                    OnCustomCallback="gridSolicitudesEspeciales_CustomCallback">
                     <ClientSideEvents
                         EndCallback="OnGridSolicitudesEndCallback"
-                        CustomButtonClick="OnCustomButtonClickSolicitud" />
+                        CustomButtonClick="function(s, e) { OnCustomButtonClickSolicitud(s, e); }"
+                        RowDblClick="function(s, e) { OnRowDblClickSolicitud(s, e); }" />
                     <Styles>
                         <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
                     </Styles>
                     <Columns>
-                        <dx:GridViewCommandColumn Caption="Acciones" Width="100px"
-                            ShowNewButtonInHeader="true"
-                            ShowEditButton="true"
-                            ButtonRenderMode="Image">
+                        <dx:GridViewCommandColumn Caption="Acciones" Width="100px" ButtonRenderMode="Image" ShowNewButtonInHeader="true">
                             <CustomButtons>
-                                <dx:GridViewCommandColumnCustomButton ID="btnDeleteSolicitud" Text="Eliminar">
-                                  <Image Url="~/Images/delete.png" Width="25px" Height="25px" ToolTip="Eliminar" />
+                                <dx:GridViewCommandColumnCustomButton ID="btnEditSolicitud" Text="Editar">
+                                    <Image Url="~/Images/edits.png" Width="25px" Height="25px" ToolTip="Editar" />
                                 </dx:GridViewCommandColumnCustomButton>
+                                <dx:GridViewCommandColumnCustomButton ID="btnDeleteSolicitud" Text="Eliminar">
+                                    <Image Url="~/Images/delete.png" Width="25px" Height="25px" ToolTip="Eliminar" />
+                                </dx:GridViewCommandColumnCustomButton>
+                               
                             </CustomButtons>
                         </dx:GridViewCommandColumn>
 
@@ -178,17 +228,17 @@
                         <dx:GridViewDataTextColumn FieldName="AreaTrabajo" Caption="Área de Trabajo" Width="150px" />
 
                         <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="150px" />
-                        
+
                         <dx:GridViewDataTextColumn FieldName="Estancia" Caption="Estancia" Width="100px" />
-                        
+
                         <dx:GridViewDataDateColumn FieldName="FechaInicio" Caption="Fecha Inicio" Width="110px">
                             <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
                         </dx:GridViewDataDateColumn>
-                        
+
                         <dx:GridViewDataDateColumn FieldName="FechaFin" Caption="Fecha Fin" Width="110px">
                             <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
                         </dx:GridViewDataDateColumn>
-                        
+
                         <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha Solicitud" Width="110px" ReadOnly="true">
                             <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
                         </dx:GridViewDataDateColumn>
@@ -203,31 +253,9 @@
                     <SettingsPager PageSize="10">
                         <PageSizeItemSettings ShowAllItem="true" Visible="true"></PageSizeItemSettings>
                     </SettingsPager>
-                    <SettingsEditing Mode="PopupEditForm"/>
-                    <SettingsPopup>
-                        <EditForm Modal="true"
-                            Width="700px"
-                            HorizontalAlign="WindowCenter"
-                            VerticalAlign="WindowCenter" 
-                            ShowCloseButton="false"/>
-                    </SettingsPopup>
-                    <SettingsText PopupEditFormCaption=" " />
-                     <SettingsCommandButton>
-                        <NewButton>
-                            <Image Url="~/Images/add.png" Width="30px" Height="30px" ToolTip="Nueva Solicitud" />
-                        </NewButton>
-                        <EditButton>
-                            <Image Url="~/Images/edits.png" Width="25px" Height="25px" ToolTip="Editar" />
-                        </EditButton>
-                        <UpdateButton>
-                            <Image IconID="actions_apply_16x16" ToolTip="Guardar" />
-                        </UpdateButton>
-                        <CancelButton>
-                            <Image IconID="actions_cancel_16x16" ToolTip="Cancelar" />
-                        </CancelButton>
-                    </SettingsCommandButton>
                 </dx:ASPxGridView>
             </asp:TableCell>
         </asp:TableRow>
     </asp:Table>
+
 </asp:Content>

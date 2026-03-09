@@ -10,6 +10,8 @@ namespace DataAccessDesarrollos.Interfaces
     {
         List<SolicitudRH> ObtenerTodasSolicitudesRH();
         List<SolicitudRH> ObtenerSolicitudesRHPorUsuario(int empleadoId);
+        // Obtener una solicitud por su ID
+        SolicitudRH ObtenerSolicitudRHPorId(int id);
         bool CrearSolicitudRH(SolicitudRH solicitud);
         bool ActualizarSolicitudRH(SolicitudRH solicitud);
         void EliminarSolicitudRH(int id);

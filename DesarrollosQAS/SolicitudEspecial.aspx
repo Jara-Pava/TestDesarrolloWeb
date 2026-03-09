@@ -17,12 +17,21 @@
             <dx:LayoutGroup Caption="Solicitud Especial" ColumnCount="4" SettingsItemCaptions-Location="Top" CellStyle-Font-Size="14px">
                 <CellStyle Font-Size="14px" />
                 <Items>
+                    <%--Combobox Solicitud--%>
+                    <dx:LayoutItem Caption="Tipo Solicitud" ColumnSpan="4" Visible="false">
+                        <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
+                        <LayoutItemNestedControlCollection>
+                            <dx:LayoutItemNestedControlContainer>
+                               <dx:ASPxTextBox runat="server" ID="txtIdSolicitud" Caption="ID" Visible="false" ReadOnly="true"></dx:ASPxTextBox>
+                            </dx:LayoutItemNestedControlContainer>
+                        </LayoutItemNestedControlCollection>
+                    </dx:LayoutItem>
                     <%--Combobox Tipo Solicitud--%>
                     <dx:LayoutItem Caption="Tipo Solicitud" ColumnSpan="2">
                         <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
                         <LayoutItemNestedControlCollection>
                             <dx:LayoutItemNestedControlContainer>
-                                <dx:ASPxComboBox ID="cboTipoSolicitud" runat="server" Width="100%"></dx:ASPxComboBox>
+                                <dx:ASPxComboBox ID="cboTipoSolicitud" TextField="TipoSolicitud" ValueField="ID_TipoVisita" ValueType="System.Int32" runat="server" Width="100%"></dx:ASPxComboBox>
                             </dx:LayoutItemNestedControlContainer>
                         </LayoutItemNestedControlCollection>
                     </dx:LayoutItem>
@@ -31,7 +40,7 @@
                         <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
                         <LayoutItemNestedControlCollection>
                             <dx:LayoutItemNestedControlContainer>
-                                <dx:ASPxComboBox ID="cboProyecto" runat="server" Width="100%"></dx:ASPxComboBox>
+                                <dx:ASPxComboBox ID="cboProyecto" TextField="NombreProyecto" ValueField="ID_Proyecto" ValueType="System.Int32" runat="server" Width="100%"></dx:ASPxComboBox>
                             </dx:LayoutItemNestedControlContainer>
                         </LayoutItemNestedControlCollection>
                     </dx:LayoutItem>
@@ -49,16 +58,16 @@
                         <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
                         <LayoutItemNestedControlCollection>
                             <dx:LayoutItemNestedControlContainer>
-                                <dx:ASPxComboBox ID="cboPlanta" runat="server" Width="100%"></dx:ASPxComboBox>
+                                <dx:ASPxComboBox ID="cboPlanta" TextField="NombrePlanta" ValueField="ID_Planta" ValueType="System.Int32" runat="server" Width="100%"></dx:ASPxComboBox>
                             </dx:LayoutItemNestedControlContainer>
                         </LayoutItemNestedControlCollection>
                     </dx:LayoutItem>
-                    <%--Textbox Contratista--%>
+                    <%--ComboBox Contratista--%>
                     <dx:LayoutItem Caption="Contratista" ColumnSpan="2">
                         <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
                         <LayoutItemNestedControlCollection>
                             <dx:LayoutItemNestedControlContainer>
-                                <dx:ASPxTextBox ID="txtContratista" runat="server" Width="100%"></dx:ASPxTextBox>
+                                <dx:ASPxComboBox ID="cboContratista" TextField="Responsable" ValueField="id_contratista" ValueType="System.Int32" runat="server" Width="100%"></dx:ASPxComboBox>
                             </dx:LayoutItemNestedControlContainer>
                         </LayoutItemNestedControlCollection>
                     </dx:LayoutItem>
