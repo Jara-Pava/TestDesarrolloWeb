@@ -54,8 +54,16 @@ namespace DesarrollosQAS
 
             // Configurar eventos de botones
             btnGuardar.Click += BtnGuardar_Click;
-            btnCancelar.Click += BtnCancelar_Click;
-            btnRegresarSolicitudesEspeciales.Click += BtnRegresar_Click;
+        }
+
+        protected void Page_PreRender(object sender, EventArgs e)
+        {
+            // Verificar si hay mensaje para mostrar después de procesar todo
+            if (hfMostrarMensaje.Value == "true")
+            {
+                MostrarPopup(hfTextoMensaje.Value, hfTipoMensaje.Value == "exito");
+                hfMostrarMensaje.Value = "false";
+            }
         }
 
         private void CargarCatalogos()
@@ -104,7 +112,7 @@ namespace DesarrollosQAS
 
                 if (solicitud != null)
                 {
-                    cboTipoSolicitud.Value = solicitud.id_TipoSolicitud;
+                    cboTipoSolicitud.Value= solicitud.id_TipoSolicitud;
                     cboProyecto.Value = solicitud.id_Proyecto;
                     txtVisitante.Text = solicitud.Visitante;
                     cboPlanta.Value = solicitud.id_Planta;
@@ -150,9 +158,6 @@ namespace DesarrollosQAS
         {
             try
             {
-                if (!ValidarFormulario())
-                    return;
-
                 var repo = new SolicitudRHRepository();
 
                 var solicitud = new SolicitudRH
@@ -180,32 +185,14 @@ namespace DesarrollosQAS
                     // Modo edición
                     solicitud.ID_Solicitud = IdSolicitud.Value;
                     resultado = repo.ActualizarSolicitudRH(solicitud);
-
-                    if (resultado)
-                    {
-                        ScriptManager.RegisterStartupScript(this, GetType(), "mensaje",
-                            "alert('Solicitud actualizada exitosamente.'); window.location.href='SolicitudesEspeciales.aspx';", true);
-                    }
-                    else
-                    {
-                        MostrarMensaje("Error al actualizar la solicitud.", false);
-                    }
+                    MostrarMensaje(resultado ? "Solicitud actualizada exitosamente." : "Error al actualizar la solicitud.", resultado);
                 }
                 else
                 {
                     // Modo creación
                     solicitud.FechaSolicitud = DateTime.Now;
                     resultado = repo.CrearSolicitudRH(solicitud);
-
-                    if (resultado)
-                    {
-                        ScriptManager.RegisterStartupScript(this, GetType(), "mensaje",
-                            "alert('Solicitud creada exitosamente.'); window.location.href='SolicitudesEspeciales.aspx';", true);
-                    }
-                    else
-                    {
-                        MostrarMensaje("Error al crear la solicitud.", false);
-                    }
+                    MostrarMensaje(resultado ? "Solicitud creada exitosamente." : "Error al crear la solicitud.", resultado);
                 }
             }
             catch (Exception ex)
@@ -215,57 +202,64 @@ namespace DesarrollosQAS
             }
         }
 
-        private void BtnCancelar_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("SolicitudesEspeciales.aspx", false);
-            Context.ApplicationInstance.CompleteRequest();
-        }
-
-        private void BtnRegresar_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("SolicitudesEspeciales.aspx", false);
-            Context.ApplicationInstance.CompleteRequest();
-        }
-
-        private bool ValidarFormulario()
-        {
-            if (cboTipoSolicitud.Value == null)
-            {
-                MostrarMensaje("Debe seleccionar un tipo de solicitud.", false);
-                return false;
-            }
-
-            if (cboProyecto.Value == null)
-            {
-                MostrarMensaje("Debe seleccionar un proyecto.", false);
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtVisitante.Text))
-            {
-                MostrarMensaje("Debe ingresar el nombre del visitante.", false);
-                return false;
-            }
-
-            if (dteFechaInicio.Value == null || dteFechaFin.Value == null)
-            {
-                MostrarMensaje("Debe ingresar las fechas de inicio y fin.", false);
-                return false;
-            }
-
-            if (Convert.ToDateTime(dteFechaInicio.Value) > Convert.ToDateTime(dteFechaFin.Value))
-            {
-                MostrarMensaje("La fecha de inicio no puede ser mayor a la fecha de fin.", false);
-                return false;
-            }
-
-            return true;
-        }
-
         private void MostrarMensaje(string mensaje, bool esExito)
         {
-            ScriptManager.RegisterStartupScript(this, GetType(), "mensaje",
-                $"alert('{mensaje}');", true);
+            // Configurar HiddenFields para que Page_PreRender los procese
+            hfMostrarMensaje.Value = "true";
+            hfTipoMensaje.Value = esExito ? "exito" : "error";
+            hfTextoMensaje.Value = mensaje;
+        }
+
+        private void MostrarPopup(string mensaje, bool esExito)
+        {
+            // Escapar caracteres especiales para JavaScript
+            string mensajeEscapado = mensaje
+                .Replace("\\", "\\\\")
+                .Replace("'", "\\'")
+                .Replace("\"", "\\\"")
+                .Replace("\r", "")
+                .Replace("\n", "\\n");
+
+            string script = string.Empty;
+
+            if (esExito)
+            {
+                script = string.Format(@"
+                    window.onload = function() {{
+                        setTimeout(function() {{
+                            if (typeof lblMensajeExitoSolicitud !== 'undefined' && lblMensajeExitoSolicitud) {{
+                                lblMensajeExitoSolicitud.SetText('{0}');
+                                pcMensajeExitoSolicitud.Show();
+                            }} else {{
+                                console.error('lblMensajeExitoSolicitud no está definido');
+                            }}
+                        }}, 100);
+                    }};
+                ", mensajeEscapado);
+            }
+            else
+            {
+                script = string.Format(@"
+                    window.onload = function() {{
+                        setTimeout(function() {{
+                            if (typeof lblMensajeErrorSolicitud !== 'undefined' && lblMensajeErrorSolicitud) {{
+                                lblMensajeErrorSolicitud.SetText('{0}');
+                                pcMensajeErrorSolicitud.Show();
+                            }} else {{
+                                console.error('lblMensajeErrorSolicitud no está definido');
+                            }}
+                        }}, 100);
+                    }};
+                ", mensajeEscapado);
+            }
+
+            // Usar Page.ClientScript que funciona mejor con Master Pages
+            Page.ClientScript.RegisterStartupScript(
+                this.GetType(),
+                "MostrarPopup_" + Guid.NewGuid().ToString(),
+                script,
+                true
+            );
         }
     }
 }

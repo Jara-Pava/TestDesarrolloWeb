@@ -22,25 +22,18 @@
 
         // Redirigir a nueva solicitud
         function NuevaSolicitud() {
-            console.log('Navegando a nueva solicitud...');
             window.location.href = 'SolicitudEspecial.aspx';
         }
 
         // Manejar botones personalizados (Editar y Eliminar)
         function OnCustomButtonClickSolicitud(s, e) {
-            console.log('Botón clickeado:', e.buttonID);
-            console.log('Visible Index:', e.visibleIndex);
-
             // Botón Editar
             if (e.buttonID === 'btnEditSolicitud') {
                 e.processOnServer = false;
                 var idSolicitud = s.GetRowKey(e.visibleIndex);
-                console.log('ID Solicitud:', idSolicitud);
 
                 if (idSolicitud) {
-                    var url = 'SolicitudEspecial.aspx?id=' + idSolicitud;
-                    console.log('Navegando a:', url);
-                    window.location.href = url;
+                    window.location.href = 'SolicitudEspecial.aspx?id=' + idSolicitud;
                 } else {
                     alert('No se pudo obtener el ID de la solicitud');
                 }
@@ -57,12 +50,8 @@
 
         // Permitir edición con doble clic
         function OnRowDblClickSolicitud(s, e) {
-            console.log('Doble clic en fila, visibleIndex:', e.visibleIndex);
-
             if (e.visibleIndex >= 0) {
                 var idSolicitud = s.GetRowKey(e.visibleIndex);
-                console.log('ID Solicitud (doble clic):', idSolicitud);
-
                 if (idSolicitud) {
                     window.location.href = 'SolicitudEspecial.aspx?id=' + idSolicitud;
                 }
@@ -87,6 +76,12 @@
         }
 
     </script>
+
+    <div style="padding-top: 8px">
+        <dx:ASPxLabel runat="server" ID="ASPxLabel7" Text="Solicitudes de Visitas" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
+    </div>
+    <br />
+
     <!-- Popup de Confirmación de Eliminación -->
     <dx:ASPxPopupControl ID="pcConfirmarEliminacion" runat="server" Width="450" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcConfirmarEliminacion"
@@ -118,7 +113,7 @@
     <!-- Popup de Éxito -->
     <dx:ASPxPopupControl ID="pcMensajeExitoSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExitoSolicitud"
-        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
+        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
         <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
@@ -157,105 +152,91 @@
         </FooterContentTemplate>
     </dx:ASPxPopupControl>
 
-    <!--Grid de Solicitudes RH -->
-    <asp:Table runat="server" Width="90%" HorizontalAlign="Center">
-        <asp:TableRow>
-            <asp:TableCell>
-                <div style="padding-top: 8px; padding-bottom: 15px;">
-                    <table style="width: 100%;">
-                        <tr>
-                            <td style="text-align: left;">
-                                <dx:ASPxLabel runat="server" ID="ASPxLabel7" Text="Solicitudes de Visitas" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
-                            </td>
-                            <td style="text-align: right;">
-                                <dx:ASPxButton runat="server" ID="btnNuevaSolicitud" Text="Nueva Solicitud" AutoPostBack="false"
-                                    Width="200px" BackColor="#353943" ForeColor="White" Font-Bold="true">
-                                    <Image Url="~/Images/add.png" Width="20px" Height="20px" />
-                                    <ClientSideEvents Click="NuevaSolicitud" />
-                                </dx:ASPxButton>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <dx:ASPxGridView ID="gridSolicitudesEspeciales" runat="server"
-                    KeyFieldName="ID_Solicitud"
-                    Width="100%"
-                    ForeColor="Black"
-                    ClientInstanceName="gridSolicitudesEspeciales"
-                    OnDataBinding="gridSolicitudesEspeciales_DataBinding"
-                    OnCustomButtonCallback="gridSolicitudesEspeciales_CustomButtonCallback"
-                    OnCustomCallback="gridSolicitudesEspeciales_CustomCallback">
-                    <ClientSideEvents
-                        EndCallback="OnGridSolicitudesEndCallback"
-                        CustomButtonClick="function(s, e) { OnCustomButtonClickSolicitud(s, e); }"
-                        RowDblClick="function(s, e) { OnRowDblClickSolicitud(s, e); }" />
-                    <Styles>
-                        <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
-                    </Styles>
-                    <Columns>
-                        <dx:GridViewCommandColumn Caption="Acciones" Width="100px" ButtonRenderMode="Image" ShowNewButtonInHeader="true">
-                            <CustomButtons>
-                                <dx:GridViewCommandColumnCustomButton ID="btnEditSolicitud" Text="Editar">
-                                    <Image Url="~/Images/edits.png" Width="25px" Height="25px" ToolTip="Editar" />
-                                </dx:GridViewCommandColumnCustomButton>
-                                <dx:GridViewCommandColumnCustomButton ID="btnDeleteSolicitud" Text="Eliminar">
-                                    <Image Url="~/Images/delete.png" Width="25px" Height="25px" ToolTip="Eliminar" />
-                                </dx:GridViewCommandColumnCustomButton>
-                               
-                            </CustomButtons>
-                        </dx:GridViewCommandColumn>
+    <!-- Grid de Solicitudes RH -->
+    <dx:ASPxGridView ID="gridSolicitudesEspeciales" runat="server"
+        KeyFieldName="ID_Solicitud"
+        Width="100%"
+        ForeColor="Black"
+        ClientInstanceName="gridSolicitudesEspeciales"
+        OnDataBinding="gridSolicitudesEspeciales_DataBinding"
+        OnCustomButtonCallback="gridSolicitudesEspeciales_CustomButtonCallback"
+        OnCustomCallback="gridSolicitudesEspeciales_CustomCallback">
+        <ClientSideEvents
+            EndCallback="OnGridSolicitudesEndCallback"
+            CustomButtonClick="function(s, e) { OnCustomButtonClickSolicitud(s, e); }"
+            RowDblClick="function(s, e) { OnRowDblClickSolicitud(s, e); }" />
+        <Styles>
+            <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
+        </Styles>
+        <Columns>
+            <dx:GridViewCommandColumn Caption="Acciones" Width="100px" ButtonRenderMode="Image">
+                <HeaderTemplate>
+                    <div style="text-align: center;">
+                        <dx:ASPxButton runat="server" ID="btnNuevoHeader" Text="" AutoPostBack="false"
+                            ToolTip="Nueva Solicitud" RenderMode="Link">
+                            <Image Url="~/Images/add.png" Width="30px" Height="30px" />
+                            <ClientSideEvents Click="NuevaSolicitud" />
+                        </dx:ASPxButton>
+                    </div>
+                </HeaderTemplate>
+                <CustomButtons>
+                    <dx:GridViewCommandColumnCustomButton ID="btnEditSolicitud" Text="Editar">
+                        <Image Url="~/Images/edits.png" Width="25px" Height="25px" ToolTip="Editar" />
+                    </dx:GridViewCommandColumnCustomButton>
+                    <dx:GridViewCommandColumnCustomButton ID="btnDeleteSolicitud" Text="Eliminar">
+                        <Image Url="~/Images/delete.png" Width="25px" Height="25px" ToolTip="Eliminar" />
+                    </dx:GridViewCommandColumnCustomButton>
+                </CustomButtons>
+            </dx:GridViewCommandColumn>
 
-                        <dx:GridViewDataTextColumn FieldName="ID_Solicitud" Caption="ID" Visible="false" ReadOnly="true" />
+            <dx:GridViewDataTextColumn FieldName="ID_Solicitud" Caption="ID" Visible="false" ReadOnly="true" />
 
-                        <dx:GridViewDataComboBoxColumn FieldName="id_TipoSolicitud" Caption="Tipo Solicitud" Width="120px">
-                            <PropertiesComboBox TextField="Visita" ValueField="ID_TipoVisita" ValueType="System.Int32" />
-                        </dx:GridViewDataComboBoxColumn>
+            <dx:GridViewDataComboBoxColumn FieldName="id_TipoSolicitud" Caption="Tipo Solicitud" Width="120px">
+                <PropertiesComboBox TextField="Visita" ValueField="ID_TipoVisita" ValueType="System.Int32" />
+            </dx:GridViewDataComboBoxColumn>
 
-                        <dx:GridViewDataTextColumn FieldName="Visitante" Caption="Visitante" Width="150px" />
+            <dx:GridViewDataTextColumn FieldName="Visitante" Caption="Visitante" Width="150px" />
 
-                        <dx:GridViewDataComboBoxColumn FieldName="id_Proyecto" Caption="Proyecto" Width="150px">
-                            <PropertiesComboBox TextField="NombreProyecto" ValueField="ID_Proyecto" ValueType="System.Int32" />
-                        </dx:GridViewDataComboBoxColumn>
+            <dx:GridViewDataComboBoxColumn FieldName="id_Proyecto" Caption="Proyecto" Width="150px">
+                <PropertiesComboBox TextField="NombreProyecto" ValueField="ID_Proyecto" ValueType="System.Int32" />
+            </dx:GridViewDataComboBoxColumn>
 
-                        <dx:GridViewDataComboBoxColumn FieldName="id_Planta" Caption="Planta" Width="120px">
-                            <PropertiesComboBox TextField="NombrePlanta" ValueField="ID_Planta" ValueType="System.Int32" />
-                        </dx:GridViewDataComboBoxColumn>
+            <dx:GridViewDataComboBoxColumn FieldName="id_Planta" Caption="Planta" Width="120px">
+                <PropertiesComboBox TextField="NombrePlanta" ValueField="ID_Planta" ValueType="System.Int32" />
+            </dx:GridViewDataComboBoxColumn>
 
-                        <dx:GridViewDataComboBoxColumn FieldName="id_Contratista" Caption="Contratista" Width="150px">
-                            <PropertiesComboBox TextField="Responsable" ValueField="id_contratista" ValueType="System.Int32" />
-                        </dx:GridViewDataComboBoxColumn>
+            <dx:GridViewDataComboBoxColumn FieldName="id_Contratista" Caption="Contratista" Width="150px">
+                <PropertiesComboBox TextField="Responsable" ValueField="id_contratista" ValueType="System.Int32" />
+            </dx:GridViewDataComboBoxColumn>
 
-                        <dx:GridViewDataTextColumn FieldName="AreaTrabajo" Caption="Área de Trabajo" Width="150px" />
+            <dx:GridViewDataTextColumn FieldName="AreaTrabajo" Caption="Área de Trabajo" Width="150px" />
 
-                        <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="150px" />
+            <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="150px" />
 
-                        <dx:GridViewDataTextColumn FieldName="Estancia" Caption="Estancia" Width="100px" />
+            <dx:GridViewDataTextColumn FieldName="Estancia" Caption="Estancia" Width="100px" />
 
-                        <dx:GridViewDataDateColumn FieldName="FechaInicio" Caption="Fecha Inicio" Width="110px">
-                            <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
-                        </dx:GridViewDataDateColumn>
+            <dx:GridViewDataDateColumn FieldName="FechaInicio" Caption="Fecha Inicio" Width="110px">
+                <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
+            </dx:GridViewDataDateColumn>
 
-                        <dx:GridViewDataDateColumn FieldName="FechaFin" Caption="Fecha Fin" Width="110px">
-                            <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
-                        </dx:GridViewDataDateColumn>
+            <dx:GridViewDataDateColumn FieldName="FechaFin" Caption="Fecha Fin" Width="110px">
+                <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
+            </dx:GridViewDataDateColumn>
 
-                        <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha Solicitud" Width="110px" ReadOnly="true">
-                            <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
-                        </dx:GridViewDataDateColumn>
+            <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha Solicitud" Width="110px" ReadOnly="true">
+                <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
+            </dx:GridViewDataDateColumn>
 
-                        <dx:GridViewDataTextColumn FieldName="RFC" Caption="RFC" Width="120px" />
+            <dx:GridViewDataTextColumn FieldName="RFC" Caption="RFC" Width="120px" />
 
-                        <dx:GridViewDataTextColumn FieldName="Responsable" Caption="Responsable" Width="150px" />
+            <dx:GridViewDataTextColumn FieldName="Responsable" Caption="Responsable" Width="150px" />
 
-                        <dx:GridViewDataCheckColumn FieldName="aprobado" Caption="Aprobado" Width="80px" />
+            <dx:GridViewDataCheckColumn FieldName="aprobado" Caption="Aprobado" Width="80px" />
 
-                    </Columns>
-                    <SettingsPager PageSize="10">
-                        <PageSizeItemSettings ShowAllItem="true" Visible="true"></PageSizeItemSettings>
-                    </SettingsPager>
-                </dx:ASPxGridView>
-            </asp:TableCell>
-        </asp:TableRow>
-    </asp:Table>
+        </Columns>
+        <SettingsPager PageSize="10">
+            <PageSizeItemSettings ShowAllItem="true" Visible="true"></PageSizeItemSettings>
+        </SettingsPager>
+    </dx:ASPxGridView>
 
 </asp:Content>

@@ -15,6 +15,69 @@ namespace DesarrollosQAS
     {
 
         /// <summary>
+        /// hfMostrarMensaje control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfMostrarMensaje;
+
+        /// <summary>
+        /// hfTipoMensaje control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfTipoMensaje;
+
+        /// <summary>
+        /// hfTextoMensaje control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfTextoMensaje;
+
+        /// <summary>
+        /// pcMensajeExitoSolicitud control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxPopupControl pcMensajeExitoSolicitud;
+
+        /// <summary>
+        /// lblMensajeExitoSolicitud control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxLabel lblMensajeExitoSolicitud;
+
+        /// <summary>
+        /// pcMensajeErrorSolicitud control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxPopupControl pcMensajeErrorSolicitud;
+
+        /// <summary>
+        /// lblMensajeErrorSolicitud control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxLabel lblMensajeErrorSolicitud;
+
+        /// <summary>
         /// btnRegresarSolicitudesEspeciales control.
         /// </summary>
         /// <remarks>
@@ -31,15 +94,6 @@ namespace DesarrollosQAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.ASPxFormLayout exampleFormLayout;
-
-        /// <summary>
-        /// txtIdSolicitud control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtIdSolicitud;
 
         /// <summary>
         /// cboTipoSolicitud control.
