@@ -170,7 +170,7 @@
         <Styles LayoutGroupBox-Caption-Font-Size="X-Large" LayoutGroupBox-Caption-Font-Bold="true" LayoutGroupBox-Caption-ForeColor="#353943"></Styles>
         <Styles LayoutGroupBox-Caption-BackgroundImage-HorizontalPosition="center" LayoutItem-Caption-ForeColor="#353943"></Styles>
         <Items>
-            <dx:LayoutGroup Caption="Solicitud Especial" ColumnCount="4" SettingsItemCaptions-Location="Top" CellStyle-Font-Size="14px">
+            <dx:LayoutGroup Caption="Solicitud" ColumnCount="4" SettingsItemCaptions-Location="Top" CellStyle-Font-Size="14px">
                 <CellStyle Font-Size="14px" />
                 <Items>
                     <%--Combobox Tipo Solicitud--%>

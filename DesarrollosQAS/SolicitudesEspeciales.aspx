@@ -138,7 +138,7 @@
     </script>
 
     <div style="padding-top: 8px">
-        <dx:ASPxLabel runat="server" ID="ASPxLabel7" Text="Solicitudes de Visitas" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
+        <dx:ASPxLabel runat="server" ID="ASPxLabel7" Text="Solicitudes" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
     </div>
     <br />
 
@@ -184,7 +184,7 @@
         </ContentCollection>
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="Teal" ForeColor="White" Font-Bold="true">
                     <ClientSideEvents Click="function(s, e) { pcMensajeExitoSolicitud.Hide(); }" />
                 </dx:ASPxButton>
             </div>
@@ -205,7 +205,7 @@
         </ContentCollection>
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="Teal" ForeColor="White" Font-Bold="true">
                     <ClientSideEvents Click="function(s, e) { pcMensajeErrorSolicitud.Hide(); }" />
                 </dx:ASPxButton>
             </div>
@@ -220,7 +220,8 @@
         ClientInstanceName="gridSolicitudesEspeciales"
         OnDataBinding="gridSolicitudesEspeciales_DataBinding"
         OnCustomButtonCallback="gridSolicitudesEspeciales_CustomButtonCallback"
-        OnCustomCallback="gridSolicitudesEspeciales_CustomCallback">
+        OnCustomCallback="gridSolicitudesEspeciales_CustomCallback"
+        EnableRowsCache="false">
         <ClientSideEvents
             EndCallback="OnGridSolicitudesEndCallback"
             CustomButtonClick="function(s, e) { OnCustomButtonClickSolicitud(s, e); }"
@@ -228,7 +229,7 @@
         <Styles>
             <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
         </Styles>
-        <Settings ShowColumnHeaders="true" HorizontalScrollBarMode="Visible" />
+        <Settings ShowColumnHeaders="true" HorizontalScrollBarMode="Visible" VerticalScrollBarMode="Visible" VerticalScrollableHeight="340"/>
         <SettingsResizing ColumnResizeMode="Control" />
         <Columns>
             <dx:GridViewCommandColumn Caption="Acciones" Width="80" ButtonRenderMode="Image">
@@ -274,7 +275,7 @@
 
             <dx:GridViewDataTextColumn FieldName="AreaTrabajo" Caption="Área<br/>de Trabajo" Width="80" />
 
-            <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="130" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="190" HeaderStyle-HorizontalAlign="Center" />
 
             <dx:GridViewDataTextColumn FieldName="Estancia" Caption="Estancia" Width="80" />
 

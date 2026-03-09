@@ -136,6 +136,8 @@ namespace DesarrollosQAS
                     txtAreaTrabajo.Text = solicitud.AreaTrabajo;
                     txtActividad.Text = solicitud.Actividad;
                     txtResponsable.Text = solicitud.Responsable;
+                    txtEstancia.Text = solicitud.Estancia;
+                    txtRFC.Text = solicitud.RFC;
                     dteFechaInicio.Value = solicitud.FechaInicio;
                     dteFechaFin.Value = solicitud.FechaFin;
                     chkAprobado.Checked = solicitud.aprobado;
