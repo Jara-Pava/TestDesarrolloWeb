@@ -318,6 +318,7 @@
     <Content Include="Root.master" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="UserControls\PopupMessages.ascx" />
     <Content Include="Usuarios.aspx" />
     <Content Include="Web.config" />
     <Content Include="Images\Responsiva.pdf" />
@@ -389,6 +390,13 @@
     </Compile>
     <Compile Include="UserControls\Navigation.ascx.designer.cs">
       <DependentUpon>Navigation.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PopupMessages.ascx.cs">
+      <DependentUpon>PopupMessages.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\PopupMessages.ascx.designer.cs">
+      <DependentUpon>PopupMessages.ascx</DependentUpon>
     </Compile>
     <Compile Include="Usuarios.aspx.cs">
       <DependentUpon>Usuarios.aspx</DependentUpon>

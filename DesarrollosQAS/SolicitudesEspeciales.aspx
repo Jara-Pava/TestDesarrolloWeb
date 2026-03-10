@@ -1,61 +1,30 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SolicitudesEspeciales.aspx.cs" Inherits="DesarrollosQAS.SolicitudesEspeciales" MasterPageFile="~/Root.master" %>
 
+<%@ Register Src="~/UserControls/PopupMessages.ascx" TagPrefix="uc" TagName="PopupMessages" %>
 
 <asp:Content ContentPlaceHolderID="Content" runat="server">
+    <style type="text/css">
+        tr > .dxflCaptionCell_Office365 {
+            padding-bottom: 15px !important;
+        }
+
+        .dxflGroupBox_Office365 {
+            margin-bottom: 0px;
+            padding: 0 0 12px;
+            text-align: center;
+        }
+    </style>
+
     <script type="text/javascript">
-        // Función para redimensionar el grid cuando cambia el tamaño del contenedor
-        function RedimensionarGrid() {
-            if (typeof gridSolicitudesEspeciales !== 'undefined' && gridSolicitudesEspeciales) {
-                setTimeout(function () {
-                    gridSolicitudesEspeciales.AdjustControl();
-                }, 300);
-            }
-        }
-
-        // Detectar cambios de tamaño en la ventana
-        window.addEventListener('resize', RedimensionarGrid);
-
-        // Detectar cuando el menu se cierra/abre (si usas DevExpress Navigation)
-        // Ajusta según tu implementación específica del navbar
-        document.addEventListener('DOMContentLoaded', function () {
-            // Observar cambios en el DOM que puedan indicar que el menu cambió
-            var observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (mutation) {
-                    if (mutation.type === 'attributes' &&
-                        (mutation.attributeName === 'class' || mutation.attributeName === 'style')) {
-                        RedimensionarGrid();
-                    }
-                });
-            });
-
-            // Observar el elemento que contiene el menu/sidebar
-            var sidebarElement = document.querySelector('.sidebar, .dx-drawer, [class*="menu"]');
-            if (sidebarElement) {
-                observer.observe(sidebarElement, {
-                    attributes: true,
-                    attributeFilter: ['class', 'style']
-                });
-            }
-
-            // También observar el contenedor principal
-            var mainContent = document.querySelector('.content, .main-content, [class*="content"]');
-            if (mainContent) {
-                observer.observe(mainContent, {
-                    attributes: true,
-                    attributeFilter: ['class', 'style']
-                });
-            }
-        });
-
         // Manejar mensajes después de operaciones del grid
         function OnGridSolicitudesEndCallback(s, e) {
             if (s.cpMessageType && s.cpMessage) {
                 if (s.cpMessageType === "success") {
-                    lblMensajeExitoSolicitud.SetText(s.cpMessage);
-                    pcMensajeExitoSolicitud.Show();
+                    lblMensajeExito.SetText(s.cpMessage);
+                    pcMensajeExito.Show();
                 } else if (s.cpMessageType === "error") {
-                    lblMensajeErrorSolicitud.SetText(s.cpMessage);
-                    pcMensajeErrorSolicitud.Show();
+                    lblMensajeError.SetText(s.cpMessage);
+                    pcMensajeError.Show();
                 }
 
                 delete s.cpMessageType;
@@ -64,21 +33,6 @@
         }
 
 
-        // Manejar mensajes después de operaciones del grid
-        function OnGridSolicitudesEndCallback(s, e) {
-            if (s.cpMessageType && s.cpMessage) {
-                if (s.cpMessageType === "success") {
-                    lblMensajeExitoSolicitud.SetText(s.cpMessage);
-                    pcMensajeExitoSolicitud.Show();
-                } else if (s.cpMessageType === "error") {
-                    lblMensajeErrorSolicitud.SetText(s.cpMessage);
-                    pcMensajeErrorSolicitud.Show();
-                }
-
-                delete s.cpMessageType;
-                delete s.cpMessage;
-            }
-        }
 
         // Redirigir a nueva solicitud
         function NuevaSolicitud() {
@@ -134,15 +88,11 @@
             currentDeleteIndex = -1;
             pcConfirmarEliminacion.Hide();
         }
-
     </script>
 
-    <div style="padding-top: 8px">
-        <dx:ASPxLabel runat="server" ID="ASPxLabel7" Text="Solicitudes" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
-    </div>
-    <br />
-
-    <!-- Popup de Confirmación de Eliminación -->
+    <!-- Incluir el User Control de Popups -->
+    <uc:PopupMessages ID="popupMessages" runat="server" />
+    <!-- Popup de Confirmación de Eliminación (específico de esta página) -->
     <dx:ASPxPopupControl ID="pcConfirmarEliminacion" runat="server" Width="450" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcConfirmarEliminacion"
         HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
@@ -170,47 +120,10 @@
         </FooterContentTemplate>
     </dx:ASPxPopupControl>
 
-    <!-- Popup de Éxito -->
-    <dx:ASPxPopupControl ID="pcMensajeExitoSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
-        PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExitoSolicitud"
-        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
-        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
-        <ContentCollection>
-            <dx:PopupControlContentControl runat="server">
-                <div style="padding: 20px; text-align: center;">
-                    <dx:ASPxLabel ID="lblMensajeExitoSolicitud" runat="server" Font-Size="14px" ClientInstanceName="lblMensajeExitoSolicitud" />
-                </div>
-            </dx:PopupControlContentControl>
-        </ContentCollection>
-        <FooterContentTemplate>
-            <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="Teal" ForeColor="White" Font-Bold="true">
-                    <ClientSideEvents Click="function(s, e) { pcMensajeExitoSolicitud.Hide(); }" />
-                </dx:ASPxButton>
-            </div>
-        </FooterContentTemplate>
-    </dx:ASPxPopupControl>
-
-    <!-- Popup de Error -->
-    <dx:ASPxPopupControl ID="pcMensajeErrorSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
-        PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeErrorSolicitud"
-        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
-        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
-        <ContentCollection>
-            <dx:PopupControlContentControl runat="server">
-                <div style="padding: 20px; text-align: center;">
-                    <dx:ASPxLabel ID="lblMensajeErrorSolicitud" runat="server" Font-Size="14px" ClientInstanceName="lblMensajeErrorSolicitud" />
-                </div>
-            </dx:PopupControlContentControl>
-        </ContentCollection>
-        <FooterContentTemplate>
-            <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="Teal" ForeColor="White" Font-Bold="true">
-                    <ClientSideEvents Click="function(s, e) { pcMensajeErrorSolicitud.Hide(); }" />
-                </dx:ASPxButton>
-            </div>
-        </FooterContentTemplate>
-    </dx:ASPxPopupControl>
+    <div style="padding-top: 8px">
+        <dx:ASPxLabel runat="server" ID="ASPxLabel7" Text="Solicitudes" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
+    </div>
+    <br />
 
     <!-- Grid de Solicitudes RH -->
     <dx:ASPxGridView ID="gridSolicitudesEspeciales" runat="server"
@@ -229,7 +142,7 @@
         <Styles>
             <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
         </Styles>
-        <Settings ShowColumnHeaders="true" HorizontalScrollBarMode="Visible" VerticalScrollBarMode="Visible" VerticalScrollableHeight="340"/>
+        <Settings ShowColumnHeaders="true" HorizontalScrollBarMode="Visible" VerticalScrollBarMode="Visible" VerticalScrollableHeight="600" />
         <SettingsResizing ColumnResizeMode="Control" />
         <Columns>
             <dx:GridViewCommandColumn Caption="Acciones" Width="80" ButtonRenderMode="Image">
@@ -302,6 +215,7 @@
         </Columns>
         <SettingsPager PageSize="25">
         </SettingsPager>
+        <StylesPager CurrentPageNumber-BackColor="#353943"></StylesPager>
     </dx:ASPxGridView>
 
 </asp:Content>

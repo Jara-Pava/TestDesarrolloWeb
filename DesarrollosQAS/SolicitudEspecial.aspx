@@ -158,13 +158,6 @@
         </FooterContentTemplate>
     </dx:ASPxPopupControl>
 
-    <div style="padding-top: 20px; padding-left: 20px; text-align: right">
-        <dx:ASPxButton runat="server" ID="btnRegresarSolicitudesEspeciales" Text="Regresar"
-            Width="200px" CssClass="btn" BackColor="#353943" ForeColor="White" Font-Bold="true" AutoPostBack="false">
-            <ClientSideEvents Click="RegresarFormulario" />
-        </dx:ASPxButton>
-    </div>
-
     <%--Template para solicitud especial--%>
     <dx:ASPxFormLayout runat="server" ID="FormLayoutSolicitudEspecial" Paddings-PaddingTop="20px" RequiredMarkDisplayMode="RequiredOnly" EnableViewState="true" EncodeHtml="false" UseDefaultPaddings="false" Width="100%">
         <Styles LayoutGroupBox-Caption-Font-Size="X-Large" LayoutGroupBox-Caption-Font-Bold="true" LayoutGroupBox-Caption-ForeColor="#353943"></Styles>
@@ -172,7 +165,20 @@
         <Items>
             <dx:LayoutGroup Caption="Solicitud" ColumnCount="4" SettingsItemCaptions-Location="Top" CellStyle-Font-Size="14px">
                 <CellStyle Font-Size="14px" />
+                <GroupBoxStyle Border-BorderStyle="None" />
                 <Items>
+                    <dx:LayoutItem Caption=" " ColumnSpan="4">
+                        <LayoutItemNestedControlCollection>
+                            <dx:LayoutItemNestedControlContainer>
+                                <div style="padding-left: 20px; text-align: right">
+                                    <dx:ASPxButton runat="server" ID="btnRegresarSolicitudesEspeciales" Text="Regresar"
+                                        Width="200px" CssClass="btn" BackColor="#353943" ForeColor="White" Font-Bold="true" AutoPostBack="false">
+                                        <ClientSideEvents Click="RegresarFormulario" />
+                                    </dx:ASPxButton>
+                                </div>
+                            </dx:LayoutItemNestedControlContainer>
+                        </LayoutItemNestedControlCollection>
+                    </dx:LayoutItem>
                     <%--Combobox Tipo Solicitud--%>
                     <dx:LayoutItem Caption="Tipo Solicitud" ColumnSpan="2">
                         <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
@@ -277,7 +283,7 @@
                         </LayoutItemNestedControlCollection>
                     </dx:LayoutItem>
 
-                    
+
                     <%--Textbox Responsable--%>
                     <dx:LayoutItem Caption="Responsable" ColumnSpan="4">
                         <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
@@ -359,7 +365,7 @@
                         <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
                         <LayoutItemNestedControlCollection>
                             <dx:LayoutItemNestedControlContainer>
-                                <dx:ASPxCheckBox ID="chkAprobado" runat="server" ClientInstanceName="chkAprobado"/>
+                                <dx:ASPxCheckBox ID="chkAprobado" runat="server" ClientInstanceName="chkAprobado" />
                             </dx:LayoutItemNestedControlContainer>
                         </LayoutItemNestedControlCollection>
                     </dx:LayoutItem>

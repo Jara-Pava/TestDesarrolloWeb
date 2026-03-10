@@ -37,12 +37,12 @@ namespace DesarrollosQAS
                     repo.EliminarSolicitudRH(id);
 
                     gridSolicitudesEspeciales.DataBind();
-                    MostrarExito("Solicitud eliminada exitosamente.");
+                    MostrarExito("Proceso exitoso al eliminar la solicitud.");
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Trace.TraceError("Error al eliminar solicitud: {0}", ex);
-                    MostrarError($"Error al eliminar: {ex.Message}");
+                    MostrarError($"Proceso no exitoso al eliminar la solicitud: {ex.Message}");
                 }
             }
         }
@@ -92,7 +92,7 @@ namespace DesarrollosQAS
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error al cargar catálogos: {0}", ex);
-                MostrarError($"Error al cargar catálogos: {ex.Message}");
+                MostrarError($"Proceso no exitoso al cargar los catalagos: {ex.Message}");
             }
         }
 

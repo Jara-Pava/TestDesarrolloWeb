@@ -7,65 +7,65 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DesarrollosQAS
+namespace DesarrollosQAS.UserControls
 {
 
 
-    public partial class SolicitudesEspeciales
+    public partial class PopupMessages
     {
 
         /// <summary>
-        /// popupMessages control.
+        /// pcConfirmarAccion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DesarrollosQAS.UserControls.PopupMessages popupMessages;
+        protected global::DevExpress.Web.ASPxPopupControl pcConfirmarAccion;
 
         /// <summary>
-        /// pcConfirmarEliminacion control.
+        /// lblMensajeConfirmacion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxPopupControl pcConfirmarEliminacion;
+        protected global::DevExpress.Web.ASPxLabel lblMensajeConfirmacion;
 
         /// <summary>
-        /// ASPxLabel7 control.
+        /// pcMensajeExito control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxLabel ASPxLabel7;
+        protected global::DevExpress.Web.ASPxPopupControl pcMensajeExito;
 
         /// <summary>
-        /// gridSolicitudesEspeciales control.
+        /// lblMensajeExito control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxGridView gridSolicitudesEspeciales;
+        protected global::DevExpress.Web.ASPxLabel lblMensajeExito;
 
         /// <summary>
-        /// btnEditSolicitud control.
+        /// pcMensajeError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.GridViewCommandColumnCustomButton btnEditSolicitud;
+        protected global::DevExpress.Web.ASPxPopupControl pcMensajeError;
 
         /// <summary>
-        /// btnDeleteSolicitud control.
+        /// lblMensajeError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.GridViewCommandColumnCustomButton btnDeleteSolicitud;
+        protected global::DevExpress.Web.ASPxLabel lblMensajeError;
     }
 }

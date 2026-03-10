@@ -1,5 +1,6 @@
 ﻿using DataAccessDesarrollos;
 using DataAccessDesarrollos.Repositorios;
+using DesarrollosQAS.UserControls;
 using DevExpress.Web;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,14 @@ namespace DesarrollosQAS
             set
             {
                 ViewState["IdSolicitud"] = value;
+            }
+        }
+
+        private PopupMessages popupMessages
+        {
+            get
+            {
+                return this.FindControl("popupMessages") as PopupMessages;
             }
         }
 
@@ -107,7 +116,7 @@ namespace DesarrollosQAS
                 System.Diagnostics.Trace.TraceError("Error al cargar catálogos: {0}", ex);
                 MostrarMensaje("Error al cargar los catálogos: " + ex.Message, false);
             }
-        } 
+        }
 
         private bool CargarDatosSolicitud(int id)
         {
@@ -122,7 +131,8 @@ namespace DesarrollosQAS
                     chkAprobado.Checked = solicitud.aprobado;
                     chkAprobado.Enabled = true;
                 }
-                else {
+                else
+                {
 
                 }
 
@@ -203,29 +213,32 @@ namespace DesarrollosQAS
                     // Modo edición
                     solicitud.ID_Solicitud = IdSolicitud.Value;
                     resultado = repo.ActualizarSolicitudRH(solicitud);
-                    MostrarMensaje(resultado ? "Solicitud actualizada exitosamente." : "Error al actualizar la solicitud.", resultado);
+                    MostrarMensaje(resultado ? $"Proceso exitoso al actualizar solicitud con folio N° {solicitud.ID_Solicitud}" : $"Proceso no exitoso al actualizar la solicitud con el folio N° {solicitud.ID_Solicitud}.", resultado);
                 }
                 else
                 {
                     // Modo creación
                     solicitud.FechaSolicitud = DateTime.Now;
                     resultado = repo.CrearSolicitudRH(solicitud);
-                    MostrarMensaje(resultado ? "Solicitud creada exitosamente." : "Error al crear la solicitud.", resultado);
+                    if (resultado)
+                    {
+                        MostrarMensaje($"Proceso exitoso, creación de la solicitud con folio N° {solicitud.ID_Solicitud}.", true);
+                    }
+                    else
+                    {
+                        MostrarMensaje("Proceso no exitoso al crear de la solicitud.", false);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Trace.TraceError("Error al guardar solicitud: {0}", ex);
+                System.Diagnostics.Trace.TraceError("Proceso no exitoso al guardar solicitud: {0}", ex);
                 MostrarMensaje("Error al guardar: " + ex.Message, false);
             }
         }
-
         private void MostrarMensaje(string mensaje, bool esExito)
         {
-            // Configurar HiddenFields para que Page_PreRender los procese
-            hfMostrarMensaje.Value = "true";
-            hfTipoMensaje.Value = esExito ? "exito" : "error";
-            hfTextoMensaje.Value = mensaje;
+            MostrarPopup(mensaje, esExito);
         }
 
         private void MostrarPopup(string mensaje, bool esExito)
