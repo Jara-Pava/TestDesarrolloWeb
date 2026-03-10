@@ -42,6 +42,15 @@ namespace DesarrollosQAS
         protected global::DevExpress.Web.ASPxPopupControl pcConfirmarEliminacion;
 
         /// <summary>
+        /// pcConfirmarCancelacionEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxPopupControl pcConfirmarCancelacionEdit;
+
+        /// <summary>
         /// gridSolicitudesRH control.
         /// </summary>
         /// <remarks>

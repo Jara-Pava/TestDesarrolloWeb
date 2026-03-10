@@ -63,10 +63,52 @@
             e.processOnServer = true;
         }
 
-        // Cancelar edición
+        // Función para verificar si hay datos en el EditForm
+        function EditFormTieneDatos() {
+            try {
+                // Verificar si los controles existen antes de intentar acceder a ellos
+                var tieneDatos = false;
+
+                if (typeof cboTipoSolicitudEdit !== 'undefined' && cboTipoSolicitudEdit.GetValue() != null) tieneDatos = true;
+                if (typeof txtVisitanteEdit !== 'undefined' && txtVisitanteEdit.GetText().trim() != '') tieneDatos = true;
+                if (typeof cboProyectoEdit !== 'undefined' && cboProyectoEdit.GetValue() != null) tieneDatos = true;
+                if (typeof cboPlantaEdit !== 'undefined' && cboPlantaEdit.GetValue() != null) tieneDatos = true;
+                if (typeof cboContratistaEdit !== 'undefined' && cboContratistaEdit.GetValue() != null) tieneDatos = true;
+                if (typeof txtAreaTrabajoEdit !== 'undefined' && txtAreaTrabajoEdit.GetText().trim() != '') tieneDatos = true;
+                if (typeof txtActividadEdit !== 'undefined' && txtActividadEdit.GetText().trim() != '') tieneDatos = true;
+                if (typeof txtResponsableEdit !== 'undefined' && txtResponsableEdit.GetText().trim() != '') tieneDatos = true;
+                if (typeof txtRFCEdit !== 'undefined' && txtRFCEdit.GetText().trim() != '') tieneDatos = true;
+                if (typeof txtEstanciaEdit !== 'undefined' && txtEstanciaEdit.GetText().trim() != '') tieneDatos = true;
+                if (typeof dteFechaInicioEdit !== 'undefined' && dteFechaInicioEdit.GetValue() != null) tieneDatos = true;
+                if (typeof dteFechaFinEdit !== 'undefined' && dteFechaFinEdit.GetValue() != null) tieneDatos = true;
+
+                return tieneDatos;
+            } catch (ex) {
+                console.error('Error al verificar datos del formulario:', ex);
+                return false;
+            }
+        }
+
+        // Cancelar edición con confirmación
         function CancelarEdicion(s, e) {
             e.processOnServer = false;
+
+            if (EditFormTieneDatos()) {
+                pcConfirmarCancelacionEdit.Show();
+            } else {
+                gridSolicitudesRH.CancelEdit();
+            }
+        }
+
+        // Confirmar cancelación del EditForm
+        function ConfirmarCancelacionEdit() {
+            pcConfirmarCancelacionEdit.Hide();
             gridSolicitudesRH.CancelEdit();
+        }
+
+        // Cancelar la cancelación del EditForm (quedarse en el formulario)
+        function CancelarLaCancelacionEdit() {
+            pcConfirmarCancelacionEdit.Hide();
         }
 
     </script>
@@ -83,7 +125,7 @@
                 <!-- Incluir el User Control de Popups -->
                 <uc:PopupMessages ID="popupMessages" runat="server" />
 
-                <!-- Popup de Confirmación de Eliminación (específico de esta página) -->
+                <!-- Popup de Confirmación de Eliminación -->
                 <dx:ASPxPopupControl ID="pcConfirmarEliminacion" runat="server" Width="450" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
                     PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcConfirmarEliminacion"
                     HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
@@ -106,6 +148,34 @@
                             <dx:ASPxButton ID="btnCancelarEliminar" runat="server" Text="No" Width="120px" AutoPostBack="False"
                                 BackColor="DarkRed" ForeColor="White" Font-Bold="true" Style="margin-left: 90px;">
                                 <ClientSideEvents Click="CancelarEliminacion" />
+                            </dx:ASPxButton>
+                        </div>
+                    </FooterContentTemplate>
+                </dx:ASPxPopupControl>
+
+                <!-- Popup de Confirmación de Cancelación del EditForm -->
+                <dx:ASPxPopupControl ID="pcConfirmarCancelacionEdit" runat="server" Width="450" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
+                    PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcConfirmarCancelacionEdit"
+                    HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
+                    <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
+                    <ContentCollection>
+                        <dx:PopupControlContentControl runat="server">
+                            <div style="padding: 30px; text-align: center;">
+                                <dx:ASPxLabel runat="server" Text="¿Está seguro que desea cancelar? Se perderán los cambios no guardados." Font-Size="16px" Font-Bold="true" />
+                                <br />
+                                <br />
+                            </div>
+                        </dx:PopupControlContentControl>
+                    </ContentCollection>
+                    <FooterContentTemplate>
+                        <div style="text-align: center; padding: 10px;">
+                            <dx:ASPxButton ID="btnConfirmarCancelarEdit" runat="server" Text="Sí" Width="120px" AutoPostBack="False"
+                                BackColor="Teal" ForeColor="White" Font-Bold="true" Style="margin-left: 10px;">
+                                <ClientSideEvents Click="ConfirmarCancelacionEdit" />
+                            </dx:ASPxButton>
+                            <dx:ASPxButton ID="btnNoCancelarEdit" runat="server" Text="No" Width="120px" AutoPostBack="False"
+                                BackColor="DarkRed" ForeColor="White" Font-Bold="true" Style="margin-left: 90px;">
+                                <ClientSideEvents Click="CancelarLaCancelacionEdit" />
                             </dx:ASPxButton>
                         </div>
                     </FooterContentTemplate>
@@ -195,7 +265,8 @@
                                                 Value='<%# Bind("id_TipoSolicitud") %>'
                                                 TextField="Visita"
                                                 ValueField="ID_TipoVisita"
-                                                ValueType="System.Int32">
+                                                ValueType="System.Int32"
+                                                ClientInstanceName="cboTipoSolicitudEdit">
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
                                                 </ValidationSettings>
@@ -204,7 +275,8 @@
                                         <td style="padding: 10px; width: 50%;">
                                             <dx:ASPxLabel runat="server" Text="Visitante:" Font-Bold="true" />
                                             <dx:ASPxTextBox ID="txtVisitanteEdit" runat="server" Width="100%"
-                                                Text='<%# Bind("Visitante") %>'>
+                                                Text='<%# Bind("Visitante") %>'
+                                                ClientInstanceName="txtVisitanteEdit">
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
                                                 </ValidationSettings>
@@ -218,7 +290,8 @@
                                                 Value='<%# Bind("id_Proyecto") %>'
                                                 TextField="NombreProyecto"
                                                 ValueField="ID_Proyecto"
-                                                ValueType="System.Int32">
+                                                ValueType="System.Int32"
+                                                ClientInstanceName="cboProyectoEdit">
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
                                                 </ValidationSettings>
@@ -230,7 +303,8 @@
                                                 Value='<%# Bind("id_Planta") %>'
                                                 TextField="NombrePlanta"
                                                 ValueField="ID_Planta"
-                                                ValueType="System.Int32">
+                                                ValueType="System.Int32"
+                                                ClientInstanceName="cboPlantaEdit">
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
                                                 </ValidationSettings>
@@ -244,7 +318,8 @@
                                                 Value='<%# Bind("id_Contratista") %>'
                                                 TextField="Responsable"
                                                 ValueField="id_contratista"
-                                                ValueType="System.Int32">
+                                                ValueType="System.Int32"
+                                                ClientInstanceName="cboContratistaEdit">
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
                                                 </ValidationSettings>
@@ -253,7 +328,8 @@
                                         <td style="padding: 10px;">
                                             <dx:ASPxLabel runat="server" Text="Área de Trabajo:" Font-Bold="true" />
                                             <dx:ASPxTextBox ID="txtAreaTrabajoEdit" runat="server" Width="100%"
-                                                Text='<%# Bind("AreaTrabajo") %>'>
+                                                Text='<%# Bind("AreaTrabajo") %>'
+                                                ClientInstanceName="txtAreaTrabajoEdit">
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
                                                 </ValidationSettings>
@@ -264,7 +340,8 @@
                                         <td colspan="2" style="padding: 10px;">
                                             <dx:ASPxLabel runat="server" Text="Actividad:" Font-Bold="true" />
                                             <dx:ASPxMemo ID="txtActividadEdit" runat="server" Width="100%" Rows="3"
-                                                Text='<%# Bind("Actividad") %>'>
+                                                Text='<%# Bind("Actividad") %>'
+                                                ClientInstanceName="txtActividadEdit">
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
                                                 </ValidationSettings>
@@ -275,7 +352,8 @@
                                         <td colspan="2" style="padding: 10px;">
                                             <dx:ASPxLabel runat="server" Text="Responsable:" Font-Bold="true" />
                                             <dx:ASPxTextBox ID="txtResponsableEdit" runat="server" Width="100%"
-                                                Text='<%# Bind("Responsable") %>'>
+                                                Text='<%# Bind("Responsable") %>'
+                                                ClientInstanceName="txtResponsableEdit">
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
                                                 </ValidationSettings>
@@ -286,7 +364,8 @@
                                         <td style="padding: 10px;">
                                             <dx:ASPxLabel runat="server" Text="RFC:" Font-Bold="true" />
                                             <dx:ASPxTextBox ID="txtRFCEdit" runat="server" Width="100%"
-                                                Text='<%# Bind("RFC") %>'>
+                                                Text='<%# Bind("RFC") %>'
+                                                ClientInstanceName="txtRFCEdit">
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
                                                     <RegularExpression ValidationExpression="^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$" ErrorText=" " />
@@ -296,7 +375,8 @@
                                         <td style="padding: 10px;">
                                             <dx:ASPxLabel runat="server" Text="Estancia:" Font-Bold="true" />
                                             <dx:ASPxTextBox ID="txtEstanciaEdit" runat="server" Width="100%"
-                                                Text='<%# Bind("Estancia") %>'>
+                                                Text='<%# Bind("Estancia") %>'
+                                                ClientInstanceName="txtEstanciaEdit">
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
                                                 </ValidationSettings>
@@ -309,7 +389,8 @@
                                             <dx:ASPxDateEdit ID="dteFechaInicioEdit" runat="server" Width="100%"
                                                 Value='<%# Bind("FechaInicio") %>'
                                                 DisplayFormatString="dd/MM/yyyy"
-                                                EditFormat="Date">
+                                                EditFormat="Date"
+                                                ClientInstanceName="dteFechaInicioEdit">
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
                                                 </ValidationSettings>
@@ -320,7 +401,8 @@
                                             <dx:ASPxDateEdit ID="dteFechaFinEdit" runat="server" Width="100%"
                                                 Value='<%# Bind("FechaFin") %>'
                                                 DisplayFormatString="dd/MM/yyyy"
-                                                EditFormat="Date">
+                                                EditFormat="Date"
+                                                ClientInstanceName="dteFechaFinEdit">
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
                                                 </ValidationSettings>
