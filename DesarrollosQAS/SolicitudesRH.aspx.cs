@@ -93,7 +93,7 @@ namespace DesarrollosQAS
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error al cargar catálogos: {0}", ex);
-                MostrarError($"Error al cargar catálogos: {ex.Message}");
+                MostrarMensaje($"Error al cargar catálogos: {ex.Message}", false);
             }
         }
 
@@ -146,6 +146,13 @@ namespace DesarrollosQAS
                 cboContratista.ValueField = "id_contratista";
             }
 
+            // Configurar evento Click del botón Guardar
+            ASPxButton btnUpdate = gridSolicitudesRH.FindEditFormTemplateControl("btnUpdate") as ASPxButton;
+            if (btnUpdate != null)
+            {
+                btnUpdate.Click += BtnUpdate_Click;
+            }
+
             // Controlar visibilidad del checkbox Aprobado según el modo
             ASPxCheckBox chkAprobado = gridSolicitudesRH.FindEditFormTemplateControl("chkAprobadoEdit") as ASPxCheckBox;
             ASPxLabel lblAprobado = gridSolicitudesRH.FindEditFormTemplateControl("lblAprobadoEdit") as ASPxLabel;
@@ -153,9 +160,88 @@ namespace DesarrollosQAS
             {
                 // Ocultar en modo inserción, mostrar en modo edición
                 chkAprobado.Visible = !gridSolicitudesRH.IsNewRowEditing;
-                lblAprobado.Visible = !gridSolicitudesRH.IsNewRowEditing;
+                if (lblAprobado != null)
+                {
+                    lblAprobado.Visible = !gridSolicitudesRH.IsNewRowEditing;
+                }
             }
         }
+
+        private void BtnUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Obtener valores del formulario
+                ASPxComboBox cboTipoSolicitud = gridSolicitudesRH.FindEditFormTemplateControl("cboTipoSolicitudEdit") as ASPxComboBox;
+                ASPxTextBox txtVisitante = gridSolicitudesRH.FindEditFormTemplateControl("txtVisitanteEdit") as ASPxTextBox;
+                ASPxComboBox cboProyecto = gridSolicitudesRH.FindEditFormTemplateControl("cboProyectoEdit") as ASPxComboBox;
+                ASPxComboBox cboPlanta = gridSolicitudesRH.FindEditFormTemplateControl("cboPlantaEdit") as ASPxComboBox;
+                ASPxComboBox cboContratista = gridSolicitudesRH.FindEditFormTemplateControl("cboContratistaEdit") as ASPxComboBox;
+                ASPxTextBox txtAreaTrabajo = gridSolicitudesRH.FindEditFormTemplateControl("txtAreaTrabajoEdit") as ASPxTextBox;
+                ASPxMemo txtActividad = gridSolicitudesRH.FindEditFormTemplateControl("txtActividadEdit") as ASPxMemo;
+                ASPxTextBox txtResponsable = gridSolicitudesRH.FindEditFormTemplateControl("txtResponsableEdit") as ASPxTextBox;
+                ASPxTextBox txtEstancia = gridSolicitudesRH.FindEditFormTemplateControl("txtEstanciaEdit") as ASPxTextBox;
+                ASPxTextBox txtRFC = gridSolicitudesRH.FindEditFormTemplateControl("txtRFCEdit") as ASPxTextBox;
+                ASPxDateEdit dteFechaInicio = gridSolicitudesRH.FindEditFormTemplateControl("dteFechaInicioEdit") as ASPxDateEdit;
+                ASPxDateEdit dteFechaFin = gridSolicitudesRH.FindEditFormTemplateControl("dteFechaFinEdit") as ASPxDateEdit;
+                ASPxCheckBox chkAprobado = gridSolicitudesRH.FindEditFormTemplateControl("chkAprobadoEdit") as ASPxCheckBox;
+
+                var solicitud = new SolicitudRH
+                {
+                    id_TipoSolicitud = cboTipoSolicitud.Value != null ? Convert.ToInt32(cboTipoSolicitud.Value) : 0,
+                    id_Solicitante = 0,
+                    id_Proyecto = cboProyecto.Value != null ? Convert.ToInt32(cboProyecto.Value) : 0,
+                    id_Planta = cboPlanta.Value != null ? Convert.ToInt32(cboPlanta.Value) : 0,
+                    Visitante = txtVisitante.Text.Trim(),
+                    FechaInicio = dteFechaInicio.Value != null ? Convert.ToDateTime(dteFechaInicio.Value) : default(DateTime),
+                    FechaFin = dteFechaFin.Value != null ? Convert.ToDateTime(dteFechaFin.Value) : default(DateTime),
+                    RFC = txtRFC.Text.Trim(),
+                    id_Contratista = cboContratista.Value != null ? Convert.ToInt32(cboContratista.Value) : 0,
+                    Responsable = txtResponsable.Text.Trim(),
+                    AreaTrabajo = txtAreaTrabajo.Text.Trim(),
+                    Actividad = txtActividad.Text.Trim(),
+                    Estancia = txtEstancia.Text.Trim(),
+                    aprobado = chkAprobado != null ? chkAprobado.Checked : false
+                };
+
+                var repo = new SolicitudRHRepository();
+                bool resultado = false;
+                string mensaje = string.Empty;
+
+                if (gridSolicitudesRH.IsNewRowEditing)
+                {
+                    // Modo creación
+                    solicitud.FechaSolicitud = DateTime.Now;
+                    resultado = repo.CrearSolicitudRH(solicitud);
+                    mensaje = resultado
+                        ? $"Proceso exitoso, creación de la solicitud con folio N° {solicitud.ID_Solicitud}"
+                        : "Proceso no exitoso al crear la solicitud.";
+                }
+                else
+                {
+                    // Modo edición
+                    solicitud.ID_Solicitud = Convert.ToInt32(gridSolicitudesRH.GetRowValues(gridSolicitudesRH.EditingRowVisibleIndex, "ID_Solicitud"));
+                    resultado = repo.ActualizarSolicitudRH(solicitud);
+                    mensaje = resultado
+                        ? $"Proceso exitoso al actualizar solicitud con folio N° {solicitud.ID_Solicitud}"
+                        : $"Proceso no exitoso al actualizar la solicitud con el folio N° {solicitud.ID_Solicitud}.";
+                }
+
+                // Cancelar edición y actualizar grid
+                gridSolicitudesRH.CancelEdit();
+                gridSolicitudesRH.DataBind();
+
+                // Mostrar mensaje usando el mismo método que SolicitudEspecial
+                MostrarMensaje(mensaje, resultado);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.TraceError("Error al guardar solicitud: {0}", ex);
+                gridSolicitudesRH.CancelEdit();
+                MostrarMensaje($"Error al guardar: {ex.Message}", false);
+            }
+        }
+
         protected void gridSolicitudesRH_DataBinding(object sender, EventArgs e)
         {
             var repo = new SolicitudRHRepository();
@@ -169,92 +255,14 @@ namespace DesarrollosQAS
 
         protected void gridSolicitudesRH_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
         {
-            try
-            {
-                var solicitud = new SolicitudRH
-                {
-                    id_TipoSolicitud = e.NewValues["id_TipoSolicitud"] != null ? Convert.ToInt32(e.NewValues["id_TipoSolicitud"]) : 0,
-                    id_Solicitante = 0,
-                    id_Proyecto = e.NewValues["id_Proyecto"] != null ? Convert.ToInt32(e.NewValues["id_Proyecto"]) : 0,
-                    id_Planta = e.NewValues["id_Planta"] != null ? Convert.ToInt32(e.NewValues["id_Planta"]) : 0,
-                    Visitante = Convert.ToString(e.NewValues["Visitante"]),
-                    FechaInicio = e.NewValues["FechaInicio"] != null ? Convert.ToDateTime(e.NewValues["FechaInicio"]) : default(DateTime),
-                    FechaFin = e.NewValues["FechaFin"] != null ? Convert.ToDateTime(e.NewValues["FechaFin"]) : default(DateTime),
-                    RFC = Convert.ToString(e.NewValues["RFC"]),
-                    id_Contratista = e.NewValues["id_Contratista"] != null ? Convert.ToInt32(e.NewValues["id_Contratista"]) : 0,
-                    Responsable = Convert.ToString(e.NewValues["Responsable"]),
-                    AreaTrabajo = Convert.ToString(e.NewValues["AreaTrabajo"]),
-                    Actividad = Convert.ToString(e.NewValues["Actividad"]),
-                    Estancia = Convert.ToString(e.NewValues["Estancia"]),
-                    FechaSolicitud = DateTime.Now,
-                    aprobado = false
-                };
-
-                var repo = new SolicitudRHRepository();
-                if (!repo.CrearSolicitudRH(solicitud))
-                {
-                    throw new ApplicationException("No se pudo crear la solicitud.");
-                }
-
-                e.Cancel = true;
-                gridSolicitudesRH.CancelEdit();
-                gridSolicitudesRH.DataBind();
-                MostrarExito("Solicitud creada exitosamente.");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Trace.TraceError("Error en RowInserting: {0}", ex);
-                e.Cancel = true;
-                gridSolicitudesRH.CancelEdit();
-                MostrarError($"Error al insertar: {ex.Message}");
-            }
+            // Este evento ya no se usa, se maneja en BtnUpdate_Click
+            e.Cancel = true;
         }
 
         protected void gridSolicitudesRH_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
         {
-            try
-            {
-                // Leer el valor del checkbox desde el formulario
-                ASPxCheckBox chkAprobado = gridSolicitudesRH.FindEditFormTemplateControl("chkAprobadoEdit") as ASPxCheckBox;
-                bool aprobadoValue = chkAprobado != null ? chkAprobado.Checked : false;
-
-                var solicitud = new SolicitudRH
-                {
-                    ID_Solicitud = Convert.ToInt32(e.Keys["ID_Solicitud"]),
-                    id_TipoSolicitud = e.NewValues["id_TipoSolicitud"] != null ? Convert.ToInt32(e.NewValues["id_TipoSolicitud"]) : 0,
-                    id_Solicitante = 0,
-                    id_Proyecto = e.NewValues["id_Proyecto"] != null ? Convert.ToInt32(e.NewValues["id_Proyecto"]) : 0,
-                    id_Planta = e.NewValues["id_Planta"] != null ? Convert.ToInt32(e.NewValues["id_Planta"]) : 0,
-                    Visitante = Convert.ToString(e.NewValues["Visitante"]),
-                    FechaInicio = e.NewValues["FechaInicio"] != null ? Convert.ToDateTime(e.NewValues["FechaInicio"]) : default(DateTime),
-                    FechaFin = e.NewValues["FechaFin"] != null ? Convert.ToDateTime(e.NewValues["FechaFin"]) : default(DateTime),
-                    RFC = Convert.ToString(e.NewValues["RFC"]),
-                    id_Contratista = e.NewValues["id_Contratista"] != null ? Convert.ToInt32(e.NewValues["id_Contratista"]) : 0,
-                    Responsable = Convert.ToString(e.NewValues["Responsable"]),
-                    AreaTrabajo = Convert.ToString(e.NewValues["AreaTrabajo"]),
-                    Actividad = Convert.ToString(e.NewValues["Actividad"]),
-                    Estancia = Convert.ToString(e.NewValues["Estancia"]),
-                    aprobado = aprobadoValue
-                };
-
-                var repo = new SolicitudRHRepository();
-                if (!repo.ActualizarSolicitudRH(solicitud))
-                {
-                    throw new ApplicationException("No se pudo actualizar la solicitud.");
-                }
-
-                e.Cancel = true;
-                gridSolicitudesRH.CancelEdit();
-                gridSolicitudesRH.DataBind();
-                MostrarExito("Solicitud actualizada exitosamente.");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Trace.TraceError("Error al actualizar solicitud: {0}", ex);
-                e.Cancel = true;
-                gridSolicitudesRH.CancelEdit();
-                MostrarError($"Error al actualizar: {ex.Message}");
-            }
+            // Este evento ya no se usa, se maneja en BtnUpdate_Click
+            e.Cancel = true;
         }
 
         #region Métodos de Mensajes
@@ -269,6 +277,63 @@ namespace DesarrollosQAS
         {
             gridSolicitudesRH.JSProperties["cpMessageType"] = "error";
             gridSolicitudesRH.JSProperties["cpMessage"] = mensaje;
+        }
+
+        private void MostrarMensaje(string mensaje, bool esExito)
+        {
+            MostrarPopup(mensaje, esExito);
+        }
+
+        private void MostrarPopup(string mensaje, bool esExito)
+        {
+            // Escapar caracteres especiales para JavaScript
+            string mensajeEscapado = mensaje
+                .Replace("\\", "\\\\")
+                .Replace("'", "\\'")
+                .Replace("\"", "\\\"")
+                .Replace("\r", "")
+                .Replace("\n", "\\n");
+
+            string script = string.Empty;
+
+            if (esExito)
+            {
+                script = string.Format(@"
+                    window.onload = function() {{
+                        setTimeout(function() {{
+                            if (typeof lblMensajeExito !== 'undefined' && lblMensajeExito) {{
+                                lblMensajeExito.SetText('{0}');
+                                pcMensajeExito.Show();
+                            }} else {{
+                                console.error('lblMensajeExito no está definido');
+                            }}
+                        }}, 100);
+                    }};
+                ", mensajeEscapado);
+            }
+            else
+            {
+                script = string.Format(@"
+                    window.onload = function() {{
+                        setTimeout(function() {{
+                            if (typeof lblMensajeError !== 'undefined' && lblMensajeError) {{
+                                lblMensajeError.SetText('{0}');
+                                pcMensajeError.Show();
+                            }} else {{
+                                console.error('lblMensajeError no está definido');
+                            }}
+                        }}, 100);
+                    }};
+                ", mensajeEscapado);
+            }
+
+            // Usar Page.ClientScript que funciona mejor con Master Pages
+            Page.ClientScript.RegisterStartupScript(
+                this.GetType(),
+                "MostrarPopup_" + Guid.NewGuid().ToString(),
+                script,
+                true
+            );
         }
 
         #endregion

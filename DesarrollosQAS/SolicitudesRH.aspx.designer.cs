@@ -24,6 +24,15 @@ namespace DesarrollosQAS
         protected global::DevExpress.Web.ASPxLabel ASPxLabel7;
 
         /// <summary>
+        /// popupMessages control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DesarrollosQAS.UserControls.PopupMessages popupMessages;
+
+        /// <summary>
         /// pcConfirmarEliminacion control.
         /// </summary>
         /// <remarks>
@@ -31,42 +40,6 @@ namespace DesarrollosQAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.ASPxPopupControl pcConfirmarEliminacion;
-
-        /// <summary>
-        /// pcMensajeExitoSolicitud control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxPopupControl pcMensajeExitoSolicitud;
-
-        /// <summary>
-        /// lblMensajeExitoSolicitud control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxLabel lblMensajeExitoSolicitud;
-
-        /// <summary>
-        /// pcMensajeErrorSolicitud control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxPopupControl pcMensajeErrorSolicitud;
-
-        /// <summary>
-        /// lblMensajeErrorSolicitud control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxLabel lblMensajeErrorSolicitud;
 
         /// <summary>
         /// gridSolicitudesRH control.

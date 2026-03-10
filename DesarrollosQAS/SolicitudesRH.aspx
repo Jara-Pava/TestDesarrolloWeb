@@ -1,17 +1,23 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SolicitudesRH.aspx.cs" MasterPageFile="~/Root.master" Inherits="DesarrollosQAS.SolicitudesRH" %>
 
+<%@ Register Src="~/UserControls/PopupMessages.ascx" TagPrefix="uc" TagName="PopupMessages" %>
+
 <asp:Content ContentPlaceHolderID="Content" runat="server">
     <script type="text/javascript">
 
         // Manejar mensajes después de operaciones del grid
         function OnGridSolicitudesEndCallback(s, e) {
+            console.log('EndCallback disparado'); // Para debug
+            console.log('cpMessageType:', s.cpMessageType);
+            console.log('cpMessage:', s.cpMessage);
+
             if (s.cpMessageType && s.cpMessage) {
                 if (s.cpMessageType === "success") {
-                    lblMensajeExitoSolicitud.SetText(s.cpMessage);
-                    pcMensajeExitoSolicitud.Show();
+                    lblMensajeExito.SetText(s.cpMessage);
+                    pcMensajeExito.Show();
                 } else if (s.cpMessageType === "error") {
-                    lblMensajeErrorSolicitud.SetText(s.cpMessage);
-                    pcMensajeErrorSolicitud.Show();
+                    lblMensajeError.SetText(s.cpMessage);
+                    pcMensajeError.Show();
                 }
 
                 delete s.cpMessageType;
@@ -45,6 +51,24 @@
             pcConfirmarEliminacion.Hide();
         }
 
+        // Validar antes de guardar en el EditForm
+        function ValidarYGuardarEditForm(s, e) {
+            // Validar todos los controles del grupo "EditForm"
+            if (!ASPxClientEdit.ValidateGroup('EditForm')) {
+                e.processOnServer = false;
+                return false;
+            }
+
+            // Permitir el postback
+            e.processOnServer = true;
+        }
+
+        // Cancelar edición
+        function CancelarEdicion(s, e) {
+            e.processOnServer = false;
+            gridSolicitudesRH.CancelEdit();
+        }
+
     </script>
 
     <!-- Grid de Solicitudes RH -->
@@ -56,10 +80,13 @@
                 </div>
                 <br />
 
-                <!-- Popup de Confirmación de Eliminación -->
+                <!-- Incluir el User Control de Popups -->
+                <uc:PopupMessages ID="popupMessages" runat="server" />
+
+                <!-- Popup de Confirmación de Eliminación (específico de esta página) -->
                 <dx:ASPxPopupControl ID="pcConfirmarEliminacion" runat="server" Width="450" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
                     PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcConfirmarEliminacion"
-                    HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
+                    HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
                     <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
                     <ContentCollection>
                         <dx:PopupControlContentControl runat="server">
@@ -72,55 +99,13 @@
                     </ContentCollection>
                     <FooterContentTemplate>
                         <div style="text-align: center; padding: 10px;">
-                            <dx:ASPxButton ID="btnConfirmarEliminar" runat="server" Text="Sí, Eliminar" Width="120px" AutoPostBack="False"
-                                BackColor="#353943" ForeColor="White" Font-Bold="true" Style="margin-left: 10px;">
+                            <dx:ASPxButton ID="btnConfirmarEliminar" runat="server" Text="Sí" Width="120px" AutoPostBack="False"
+                                BackColor="Teal" ForeColor="White" Font-Bold="true" Style="margin-left: 10px;">
                                 <ClientSideEvents Click="ConfirmarEliminacion" />
                             </dx:ASPxButton>
-                            <dx:ASPxButton ID="btnCancelarEliminar" runat="server" Text="Cancelar" Width="120px" AutoPostBack="False"
-                                BackColor="#353943" ForeColor="White" Font-Bold="true" Style="margin-left: 90px;">
+                            <dx:ASPxButton ID="btnCancelarEliminar" runat="server" Text="No" Width="120px" AutoPostBack="False"
+                                BackColor="DarkRed" ForeColor="White" Font-Bold="true" Style="margin-left: 90px;">
                                 <ClientSideEvents Click="CancelarEliminacion" />
-                            </dx:ASPxButton>
-                        </div>
-                    </FooterContentTemplate>
-                </dx:ASPxPopupControl>
-
-                <!-- Popup de Éxito -->
-                <dx:ASPxPopupControl ID="pcMensajeExitoSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
-                    PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExitoSolicitud"
-                    HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false">
-                    <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
-                    <ContentCollection>
-                        <dx:PopupControlContentControl runat="server">
-                            <div style="padding: 20px; text-align: center;">
-                                <dx:ASPxLabel ID="lblMensajeExitoSolicitud" runat="server" Font-Size="14px" ClientInstanceName="lblMensajeExitoSolicitud" />
-                            </div>
-                        </dx:PopupControlContentControl>
-                    </ContentCollection>
-                    <FooterContentTemplate>
-                        <div style="text-align: center; padding: 10px;">
-                            <dx:ASPxButton ID="btnCerrarExitoSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
-                                <ClientSideEvents Click="function(s, e) { pcMensajeExitoSolicitud.Hide(); }" />
-                            </dx:ASPxButton>
-                        </div>
-                    </FooterContentTemplate>
-                </dx:ASPxPopupControl>
-
-                <!-- Popup de Error -->
-                <dx:ASPxPopupControl ID="pcMensajeErrorSolicitud" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
-                    PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeErrorSolicitud"
-                    HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
-                    <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
-                    <ContentCollection>
-                        <dx:PopupControlContentControl runat="server">
-                            <div style="padding: 20px; text-align: center;">
-                                <dx:ASPxLabel ID="lblMensajeErrorSolicitud" runat="server" Font-Size="14px" ClientInstanceName="lblMensajeErrorSolicitud" />
-                            </div>
-                        </dx:PopupControlContentControl>
-                    </ContentCollection>
-                    <FooterContentTemplate>
-                        <div style="text-align: center; padding: 10px;">
-                            <dx:ASPxButton ID="btnCerrarErrorSolicitud" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
-                                <ClientSideEvents Click="function(s, e) { pcMensajeErrorSolicitud.Hide(); }" />
                             </dx:ASPxButton>
                         </div>
                     </FooterContentTemplate>
@@ -287,19 +272,10 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 10px;">
+                                        <td colspan="2" style="padding: 10px;">
                                             <dx:ASPxLabel runat="server" Text="Responsable:" Font-Bold="true" />
                                             <dx:ASPxTextBox ID="txtResponsableEdit" runat="server" Width="100%"
                                                 Text='<%# Bind("Responsable") %>'>
-                                                <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
-                                                    <RequiredField IsRequired="true" ErrorText=" " />
-                                                </ValidationSettings>
-                                            </dx:ASPxTextBox>
-                                        </td>
-                                        <td style="padding: 10px;">
-                                            <dx:ASPxLabel runat="server" Text="Estancia:" Font-Bold="true" />
-                                            <dx:ASPxTextBox ID="txtEstanciaEdit" runat="server" Width="100%"
-                                                Text='<%# Bind("Estancia") %>'>
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
                                                 </ValidationSettings>
@@ -313,10 +289,19 @@
                                                 Text='<%# Bind("RFC") %>'>
                                                 <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
                                                     <RequiredField IsRequired="true" ErrorText=" " />
+                                                    <RegularExpression ValidationExpression="^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$" ErrorText=" " />
                                                 </ValidationSettings>
                                             </dx:ASPxTextBox>
                                         </td>
-                                        <td></td>
+                                        <td style="padding: 10px;">
+                                            <dx:ASPxLabel runat="server" Text="Estancia:" Font-Bold="true" />
+                                            <dx:ASPxTextBox ID="txtEstanciaEdit" runat="server" Width="100%"
+                                                Text='<%# Bind("Estancia") %>'>
+                                                <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorDisplayMode="ImageWithText">
+                                                    <RequiredField IsRequired="true" ErrorText=" " />
+                                                </ValidationSettings>
+                                            </dx:ASPxTextBox>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td style="padding: 10px;">
@@ -358,15 +343,17 @@
                                                 <dx:ASPxButton ID="btnUpdate" runat="server" Text="Guardar"
                                                     ValidationGroup="EditForm"
                                                     CausesValidation="true"
-                                                    CommandName="Update"
+                                                    AutoPostBack="true"
                                                     BackColor="Teal" ForeColor="White" Font-Bold="true">
+                                                    <ClientSideEvents Click="ValidarYGuardarEditForm" />
                                                 </dx:ASPxButton>
                                             </td>
                                             <td style="text-align: right; width: 50%;">
                                                 <dx:ASPxButton ID="btnCancel" runat="server" Text="Cancelar"
                                                     CausesValidation="false"
-                                                    CommandName="Cancel"
+                                                    AutoPostBack="false"
                                                     BackColor="DarkRed" ForeColor="White" Font-Bold="true">
+                                                    <ClientSideEvents Click="CancelarEdicion" />
                                                 </dx:ASPxButton>
                                             </td>
                                         </tr>
