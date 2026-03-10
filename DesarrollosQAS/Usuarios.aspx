@@ -19,11 +19,30 @@
             }
         }
 
-        // Confirmar antes de eliminar
+        // Variable global para guardar el índice de la fila a eliminar
+        var currentDeleteIndex = -1;
+
+        // Confirmar antes de eliminar - Mostrar popup personalizado
         function OnCustomButtonClick(s, e) {
             if (e.buttonID === 'btnDelete') {
-                e.processOnServer = confirm('¿Está seguro que desea eliminar este usuario?\n\nEsta acción no se puede deshacer.');
+                e.processOnServer = false; // Cancelar el proceso del servidor
+                currentDeleteIndex = e.visibleIndex; // Guardar el índice de la fila
+                pcConfirmarEliminacion.Show(); // Mostrar popup de confirmación
             }
+        }
+
+        // Confirmar eliminación desde el popup
+        function ConfirmarEliminacion() {
+            if (currentDeleteIndex >= 0) {
+                gridUsuarios.PerformCallback('DELETE|' + currentDeleteIndex);
+                pcConfirmarEliminacion.Hide();
+            }
+        }
+
+        // Cancelar eliminación
+        function CancelarEliminacion() {
+            currentDeleteIndex = -1;
+            pcConfirmarEliminacion.Hide();
         }
 
         // Prevenir Enter en el formulario de edición
@@ -52,6 +71,34 @@
         <dx:ASPxLabel runat="server" ID="ASPxLabel1" Text="Usuarios" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
     </div>
     <br />
+
+    <!-- Popup de Confirmación de Eliminación -->
+    <dx:ASPxPopupControl ID="pcConfirmarEliminacion" runat="server" Width="450" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
+        PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcConfirmarEliminacion"
+        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
+        <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
+        <ContentCollection>
+            <dx:PopupControlContentControl runat="server">
+                <div style="padding: 30px; text-align: center;">
+                    <dx:ASPxLabel runat="server" Text="¿Está seguro que desea eliminar este usuario?" Font-Size="16px" Font-Bold="true" />
+                    <br />
+                    <br />
+                </div>
+            </dx:PopupControlContentControl>
+        </ContentCollection>
+        <FooterContentTemplate>
+            <div style="text-align: center; padding: 10px;">
+                <dx:ASPxButton ID="btnConfirmarEliminar" runat="server" Text="Sí" Width="120px" AutoPostBack="False"
+                    BackColor="Teal" ForeColor="White" Font-Bold="true" Style="margin-left: 10px;">
+                    <ClientSideEvents Click="ConfirmarEliminacion" />
+                </dx:ASPxButton>
+                <dx:ASPxButton ID="btnCancelarEliminar" runat="server" Text="No" Width="120px" AutoPostBack="False"
+                    BackColor="DarkRed" ForeColor="White" Font-Bold="true" Style="margin-left: 90px;">
+                    <ClientSideEvents Click="CancelarEliminacion" />
+                </dx:ASPxButton>
+            </div>
+        </FooterContentTemplate>
+    </dx:ASPxPopupControl>
 
     <!-- Popup de Éxito -->
     <dx:ASPxPopupControl ID="pcMensajeExito" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
@@ -95,7 +142,6 @@
         </FooterContentTemplate>
     </dx:ASPxPopupControl>
 
-    <!-- Grid de Usuarios -->
     <dx:ASPxGridView ID="gridUsuarios" runat="server"
         KeyFieldName="id_usuario"
         Width="100%"
@@ -105,6 +151,7 @@
         OnRowInserting="gridUsuarios_RowInserting"
         OnRowUpdating="gridUsuarios_RowUpdating"
         OnCustomButtonCallback="gridUsuarios_CustomButtonCallback"
+        OnCustomCallback="gridUsuarios_CustomCallback"
         OnHtmlEditFormCreated="gridUsuarios_HtmlEditFormCreated">
         <ClientSideEvents
             EndCallback="OnGridEndCallback"
@@ -156,10 +203,6 @@
                                     Text='<%# Bind("sigla_red") %>'
                                     NullText="Ingrese sigla de red">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                                    <%--                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Bottom">
-                                        <RequiredField IsRequired="true" ErrorText="Sigla de Red requerida" />
-                                        <RegularExpression ValidationExpression="^[a-zA-Z0-9]+$" ErrorText="Solo puede contener letras y números, sin espacios." />
-                                    </ValidationSettings>--%>
                                     <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
                                         <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
@@ -173,10 +216,6 @@
                                     Text='<%# Bind("nombre") %>'
                                     NullText="Ingrese nombre completo">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                                    <%--<ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Bottom">
-                                        <RequiredField IsRequired="true" ErrorText="Nombre requerido" />
-                                        <RegularExpression ValidationExpression="^(?!\s+$).+" ErrorText="El nombre no puede contener solo espacios" />
-                                    </ValidationSettings>--%>
                                     <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
                                         <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>
@@ -192,10 +231,6 @@
                                     Text='<%# Bind("Email") %>'
                                     NullText="ejemplo@correo.com">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                                    <%--                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Bottom">
-                                        <RequiredField IsRequired="true" ErrorText="Email requerido" />
-                                        <RegularExpression ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$" ErrorText="Email no válido" />
-                                    </ValidationSettings>--%>
                                     <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
                                         <RequiredField IsRequired="true" ErrorText=" " />
                                     </ValidationSettings>

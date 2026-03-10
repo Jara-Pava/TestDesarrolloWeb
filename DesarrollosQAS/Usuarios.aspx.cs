@@ -83,13 +83,16 @@ namespace DesarrollosQAS
             }
         }
 
-        protected void gridUsuarios_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
+        protected void gridUsuarios_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
         {
-            if (e.ButtonID == "btnDelete")
+            if (e.Parameters.StartsWith("DELETE|"))
             {
                 try
                 {
-                    int id = Convert.ToInt32(gridUsuarios.GetRowValues(e.VisibleIndex, "id_usuario"));
+                    string[] parts = e.Parameters.Split('|');
+                    int visibleIndex = Convert.ToInt32(parts[1]);
+
+                    int id = Convert.ToInt32(gridUsuarios.GetRowValues(visibleIndex, "id_usuario"));
                     var repo = new UsuarioSistemaRepository();
                     repo.EliminarUsuario(id);
 
@@ -102,6 +105,11 @@ namespace DesarrollosQAS
                     MostrarError($"Error al eliminar: {ex.Message}");
                 }
             }
+        }
+
+        protected void gridUsuarios_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
+        {
+            // Este método ya no elimina directamente, solo se usa para el evento del cliente
         }
 
         protected void gridUsuarios_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
