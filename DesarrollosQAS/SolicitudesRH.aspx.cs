@@ -107,18 +107,55 @@ namespace DesarrollosQAS
 
         protected void gridUsuarios_HtmlEditFormCreated(object sender, ASPxGridViewEditFormEventArgs e)
         {
-            // Deshabilitar y ocultar fecha Solicitud en modo edición e inserción
-            if (!gridSolicitudesRH.IsNewRowEditing || gridSolicitudesRH.IsEditing)
+            // Cargar catálogos en los ComboBox del EditForm template
+            var repo = new SolicitudRHRepository();
+
+            // Tipo Solicitud
+            ASPxComboBox cboTipoSolicitud = gridSolicitudesRH.FindEditFormTemplateControl("cboTipoSolicitudEdit") as ASPxComboBox;
+            if (cboTipoSolicitud != null)
             {
-                ASPxDateEdit fechaSolicitudEditor = gridSolicitudesRH.FindEditFormTemplateControl("FechaSolicitud") as ASPxDateEdit;
-                if (fechaSolicitudEditor != null)
-                {
-                    fechaSolicitudEditor.Enabled = false;
-                    fechaSolicitudEditor.Visible = false;
-                }
+                cboTipoSolicitud.DataSource = repo.ObtenerTiposSolicitud();
+                cboTipoSolicitud.TextField = "Visita";
+                cboTipoSolicitud.ValueField = "ID_TipoVisita";
+            }
+
+            // Proyecto
+            ASPxComboBox cboProyecto = gridSolicitudesRH.FindEditFormTemplateControl("cboProyectoEdit") as ASPxComboBox;
+            if (cboProyecto != null)
+            {
+                cboProyecto.DataSource = repo.ObtenerProyectos();
+                cboProyecto.TextField = "NombreProyecto";
+                cboProyecto.ValueField = "ID_Proyecto";
+            }
+
+            // Planta
+            ASPxComboBox cboPlanta = gridSolicitudesRH.FindEditFormTemplateControl("cboPlantaEdit") as ASPxComboBox;
+            if (cboPlanta != null)
+            {
+                cboPlanta.DataSource = repo.ObtenerPlantas();
+                cboPlanta.TextField = "NombrePlanta";
+                cboPlanta.ValueField = "ID_Planta";
+            }
+
+            // Contratista
+            ASPxComboBox cboContratista = gridSolicitudesRH.FindEditFormTemplateControl("cboContratistaEdit") as ASPxComboBox;
+            if (cboContratista != null)
+            {
+                cboContratista.DataSource = repo.ObtenerContratistas();
+                cboContratista.TextField = "Responsable";
+                cboContratista.ValueField = "id_contratista";
+            }
+
+            // Controlar visibilidad del checkbox Aprobado según el modo
+            ASPxCheckBox chkAprobado = gridSolicitudesRH.FindEditFormTemplateControl("chkAprobadoEdit") as ASPxCheckBox;
+            ASPxLabel lblAprobado = gridSolicitudesRH.FindEditFormTemplateControl("lblAprobadoEdit") as ASPxLabel;
+            if (chkAprobado != null)
+            {
+                // Ocultar en modo inserción, mostrar en modo edición
+                chkAprobado.Visible = !gridSolicitudesRH.IsNewRowEditing;
+                lblAprobado.Visible = !gridSolicitudesRH.IsNewRowEditing;
             }
         }
-
         protected void gridSolicitudesRH_DataBinding(object sender, EventArgs e)
         {
             var repo = new SolicitudRHRepository();
@@ -177,7 +214,9 @@ namespace DesarrollosQAS
         {
             try
             {
-                bool aprobadoOriginal = e.OldValues["aprobado"] != null && (bool)e.OldValues["aprobado"];
+                // Leer el valor del checkbox desde el formulario
+                ASPxCheckBox chkAprobado = gridSolicitudesRH.FindEditFormTemplateControl("chkAprobadoEdit") as ASPxCheckBox;
+                bool aprobadoValue = chkAprobado != null ? chkAprobado.Checked : false;
 
                 var solicitud = new SolicitudRH
                 {
@@ -195,7 +234,7 @@ namespace DesarrollosQAS
                     AreaTrabajo = Convert.ToString(e.NewValues["AreaTrabajo"]),
                     Actividad = Convert.ToString(e.NewValues["Actividad"]),
                     Estancia = Convert.ToString(e.NewValues["Estancia"]),
-                    aprobado = aprobadoOriginal
+                    aprobado = aprobadoValue
                 };
 
                 var repo = new SolicitudRHRepository();
