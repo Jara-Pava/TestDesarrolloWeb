@@ -192,7 +192,7 @@
                                     Text='<%# Bind("Email") %>'
                                     NullText="ejemplo@correo.com">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-<%--                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Bottom">
+                                    <%--                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Bottom">
                                         <RequiredField IsRequired="true" ErrorText="Email requerido" />
                                         <RegularExpression ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$" ErrorText="Email no válido" />
                                     </ValidationSettings>--%>
@@ -202,12 +202,12 @@
                                 </dx:ASPxTextBox>
                             </td>
                         </tr>
-                        <tr>
+                        <tr id="trActivo" runat="server">
                             <td style="width: 50%; padding: 10px; vertical-align: top">
                                 <dx:ASPxLabel ID="lblActivo" runat="server" Text="Activo:" AssociatedControlID="chkActivo" />
                                 <dx:ASPxCheckBox ID="chkActivo" runat="server"
                                     Checked='<%# Eval("activo") == null ? true : (bool)Eval("activo") %>'
-                                    Text="" Enabled="false" />
+                                    Text="" />
                             </td>
                             <td style="width: 50%; padding: 10px; vertical-align: top;">
                                 <!-- Celda vacía para mantener el diseño balanceado -->
@@ -216,11 +216,11 @@
                     </table>
 
                     <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd;">
-                        <dx:ASPxButton ID="btnCancel" runat="server" Text="Cancelar" Width="120px" ToolTip="Cancelar" AutoPostBack="false" BackColor="#353943" ForeColor="White" Font-Bold="true">
-                            <ClientSideEvents Click="CancelarEdicion" />
-                        </dx:ASPxButton>
-                        <dx:ASPxButton ID="btnUpdate" runat="server" Text="Guardar" Width="120px" ToolTip="Guardar" AutoPostBack="false" Style="margin-left: 80px;" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                        <dx:ASPxButton ID="btnUpdate" runat="server" Text="Guardar" Width="120px" ToolTip="Guardar" AutoPostBack="false" BackColor="Teal" ForeColor="White" Font-Bold="true">
                             <ClientSideEvents Click="GuardarUsuario" />
+                        </dx:ASPxButton>
+                        <dx:ASPxButton ID="btnCancel" runat="server" Text="Cancelar" Width="120px" ToolTip="Cancelar" AutoPostBack="false" Style="margin-left: 150px;" BackColor="DarkRed" ForeColor="White" Font-Bold="true">
+                            <ClientSideEvents Click="CancelarEdicion" />
                         </dx:ASPxButton>
                     </div>
                 </div>

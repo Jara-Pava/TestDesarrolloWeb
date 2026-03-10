@@ -73,7 +73,9 @@
     <Content Include="App_Data\ApplicationMenuDataSource.sitemap" />
     <Content Include="App_Data\Article.html" />
     <Content Include="App_Data\ArticleContents.xml" />
-    <Content Include="App_Data\Navigation.xml" />
+    <Content Include="App_Data\Navigation.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="App_Data\Overview.html" />
     <Content Include="App_Data\OverviewContents.xml" />
     <Content Include="Content\Content.css" />

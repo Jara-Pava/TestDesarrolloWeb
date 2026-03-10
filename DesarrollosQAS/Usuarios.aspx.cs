@@ -36,10 +36,45 @@ namespace DesarrollosQAS
 
         protected void gridUsuarios_HtmlEditFormCreated(object sender, ASPxGridViewEditFormEventArgs e)
         {
-            // Deshabilitar el campo sigla_red solo en modo edición (no en modo inserción)
-            if (!gridUsuarios.IsNewRowEditing)
+            // Obtener los controles del formulario
+            ASPxTextBox txtSiglaRed = gridUsuarios.FindEditFormTemplateControl("txtSiglaRed") as ASPxTextBox;
+            ASPxLabel lblActivo = gridUsuarios.FindEditFormTemplateControl("lblActivo") as ASPxLabel;
+            ASPxCheckBox chkActivo = gridUsuarios.FindEditFormTemplateControl("chkActivo") as ASPxCheckBox;
+
+            if (gridUsuarios.IsNewRowEditing)
             {
-                ASPxTextBox txtSiglaRed = gridUsuarios.FindEditFormTemplateControl("txtSiglaRed") as ASPxTextBox;
+                // Modo CREACIÓN: Ocultar campo Activo
+                if (lblActivo != null)
+                {
+                    lblActivo.Visible = false;
+                }
+                if (chkActivo != null)
+                {
+                    chkActivo.Visible = false;
+                    chkActivo.Checked = true; // Por defecto activo en creación
+                }
+
+                // Habilitar sigla_red en modo creación
+                if (txtSiglaRed != null)
+                {
+                    txtSiglaRed.ClientEnabled = true;
+                    txtSiglaRed.BackColor = System.Drawing.Color.White;
+                }
+            }
+            else
+            {
+                // Modo EDICIÓN: Mostrar campo Activo y deshabilitar sigla_red
+                if (lblActivo != null)
+                {
+                    lblActivo.Visible = true;
+                }
+                if (chkActivo != null)
+                {
+                    chkActivo.Visible = true;
+                    chkActivo.Enabled = true; // Permitir editar el estado
+                }
+
+                // Deshabilitar sigla_red en modo edición
                 if (txtSiglaRed != null)
                 {
                     txtSiglaRed.ClientEnabled = false;
@@ -77,9 +112,8 @@ namespace DesarrollosQAS
                 string siglaRed = e.NewValues["sigla_red"]?.ToString()?.Trim();
                 string email = e.NewValues["Email"]?.ToString()?.Trim();
 
-                // Obtener el valor del checkbox desde el template
-                ASPxCheckBox chkActivo = gridUsuarios.FindEditFormTemplateControl("chkActivo") as ASPxCheckBox;
-                bool activo = chkActivo != null ? chkActivo.Checked : true;
+                // En modo creación, siempre crear como activo
+                bool activo = true;
 
                 if (!ValidarNombre(nombre, out string errorNombre))
                 {
@@ -105,15 +139,23 @@ namespace DesarrollosQAS
                     return;
                 }
 
+                var repo = new UsuarioSistemaRepository();
+                if (repo.ExisteUsuario(siglaRed, email, out string mensajeExistencia))
+                {
+                    e.Cancel = true;
+                    gridUsuarios.CancelEdit();
+                    MostrarError(mensajeExistencia);
+                    return;
+                }
+
                 var usuario = new Usuario
                 {
                     nombre = nombre,
                     sigla_red = siglaRed,
                     Email = email,
-                    activo = activo
+                    activo = activo // Siempre true en creación
                 };
 
-                var repo = new UsuarioSistemaRepository();
                 if (!repo.CrearUsuario(usuario))
                 {
                     throw new ApplicationException("No se pudo crear el usuario.");

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DataAccessDesarrollos.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using DataAccessDesarrollos.Interfaces;
+using System.Linq;
 
 namespace DataAccessDesarrollos.Repositorios
 {
@@ -90,6 +91,50 @@ namespace DataAccessDesarrollos.Repositorios
                 return false;
             }
         }
+
+        public bool ExisteUsuario(string siglaRed, string email, out string mensajeError)
+        {
+            mensajeError = string.Empty;
+
+            try
+            {
+                var usuarios = ObtenerTodosUsuarios();
+
+                var usuarioConSigla = usuarios.FirstOrDefault(u =>
+                    u.sigla_red?.Trim().Equals(siglaRed?.Trim(), StringComparison.OrdinalIgnoreCase) == true);
+
+                var usuarioConEmail = usuarios.FirstOrDefault(u =>
+                    u.Email?.Trim().Equals(email?.Trim(), StringComparison.OrdinalIgnoreCase) == true);
+
+                if (usuarioConSigla != null && usuarioConEmail != null &&
+                    usuarioConSigla.id_usuario == usuarioConEmail.id_usuario)
+                {
+                    mensajeError = $"Ya existe un usuario con la sigla '{siglaRed}' y el email '{email}'.";
+                    return true;
+                }
+
+                if (usuarioConSigla != null)
+                {
+                    mensajeError = $"Ya existe un usuario con la sigla de red '{siglaRed}'.";
+                    return true;
+                }
+
+                if (usuarioConEmail != null)
+                {
+                    mensajeError = $"Ya existe un usuario con el email '{email}'.";
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error en ExisteUsuario: {0}", ex);
+                mensajeError = "Error al validar la existencia del usuario.";
+                return true; // Por seguridad, retornamos true para evitar duplicados en caso de error
+            }
+        }
+
 
         public bool EliminarUsuario(int id)
         {
