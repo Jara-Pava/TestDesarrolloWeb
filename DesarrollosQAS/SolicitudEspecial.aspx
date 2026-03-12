@@ -14,6 +14,51 @@
     </style>
 
     <script type="text/javascript">
+        // Variable para identificar el modo (edición o creación)
+        var esEdicion = <%= Request.QueryString["id"] != null ? "true" : "false" %>;
+
+        // Variables para almacenar valores originales en modo edición
+        var valoresOriginales = {
+            tipoSolicitud: null,
+            proyecto: null,
+            visitante: null,
+            actividad: null
+        };
+
+        // Función que se ejecuta cuando la página está completamente cargada
+        function OnPageLoad() {
+            // Si estamos en modo edición, guardar los valores iniciales
+            if (esEdicion) {
+                GuardarValoresOriginales();
+            }
+        }
+
+        // Guardar los valores originales de los campos críticos
+        function GuardarValoresOriginales() {
+            valoresOriginales.tipoSolicitud = cboTipoSolicitud.GetValue();
+            valoresOriginales.proyecto = cboProyecto.GetValue();
+            valoresOriginales.visitante = txtVisitante.GetText();
+            valoresOriginales.actividad = txtActividad.GetText();
+        }
+
+        // Verificar si se han modificado los campos críticos en modo edición
+        function CamposModificados() {
+            if (!esEdicion) {
+                return false;
+            }
+
+            var tipoActual = cboTipoSolicitud.GetValue();
+            var proyectoActual = cboProyecto.GetValue();
+            var visitanteActual = txtVisitante.GetText();
+            var actividadActual = txtActividad.GetText();
+
+            // Comparar valores actuales con originales
+            return (tipoActual !== valoresOriginales.tipoSolicitud) ||
+                (proyectoActual !== valoresOriginales.proyecto) ||
+                (visitanteActual !== valoresOriginales.visitante) ||
+                (actividadActual !== valoresOriginales.actividad);
+        }
+
         // Función de validación antes de guardar
         function ValidarYGuardar(s, e) {
             // Validar todos los controles del grupo "Items"
@@ -37,7 +82,7 @@
             e.processOnServer = true;
         }
 
-        // Función para verificar si hay datos en el formulario
+        // Función para verificar si hay datos en el formulario (modo creación)
         function FormularioTieneDatos() {
             return (cboTipoSolicitud.GetValue() != null) ||
                 (cboProyecto.GetValue() != null) ||
@@ -66,15 +111,31 @@
             pcConfirmarCancelacion.Hide();
         }
 
-        // Función para regresar
+        // Función para regresar (comportamiento diferente según el modo)
         function RegresarFormulario(s, e) {
-            if (FormularioTieneDatos()) {
-                e.processOnServer = false;
-                pcConfirmarCancelacion.Show();
+            // Si está en modo edición, verificar si hay cambios
+            if (esEdicion) {
+                if (CamposModificados()) {
+                    e.processOnServer = false;
+                    pcConfirmarCancelacion.Show();
+                } else {
+                    window.location.href = 'SolicitudesEspeciales.aspx';
+                }
             } else {
-                window.location.href = 'SolicitudesEspeciales.aspx';
+                // Si está en modo creación, verificar si hay datos
+                if (FormularioTieneDatos()) {
+                    e.processOnServer = false;
+                    pcConfirmarCancelacion.Show();
+                } else {
+                    window.location.href = 'SolicitudesEspeciales.aspx';
+                }
             }
         }
+
+        // Ejecutar cuando se carga la página
+        window.onload = function () {
+            OnPageLoad();
+        };
     </script>
 
     <!-- Campos ocultos para comunicación entre servidor y cliente -->
@@ -304,24 +365,24 @@
                                 <dx:ASPxTextBox ID="txtRFC" runat="server" Width="100%"
                                     ClientInstanceName="txtRFC">
                                     <ClientSideEvents TextChanged="function(s, e) { 
-                    // Convertir a mayúsculas
-                    var valor = s.GetText().toUpperCase();
-                    s.SetText(valor);
-                }" />
+                                        // Convertir a mayúsculas
+                                        var valor = s.GetText().toUpperCase();
+                                        s.SetText(valor);
+                                    }" />
                                     <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText" ErrorTextPosition="Right">
                                         <RequiredField IsRequired="true" ErrorText="El RFC es requerido" />
                                     </ValidationSettings>
                                     <ClientSideEvents Validation="function(s, e) {
-                    // Validación: verificar que sin guiones tenga 13 caracteres
-                    var rfc = s.GetText();
-                    if (rfc) {
-                        var rfcSinGuiones = rfc.replace(/-/g, '');
-                        if (rfcSinGuiones.length !== 13) {
-                            e.isValid = false;
-                            e.errorText = 'El RFC debe tener 13 caracteres sin guiones';
-                        }
-                    }
-                }" />
+                                        // Validación: verificar que sin guiones tenga 13 caracteres
+                                        var rfc = s.GetText();
+                                        if (rfc) {
+                                            var rfcSinGuiones = rfc.replace(/-/g, '');
+                                            if (rfcSinGuiones.length !== 13) {
+                                                e.isValid = false;
+                                                e.errorText = 'El RFC debe tener 13 caracteres sin guiones';
+                                            }
+                                        }
+                                    }" />
                                 </dx:ASPxTextBox>
                             </dx:LayoutItemNestedControlContainer>
                         </LayoutItemNestedControlCollection>
