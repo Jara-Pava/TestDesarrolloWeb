@@ -42,13 +42,7 @@
             return (cboTipoSolicitud.GetValue() != null) ||
                 (cboProyecto.GetValue() != null) ||
                 (txtVisitante.GetText().trim() != '') ||
-                (cboPlanta.GetValue() != null) ||
-                (cboContratista.GetValue() != null) ||
-                (txtAreaTrabajo.GetText().trim() != '') ||
-                (txtActividad.GetText().trim() != '') ||
-                (txtResponsable.GetText().trim() != '') ||
-                (dteFechaInicio.GetValue() != null) ||
-                (dteFechaFin.GetValue() != null);
+                (txtActividad.GetText().trim() != '');
         }
 
         // Función para cancelar con confirmación
@@ -167,18 +161,6 @@
                 <CellStyle Font-Size="14px" />
                 <GroupBoxStyle Border-BorderStyle="None" />
                 <Items>
-                    <dx:LayoutItem Caption=" " ColumnSpan="4">
-                        <LayoutItemNestedControlCollection>
-                            <dx:LayoutItemNestedControlContainer>
-                                <div style="padding-left: 20px; text-align: right">
-                                    <dx:ASPxButton runat="server" ID="btnRegresarSolicitudesEspeciales" Text="Regresar"
-                                        Width="200px" CssClass="btn" BackColor="#353943" ForeColor="White" Font-Bold="true" AutoPostBack="false">
-                                        <ClientSideEvents Click="RegresarFormulario" />
-                                    </dx:ASPxButton>
-                                </div>
-                            </dx:LayoutItemNestedControlContainer>
-                        </LayoutItemNestedControlCollection>
-                    </dx:LayoutItem>
                     <%--Combobox Tipo Solicitud--%>
                     <dx:LayoutItem Caption="Tipo Solicitud" ColumnSpan="2">
                         <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
@@ -321,10 +303,25 @@
                             <dx:LayoutItemNestedControlContainer>
                                 <dx:ASPxTextBox ID="txtRFC" runat="server" Width="100%"
                                     ClientInstanceName="txtRFC">
+                                    <ClientSideEvents TextChanged="function(s, e) { 
+                    // Convertir a mayúsculas
+                    var valor = s.GetText().toUpperCase();
+                    s.SetText(valor);
+                }" />
                                     <ValidationSettings ValidationGroup="Items" Display="Dynamic" ErrorDisplayMode="ImageWithText" ErrorTextPosition="Right">
-                                        <RequiredField IsRequired="true" ErrorText=" " />
-                                        <RegularExpression ValidationExpression="^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$" ErrorText=" " />
+                                        <RequiredField IsRequired="true" ErrorText="El RFC es requerido" />
                                     </ValidationSettings>
+                                    <ClientSideEvents Validation="function(s, e) {
+                    // Validación: verificar que sin guiones tenga 13 caracteres
+                    var rfc = s.GetText();
+                    if (rfc) {
+                        var rfcSinGuiones = rfc.replace(/-/g, '');
+                        if (rfcSinGuiones.length !== 13) {
+                            e.isValid = false;
+                            e.errorText = 'El RFC debe tener 13 caracteres sin guiones';
+                        }
+                    }
+                }" />
                                 </dx:ASPxTextBox>
                             </dx:LayoutItemNestedControlContainer>
                         </LayoutItemNestedControlCollection>
@@ -375,11 +372,17 @@
                         <Paddings PaddingTop="50" />
                         <LayoutItemNestedControlCollection>
                             <dx:LayoutItemNestedControlContainer>
-                                <dx:ASPxButton runat="server" ID="btnGuardar" Text="Guardar"
-                                    Width="200px" CssClass="btn" BackColor="Teal" ForeColor="White" Font-Bold="true"
-                                    AutoPostBack="true" ValidationGroup="Items" ClientInstanceName="btnGuardar">
-                                    <ClientSideEvents Click="ValidarYGuardar" />
-                                </dx:ASPxButton>
+                                <div style="text-align: left; line-padding: 50px">
+                                    <dx:ASPxButton runat="server" ID="btnRegresar" Text="Regresar"
+                                        Width="130" Height="40" CssClass="btn" BackColor="#353943" ForeColor="White" Font-Bold="true" AutoPostBack="false">
+                                        <ClientSideEvents Click="RegresarFormulario" />
+                                    </dx:ASPxButton>
+                                    <dx:ASPxButton runat="server" ID="btnGuardar" Text="Guardar"
+                                        Width="130" Height="40" CssClass="btn" BackColor="Teal" ForeColor="White" Font-Bold="true"
+                                        AutoPostBack="true" ValidationGroup="Items" ClientInstanceName="btnGuardar">
+                                        <ClientSideEvents Click="ValidarYGuardar" />
+                                    </dx:ASPxButton>
+                                </div>
                             </dx:LayoutItemNestedControlContainer>
                         </LayoutItemNestedControlCollection>
                     </dx:LayoutItem>
@@ -390,7 +393,7 @@
                         <LayoutItemNestedControlCollection>
                             <dx:LayoutItemNestedControlContainer>
                                 <dx:ASPxButton runat="server" ID="btnCancelar" Text="Cancelar"
-                                    Width="200px" CssClass="btn" BackColor="DarkRed" ForeColor="White" Font-Bold="true"
+                                    Width="130px" Height="40" CssClass="btn" BackColor="DarkRed" ForeColor="White" Font-Bold="true"
                                     AutoPostBack="false">
                                     <ClientSideEvents Click="CancelarFormulario" />
                                 </dx:ASPxButton>

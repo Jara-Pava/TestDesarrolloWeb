@@ -114,7 +114,7 @@
         </ContentCollection>
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarExito" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                <dx:ASPxButton ID="btnCerrarExito" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="Teal" ForeColor="White" Font-Bold="true">
                     <ClientSideEvents Click="function(s, e) { pcMensajeExito.Hide(); }" />
                 </dx:ASPxButton>
             </div>
@@ -135,7 +135,7 @@
         </ContentCollection>
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
-                <dx:ASPxButton ID="btnCerrarError" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="#353943" ForeColor="White" Font-Bold="true">
+                <dx:ASPxButton ID="btnCerrarError" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="Teal" ForeColor="White" Font-Bold="true">
                     <ClientSideEvents Click="function(s, e) { pcMensajeError.Hide(); }" />
                 </dx:ASPxButton>
             </div>
@@ -166,7 +166,7 @@
                 ButtonRenderMode="Image">
                 <CustomButtons>
                     <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Eliminar">
-                        <Image Url="~/Images/delete.png" Width="25px" Height="25px" ToolTip="Eliminar" />
+                        <Image Url="~/Images/delete.png" Width="18px" Height="18px" ToolTip="Eliminar" />
                     </dx:GridViewCommandColumnCustomButton>
                 </CustomButtons>
             </dx:GridViewCommandColumn>
@@ -278,13 +278,13 @@
                 <Image Url="~/Images/add.png" Width="30px" Height="30px" ToolTip="Nueva Solicitud" />
             </NewButton>
             <EditButton>
-                <Image Url="~/Images/edits.png" Width="25px" Height="25px" ToolTip="Editar" />
+                <Image Url="~/Images/edits.png" Width="18px" Height="18px" ToolTip="Editar" />
             </EditButton>
             <UpdateButton>
                 <Image Url="~/Images/comprobar.png" Width="25px" Height="25px" ToolTip="Guardar" />
             </UpdateButton>
             <CancelButton>
-                <Image Url="~/Images/cancel.png" Width="25px" Height="25px" ToolTip="Cancelar" />
+                <Image Url="~/Images/cancel.png" Width="18px" Height="18px" ToolTip="Cancelar" />
             </CancelButton>
         </SettingsCommandButton>
     </dx:ASPxGridView>

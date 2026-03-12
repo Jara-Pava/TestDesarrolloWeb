@@ -137,12 +137,11 @@
         EnableRowsCache="false">
         <ClientSideEvents
             EndCallback="OnGridSolicitudesEndCallback"
-            CustomButtonClick="function(s, e) { OnCustomButtonClickSolicitud(s, e); }"
-            RowDblClick="function(s, e) { OnRowDblClickSolicitud(s, e); }" />
+            CustomButtonClick="function(s, e) { OnCustomButtonClickSolicitud(s, e); }" />
         <Styles>
             <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
         </Styles>
-        <Settings ShowColumnHeaders="true" HorizontalScrollBarMode="Visible" VerticalScrollBarMode="Visible" VerticalScrollableHeight="600" />
+        <Settings ShowColumnHeaders="true" />
         <SettingsResizing ColumnResizeMode="Control" />
         <Columns>
             <dx:GridViewCommandColumn Caption="Acciones" Width="80" ButtonRenderMode="Image">
@@ -165,50 +164,50 @@
                 </CustomButtons>
             </dx:GridViewCommandColumn>
 
-            <dx:GridViewDataTextColumn FieldName="ID_Solicitud" Caption="ID" Visible="false" ReadOnly="true" Width="20" />
+            <dx:GridViewDataTextColumn FieldName="ID_Solicitud" Caption="Folio" Visible="true" ReadOnly="true" Width="60" CellStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" />
 
-            <dx:GridViewDataComboBoxColumn FieldName="id_TipoSolicitud" Caption="Tipo <br/> Solicitud" Width="105">
+            <dx:GridViewDataComboBoxColumn FieldName="id_TipoSolicitud" Caption="Tipo <br/> Solicitud" Width="105" HeaderStyle-HorizontalAlign="Center">
                 <PropertiesComboBox TextField="Visita" ValueField="ID_TipoVisita" ValueType="System.Int32"></PropertiesComboBox>
             </dx:GridViewDataComboBoxColumn>
 
-            <dx:GridViewDataTextColumn FieldName="Visitante" Caption="Visitante" HeaderStyle-HorizontalAlign="Center" Width="120">
+            <dx:GridViewDataTextColumn FieldName="Visitante" Caption="Visitante" HeaderStyle-HorizontalAlign="Center" Width="150">
             </dx:GridViewDataTextColumn>
 
-            <dx:GridViewDataComboBoxColumn FieldName="id_Proyecto" Caption="Proyecto" Width="100">
+            <dx:GridViewDataComboBoxColumn FieldName="id_Proyecto" Caption="Proyecto" Width="100" HeaderStyle-HorizontalAlign="Center">
                 <PropertiesComboBox TextField="NombreProyecto" ValueField="ID_Proyecto" ValueType="System.Int32" />
             </dx:GridViewDataComboBoxColumn>
 
-            <dx:GridViewDataComboBoxColumn FieldName="id_Planta" Caption="Planta" Width="120">
+            <dx:GridViewDataComboBoxColumn FieldName="id_Planta" Caption="Planta" Width="120" HeaderStyle-HorizontalAlign="Center">
                 <PropertiesComboBox TextField="NombrePlanta" ValueField="ID_Planta" ValueType="System.Int32" />
             </dx:GridViewDataComboBoxColumn>
 
-            <dx:GridViewDataComboBoxColumn FieldName="id_Contratista" Caption="Contratista" Width="100">
+            <dx:GridViewDataComboBoxColumn FieldName="id_Contratista" Caption="Contratista" Width="100" HeaderStyle-HorizontalAlign="Center">
                 <PropertiesComboBox TextField="Responsable" ValueField="id_contratista" ValueType="System.Int32" />
             </dx:GridViewDataComboBoxColumn>
 
-            <dx:GridViewDataTextColumn FieldName="AreaTrabajo" Caption="Área<br/>de Trabajo" Width="80" />
+            <dx:GridViewDataTextColumn FieldName="AreaTrabajo" Caption="Área<br/>de Trabajo" Width="100" HeaderStyle-HorizontalAlign="Center" />
 
-            <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="190" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="Actividad" Caption="Actividad" Width="300" HeaderStyle-HorizontalAlign="Center" />
 
             <dx:GridViewDataTextColumn FieldName="Estancia" Caption="Estancia" Width="80" />
 
-            <dx:GridViewDataDateColumn FieldName="FechaInicio" Caption="Fecha Inicio" Width="110">
+            <dx:GridViewDataDateColumn FieldName="FechaInicio" Caption="Fecha Inicio" Width="110" HeaderStyle-HorizontalAlign="Center">
                 <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
             </dx:GridViewDataDateColumn>
 
-            <dx:GridViewDataDateColumn FieldName="FechaFin" Caption="Fecha Fin" Width="110">
+            <dx:GridViewDataDateColumn FieldName="FechaFin" Caption="Fecha Fin" Width="110" HeaderStyle-HorizontalAlign="Center">
                 <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
             </dx:GridViewDataDateColumn>
 
-            <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha<br/>Solicitud" Width="100" ReadOnly="true" CellStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center">
+            <dx:GridViewDataDateColumn FieldName="FechaSolicitud" Caption="Fecha<br/>Solicitud" Width="100" ReadOnly="true" HeaderStyle-HorizontalAlign="Center">
                 <PropertiesDateEdit DisplayFormatString="dd/MM/yyyy" />
             </dx:GridViewDataDateColumn>
 
-            <dx:GridViewDataTextColumn FieldName="RFC" Caption="RFC" Width="120" />
+            <dx:GridViewDataTextColumn FieldName="RFC" Caption="RFC" Width="120" HeaderStyle-HorizontalAlign="Center" />
 
-            <dx:GridViewDataTextColumn FieldName="Responsable" Caption="Responsable" Width="110" />
+            <dx:GridViewDataTextColumn FieldName="Responsable" Caption="Responsable" Width="180" HeaderStyle-HorizontalAlign="Center" />
 
-            <dx:GridViewDataCheckColumn FieldName="aprobado" Caption="Aprobado" Width="80" CellStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center">
+            <dx:GridViewDataCheckColumn FieldName="aprobado" Caption="Aprobado" Width="10" CellStyle-HorizontalAlign="Center" >
                 <HeaderStyle Wrap="False" />
             </dx:GridViewDataCheckColumn>
 

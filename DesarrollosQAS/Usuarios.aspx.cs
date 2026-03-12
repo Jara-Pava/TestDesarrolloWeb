@@ -97,12 +97,12 @@ namespace DesarrollosQAS
                     repo.EliminarUsuario(id);
 
                     gridUsuarios.DataBind();
-                    MostrarExito("Usuario eliminado exitosamente.");
+                    MostrarExito("Proceso exitoso, se ha eliminado el usuario.");
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Trace.TraceError("Error al eliminar usuario: {0}", ex);
-                    MostrarError($"Error al eliminar: {ex.Message}");
+                    System.Diagnostics.Trace.TraceError("Proceso no exitoso, no se ha eliminado el usuario: {0}", ex);
+                    MostrarError($"Proceso no exitoso, no se ha eliminado el usuario: {ex.Message}");
                 }
             }
         }
@@ -166,20 +166,20 @@ namespace DesarrollosQAS
 
                 if (!repo.CrearUsuario(usuario))
                 {
-                    throw new ApplicationException("No se pudo crear el usuario.");
+                    throw new ApplicationException($"No se ha podido crear el usuario{usuario.nombre}");
                 }
 
                 e.Cancel = true;
                 gridUsuarios.CancelEdit();
                 gridUsuarios.DataBind();
-                MostrarExito("Usuario creado exitosamente.");
+                MostrarExito($"Proceso exitoso se ha creado el usuario con la sigla de red {usuario.sigla_red}");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error en RowInserting: {0}", ex);
                 e.Cancel = true;
                 gridUsuarios.CancelEdit();
-                MostrarError($"Error al insertar: {ex.Message}");
+                MostrarError($"Proceso no exitoso, no se ha podido crear el usuario por: {ex.Message}");
             }
         }
 
@@ -224,20 +224,20 @@ namespace DesarrollosQAS
                 var repo = new UsuarioSistemaRepository();
                 if (!repo.ActualizarUsuario(usuario))
                 {
-                    throw new ApplicationException("No se pudo actualizar el usuario.");
+                    throw new ApplicationException($"Proceso no exitoso, no se ha podido actualizar el usuario con la sigla de red {usuario.sigla_red}");
                 }
 
                 e.Cancel = true;
                 gridUsuarios.CancelEdit();
                 gridUsuarios.DataBind();
-                MostrarExito("Usuario actualizado exitosamente.");
+                MostrarExito($"Proceso exitoso, se ha actualizado el usuario con la sigla de red {usuario.sigla_red}.");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error al actualizar usuario: {0}", ex);
                 e.Cancel = true;
                 gridUsuarios.CancelEdit();
-                MostrarError($"Error al actualizar: {ex.Message}");
+                MostrarError($"Proceso no exitoso, no se ha podido actualizar el usuario por : {ex.Message}");
             }
         }
 

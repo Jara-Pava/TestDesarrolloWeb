@@ -5,6 +5,7 @@ using DevExpress.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -114,7 +115,7 @@ namespace DesarrollosQAS
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error al cargar catálogos: {0}", ex);
-                MostrarMensaje("Error al cargar los catálogos: " + ex.Message, false);
+                MostrarMensaje("Proceso no exitoso, no se ha podido cargar los catalagos: " + ex.Message, false);
             }
         }
 
@@ -155,14 +156,14 @@ namespace DesarrollosQAS
                 }
                 else
                 {
-                    MostrarMensaje("No se encontró la solicitud.", false);
+                    MostrarMensaje("Proceso no exitoso, no se ha podido encontrar la solicitud.", false);
                     return false;
                 }
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error al cargar solicitud: {0}", ex);
-                MostrarMensaje("Error al cargar la solicitud: " + ex.Message, false);
+                MostrarMensaje("Proceso no exitoso, no se ha podido cargar los datos de la solicitud: " + ex.Message, false);
                 return false;
             }
         }
@@ -182,10 +183,42 @@ namespace DesarrollosQAS
             chkAprobado.Checked = false;
         }
 
+        private bool ValidarRFC(string rfc, out string rfcNormalizado, out string mensajeError)
+        {
+            rfcNormalizado = string.Empty;
+            mensajeError = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(rfc))
+            {
+                mensajeError = "El RFC es requerido.";
+                return false;
+            }
+
+            // Normalizar: convertir a mayúsculas y remover guiones
+            rfcNormalizado = rfc.ToUpper().Replace("-", "");
+
+            // Validar longitud (debe ser exactamente 13 caracteres sin guiones)
+            if (rfcNormalizado.Length != 13)
+            {
+                mensajeError = $"El RFC debe tener 13 caracteres sin guiones. RFC proporcionado tiene {rfcNormalizado.Length} caracteres.";
+                return false;
+            }
+
+            return true;
+        }
         private void BtnGuardar_Click(object sender, EventArgs e)
         {
             try
             {
+                // Validar RFC del lado del servidor
+                string rfcNormalizado;
+                string mensajeError;
+
+                if (!ValidarRFC(txtRFC.Text, out rfcNormalizado, out mensajeError))
+                {
+                    MostrarMensaje(mensajeError, false);
+                    return;
+                }
                 var repo = new SolicitudRHRepository();
 
                 var solicitud = new SolicitudRH
@@ -197,7 +230,7 @@ namespace DesarrollosQAS
                     Visitante = txtVisitante.Text.Trim(),
                     FechaInicio = dteFechaInicio.Value != null ? Convert.ToDateTime(dteFechaInicio.Value) : default(DateTime),
                     FechaFin = dteFechaFin.Value != null ? Convert.ToDateTime(dteFechaFin.Value) : default(DateTime),
-                    RFC = txtRFC.Text.Trim(),
+                    RFC = rfcNormalizado.Trim(),
                     id_Contratista = cboContratista.Value != null ? Convert.ToInt32(cboContratista.Value) : 0,
                     Responsable = txtResponsable.Text.Trim(),
                     AreaTrabajo = txtAreaTrabajo.Text.Trim(),

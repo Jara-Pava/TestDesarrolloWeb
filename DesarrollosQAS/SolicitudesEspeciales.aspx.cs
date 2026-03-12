@@ -27,22 +27,22 @@ namespace DesarrollosQAS
         {
             if (e.Parameters.StartsWith("DELETE|"))
             {
+                string[] parts = e.Parameters.Split('|');
+                int visibleIndex = Convert.ToInt32(parts[1]);
+
+                int id = Convert.ToInt32(gridSolicitudesEspeciales.GetRowValues(visibleIndex, "ID_Solicitud"));
                 try
                 {
-                    string[] parts = e.Parameters.Split('|');
-                    int visibleIndex = Convert.ToInt32(parts[1]);
-
-                    int id = Convert.ToInt32(gridSolicitudesEspeciales.GetRowValues(visibleIndex, "ID_Solicitud"));
                     var repo = new SolicitudRHRepository();
                     repo.EliminarSolicitudRH(id);
 
                     gridSolicitudesEspeciales.DataBind();
-                    MostrarExito("Proceso exitoso al eliminar la solicitud.");
+                    MostrarExito($"Proceso exitoso, se ha eliminado la solicitud con N° Folio {id}.");
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Trace.TraceError("Error al eliminar solicitud: {0}", ex);
-                    MostrarError($"Proceso no exitoso al eliminar la solicitud: {ex.Message}");
+                    MostrarError($"Proceso no exitoso, no se ha eliminado la solicitud con N° Folio {id}: {ex.Message}");
                 }
             }
         }
@@ -92,7 +92,7 @@ namespace DesarrollosQAS
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error al cargar catálogos: {0}", ex);
-                MostrarError($"Proceso no exitoso al cargar los catalagos: {ex.Message}");
+                MostrarError($"Proceso no exitoso, no se ha podido cargar los catalagos: {ex.Message}");
             }
         }
 
