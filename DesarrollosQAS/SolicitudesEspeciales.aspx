@@ -164,7 +164,7 @@
                 </CustomButtons>
             </dx:GridViewCommandColumn>
 
-            <dx:GridViewDataTextColumn FieldName="ID_Solicitud" Caption="Folio" Visible="true" ReadOnly="true" Width="60" CellStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="ID_Solicitud" Caption="Folio" Visible="true" ReadOnly="true" Width="80" CellStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" />
 
             <dx:GridViewDataComboBoxColumn FieldName="id_TipoSolicitud" Caption="Tipo <br/> Solicitud" Width="105" HeaderStyle-HorizontalAlign="Center">
                 <PropertiesComboBox TextField="Visita" ValueField="ID_TipoVisita" ValueType="System.Int32"></PropertiesComboBox>
@@ -212,6 +212,8 @@
             </dx:GridViewDataCheckColumn>
 
         </Columns>
+        <SettingsText SearchPanelEditorNullText="Ingrese el valor a buscar ..." />
+        <SettingsSearchPanel Visible="true" />
         <SettingsPager PageSize="25">
         </SettingsPager>
         <StylesPager CurrentPageNumber-BackColor="#353943"></StylesPager>
