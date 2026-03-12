@@ -5,6 +5,7 @@ using DevExpress.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
@@ -115,7 +116,7 @@ namespace DesarrollosQAS
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error al cargar catálogos: {0}", ex);
-                MostrarMensaje("Proceso no exitoso, no se ha podido cargar los catalagos: " + ex.Message, false);
+                MostrarMensaje("Proceso no exitoso, no se ha podido cargar los catálogos: " + ex.Message, false);
             }
         }
 
@@ -131,10 +132,6 @@ namespace DesarrollosQAS
                     chkAprobado.Visible = true;
                     chkAprobado.Checked = solicitud.aprobado;
                     chkAprobado.Enabled = true;
-                }
-                else
-                {
-
                 }
 
                 if (solicitud != null)
@@ -178,11 +175,100 @@ namespace DesarrollosQAS
             txtAreaTrabajo.Text = string.Empty;
             txtActividad.Text = string.Empty;
             txtResponsable.Text = string.Empty;
+            txtEstancia.Text = string.Empty;
+            txtRFC.Text = string.Empty;
             dteFechaInicio.Value = null;
             dteFechaFin.Value = null;
             chkAprobado.Checked = false;
         }
 
+        /// <summary>
+        /// Valida todos los campos del formulario antes de guardar
+        /// </summary>
+        /// <param name="errores">Lista de errores encontrados</param>
+        /// <returns>True si todos los campos son válidos, false si hay errores</returns>
+        private bool ValidarFormulario(out List<string> errores)
+        {
+            errores = new List<string>();
+
+            // Validar Tipo de Solicitud
+            if (cboTipoSolicitud.Value == null)
+            {
+                errores.Add("Tipo Solicitud");
+            }
+
+            // Validar Proyecto
+            if (cboProyecto.Value == null)
+            {
+                errores.Add("Proyecto");
+            }
+
+            // Validar Visitante
+            if (string.IsNullOrWhiteSpace(txtVisitante.Text))
+            {
+                errores.Add("Visitante");
+            }
+
+            // Validar Planta
+            if (cboPlanta.Value == null)
+            {
+                errores.Add("Planta");
+            }
+
+            // Validar Contratista
+            if (cboContratista.Value == null)
+            {
+                errores.Add("Contratista");
+            }
+
+            // Validar Área de Trabajo
+            if (string.IsNullOrWhiteSpace(txtAreaTrabajo.Text))
+            {
+                errores.Add("Área de Trabajo");
+            }
+
+            // Validar Actividad
+            if (string.IsNullOrWhiteSpace(txtActividad.Text))
+            {
+                errores.Add("Actividad");
+            }
+
+            // Validar Responsable
+            if (string.IsNullOrWhiteSpace(txtResponsable.Text))
+            {
+                errores.Add("Responsable");
+            }
+
+            // Validar Estancia
+            if (string.IsNullOrWhiteSpace(txtEstancia.Text))
+            {
+                errores.Add("Estancia");
+            }
+
+            // Validar RFC
+            if (string.IsNullOrWhiteSpace(txtRFC.Text))
+            {
+                errores.Add("RFC");
+            }
+
+            // Validar Fecha Inicio
+            if (dteFechaInicio.Value == null)
+            {
+                errores.Add("Fecha Inicio");
+            }
+
+            // Validar Fecha Fin
+            if (dteFechaFin.Value == null)
+            {
+                errores.Add("Fecha Fin");
+            }
+
+            return errores.Count == 0;
+        }
+
+        /// <summary>
+        /// Valida el RFC mexicano
+        /// </summary>
         private bool ValidarRFC(string rfc, out string rfcNormalizado, out string mensajeError)
         {
             rfcNormalizado = string.Empty;
@@ -206,32 +292,86 @@ namespace DesarrollosQAS
 
             return true;
         }
+
+        /// <summary>
+        /// Valida que la fecha de inicio no sea mayor a la fecha de fin
+        /// </summary>
+        private bool ValidarFechas(out string mensajeError)
+        {
+            mensajeError = string.Empty;
+
+            if (dteFechaInicio.Value != null && dteFechaFin.Value != null)
+            {
+                DateTime fechaInicio = Convert.ToDateTime(dteFechaInicio.Value);
+                DateTime fechaFin = Convert.ToDateTime(dteFechaFin.Value);
+
+                if (fechaInicio > fechaFin)
+                {
+                    mensajeError = "La fecha de inicio no puede ser mayor a la fecha de fin.";
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         private void BtnGuardar_Click(object sender, EventArgs e)
         {
             try
             {
-                // Validar RFC del lado del servidor
-                string rfcNormalizado;
-                string mensajeError;
-
-                if (!ValidarRFC(txtRFC.Text, out rfcNormalizado, out mensajeError))
+                // 1. Validar campos requeridos
+                List<string> camposFaltantes;
+                if (!ValidarFormulario(out camposFaltantes))
                 {
-                    MostrarMensaje(mensajeError, false);
+                    if (camposFaltantes.Count == 1)
+                    {
+                        MostrarMensaje($"El campo '{camposFaltantes[0]}' es requerido.", false);
+                    }
+                    else
+                    {
+                        StringBuilder mensaje = new StringBuilder();
+                        mensaje.AppendLine("Proceso no exitoso, ingrese información en los siguientes campos:");
+                        mensaje.AppendLine();
+                        foreach (var campo in camposFaltantes)
+                        {
+                            mensaje.AppendLine($"• {campo}");
+                        }
+                        MostrarMensaje(mensaje.ToString(), false);
+                    }
                     return;
                 }
+
+                // 2. Validar RFC
+                string rfcNormalizado;
+                string mensajeErrorRFC;
+                if (!ValidarRFC(txtRFC.Text, out rfcNormalizado, out mensajeErrorRFC))
+                {
+                    MostrarMensaje(mensajeErrorRFC, false);
+                    return;
+                }
+
+                // 3. Validar fechas
+                string mensajeErrorFechas;
+                if (!ValidarFechas(out mensajeErrorFechas))
+                {
+                    MostrarMensaje(mensajeErrorFechas, false);
+                    return;
+                }
+
+                // 4. Si todas las validaciones pasaron, proceder a guardar
                 var repo = new SolicitudRHRepository();
 
                 var solicitud = new SolicitudRH
                 {
-                    id_TipoSolicitud = cboTipoSolicitud.Value != null ? Convert.ToInt32(cboTipoSolicitud.Value) : 0,
+                    id_TipoSolicitud = Convert.ToInt32(cboTipoSolicitud.Value),
                     id_Solicitante = 0,
-                    id_Proyecto = cboProyecto.Value != null ? Convert.ToInt32(cboProyecto.Value) : 0,
-                    id_Planta = cboPlanta.Value != null ? Convert.ToInt32(cboPlanta.Value) : 0,
+                    id_Proyecto = Convert.ToInt32(cboProyecto.Value),
+                    id_Planta = Convert.ToInt32(cboPlanta.Value),
                     Visitante = txtVisitante.Text.Trim(),
-                    FechaInicio = dteFechaInicio.Value != null ? Convert.ToDateTime(dteFechaInicio.Value) : default(DateTime),
-                    FechaFin = dteFechaFin.Value != null ? Convert.ToDateTime(dteFechaFin.Value) : default(DateTime),
-                    RFC = rfcNormalizado.Trim(),
-                    id_Contratista = cboContratista.Value != null ? Convert.ToInt32(cboContratista.Value) : 0,
+                    FechaInicio = Convert.ToDateTime(dteFechaInicio.Value),
+                    FechaFin = Convert.ToDateTime(dteFechaFin.Value),
+                    RFC = rfcNormalizado,
+                    id_Contratista = Convert.ToInt32(cboContratista.Value),
                     Responsable = txtResponsable.Text.Trim(),
                     AreaTrabajo = txtAreaTrabajo.Text.Trim(),
                     Actividad = txtActividad.Text.Trim(),
@@ -246,21 +386,24 @@ namespace DesarrollosQAS
                     // Modo edición
                     solicitud.ID_Solicitud = IdSolicitud.Value;
                     resultado = repo.ActualizarSolicitudRH(solicitud);
-                    MostrarMensaje(resultado ? $"Proceso exitoso al actualizar solicitud con folio N° {solicitud.ID_Solicitud}" : $"Proceso no exitoso al actualizar la solicitud con el folio N° {solicitud.ID_Solicitud}.", resultado);
+                    MostrarMensaje(
+                        resultado
+                            ? $"Proceso exitoso al actualizar solicitud con folio N° {solicitud.ID_Solicitud}"
+                            : $"Proceso no exitoso al actualizar la solicitud con el folio N° {solicitud.ID_Solicitud}.",
+                        resultado
+                    );
                 }
                 else
                 {
                     // Modo creación
                     solicitud.FechaSolicitud = DateTime.Now;
                     resultado = repo.CrearSolicitudRH(solicitud);
-                    if (resultado)
-                    {
-                        MostrarMensaje($"Proceso exitoso, creación de la solicitud con folio N° {solicitud.ID_Solicitud}.", true);
-                    }
-                    else
-                    {
-                        MostrarMensaje("Proceso no exitoso al crear de la solicitud.", false);
-                    }
+                    MostrarMensaje(
+                        resultado
+                            ? $"Proceso exitoso, creación de la solicitud con folio N° {solicitud.ID_Solicitud}."
+                            : "Proceso no exitoso al crear la solicitud.",
+                        resultado
+                    );
                 }
             }
             catch (Exception ex)
@@ -269,6 +412,7 @@ namespace DesarrollosQAS
                 MostrarMensaje("Error al guardar: " + ex.Message, false);
             }
         }
+
         private void MostrarMensaje(string mensaje, bool esExito)
         {
             MostrarPopup(mensaje, esExito);
@@ -276,13 +420,13 @@ namespace DesarrollosQAS
 
         private void MostrarPopup(string mensaje, bool esExito)
         {
-            // Escapar caracteres especiales para JavaScript
+            // Escapar caracteres especiales para JavaScript y HTML
             string mensajeEscapado = mensaje
                 .Replace("\\", "\\\\")
                 .Replace("'", "\\'")
                 .Replace("\"", "\\\"")
                 .Replace("\r", "")
-                .Replace("\n", "\\n");
+                .Replace("\n", "<br/>");
 
             string script = string.Empty;
 
