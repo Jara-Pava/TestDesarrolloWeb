@@ -13,6 +13,10 @@
             padding: 0 0 12px;
             text-align: center;
         }
+
+        .dxpLite_Office365 .dxp-button:not(.dxp-disabledButton):hover {
+            background-color: teal;
+        }
     </style>
 
     <script type="text/javascript">
@@ -207,7 +211,7 @@
 
             <dx:GridViewDataTextColumn FieldName="Responsable" Caption="Responsable" Width="180" HeaderStyle-HorizontalAlign="Center" />
 
-            <dx:GridViewDataCheckColumn FieldName="aprobado" Caption="Aprobado" Width="10" CellStyle-HorizontalAlign="Center" >
+            <dx:GridViewDataCheckColumn FieldName="aprobado" Caption="Aprobado" Width="10" CellStyle-HorizontalAlign="Center">
                 <HeaderStyle Wrap="False" />
             </dx:GridViewDataCheckColumn>
 
@@ -216,7 +220,7 @@
         <SettingsSearchPanel Visible="true" />
         <SettingsPager PageSize="25">
         </SettingsPager>
-        <StylesPager CurrentPageNumber-BackColor="#353943"></StylesPager>
+        <StylesPager CurrentPageNumber-BackColor="#353943" PageSizeItem-HoverStyle-BackColor="Teal"></StylesPager>
     </dx:ASPxGridView>
 
 </asp:Content>

@@ -242,7 +242,7 @@
                                 <dx:ASPxLabel ID="lblActivo" runat="server" Text="Activo:" AssociatedControlID="chkActivo" />
                                 <dx:ASPxCheckBox ID="chkActivo" runat="server"
                                     Checked='<%# Eval("activo") == null ? true : (bool)Eval("activo") %>'
-                                    Text="" />
+                                    Text="" RootStyle-HoverStyle-BackColor="Teal"/>
                             </td>
                             <td style="width: 50%; padding: 10px; vertical-align: top;">
                                 <!-- Celda vacía para mantener el diseño balanceado -->

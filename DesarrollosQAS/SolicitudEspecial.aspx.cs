@@ -286,7 +286,7 @@ namespace DesarrollosQAS
             // Validar longitud (debe ser exactamente 13 caracteres sin guiones)
             if (rfcNormalizado.Length != 13)
             {
-                mensajeError = $"El RFC debe tener 13 caracteres sin guiones. RFC proporcionado tiene {rfcNormalizado.Length} caracteres.";
+                mensajeError = $"El RFC debe tener 13 caracteres. RFC proporcionado tiene {rfcNormalizado.Length} caracteres.";
                 return false;
             }
 
