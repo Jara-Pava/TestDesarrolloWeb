@@ -9,6 +9,16 @@ namespace DesarrollosQAS {
                 DevExpress.Security.Resources.UrlAccessRule.Allow()
             );
         }
+        void Application_BeginRequest(object sender, EventArgs e)
+        {
+            // Redirigir a Usuarios.aspx si se accede a la raíz
+            string path = Request.Path.ToLower();
+            if (path == "/" || path == "/desarrollosqas" || path == "/desarrollosqas/")
+            {
+                Response.Redirect("~/Usuarios.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+        }
 
         void Application_End(object sender, EventArgs e) {
             // Code that runs on application shutdown
