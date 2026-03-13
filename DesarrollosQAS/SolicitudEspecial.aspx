@@ -205,6 +205,18 @@
                 <CellStyle Font-Size="14px" />
                 <GroupBoxStyle Border-BorderStyle="None" />
                 <Items>
+                    <dx:LayoutItem Caption=" " ColumnSpan="4">
+                        <LayoutItemNestedControlCollection>
+                            <dx:LayoutItemNestedControlContainer>
+                                <div style="padding-left: 20px; text-align: right">
+                                    <dx:ASPxButton runat="server" ID="btnRegresar" Text="Regresar"
+                                        Width="200px" CssClass="btn" BackColor="#353943" ForeColor="White" Font-Bold="true" AutoPostBack="false">
+                                        <ClientSideEvents Click="RegresarFormulario" />
+                                    </dx:ASPxButton>
+                                </div>
+                            </dx:LayoutItemNestedControlContainer>
+                        </LayoutItemNestedControlCollection>
+                    </dx:LayoutItem>
                     <%--Combobox Tipo Solicitud--%>
                     <dx:LayoutItem Caption="Tipo Solicitud" ColumnSpan="2">
                         <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
@@ -340,25 +352,20 @@
                         </LayoutItemNestedControlCollection>
                     </dx:LayoutItem>
 
-                    <%--Botones--%>
+                    <%--Botón Guardar--%>
                     <dx:LayoutItem HorizontalAlign="Left" ShowCaption="False" ColumnSpan="2">
                         <Paddings PaddingTop="50" />
                         <LayoutItemNestedControlCollection>
                             <dx:LayoutItemNestedControlContainer>
-                                <div style="text-align: left; line-padding: 50px">
-                                    <dx:ASPxButton runat="server" ID="btnRegresar" Text="Regresar"
-                                        Width="130" Height="40" CssClass="btn" BackColor="#353943" ForeColor="White" Font-Bold="true" AutoPostBack="false">
-                                        <ClientSideEvents Click="RegresarFormulario" />
-                                    </dx:ASPxButton>
-                                    <dx:ASPxButton runat="server" ID="btnGuardar" Text="Guardar"
-                                        Width="130" Height="40" CssClass="btn" BackColor="Teal" ForeColor="White" Font-Bold="true"
-                                        AutoPostBack="true" ClientInstanceName="btnGuardar">
-                                        <ClientSideEvents Click="ValidarYGuardar" />
-                                    </dx:ASPxButton>
-                                </div>
+                                <dx:ASPxButton runat="server" ID="btnGuardar" Text="Guardar"
+                                    Width="130" Height="40" CssClass="btn" BackColor="Teal" ForeColor="White" Font-Bold="true"
+                                    AutoPostBack="true" ValidationGroup="Items" ClientInstanceName="btnGuardar">
+                                    <ClientSideEvents Click="ValidarYGuardar" />
+                                </dx:ASPxButton>
                             </dx:LayoutItemNestedControlContainer>
                         </LayoutItemNestedControlCollection>
                     </dx:LayoutItem>
+
 
                     <%--Botón Cancelar--%>
                     <dx:LayoutItem HorizontalAlign="Right" ShowCaption="False" ColumnSpan="2">

@@ -276,7 +276,7 @@ namespace DesarrollosQAS
 
             if (string.IsNullOrWhiteSpace(rfc))
             {
-                mensajeError = "El RFC es requerido.";
+                mensajeError = "Error el RFC es requerido.";
                 return false;
             }
 
@@ -286,7 +286,7 @@ namespace DesarrollosQAS
             // Validar longitud (debe ser exactamente 13 caracteres sin guiones)
             if (rfcNormalizado.Length != 13)
             {
-                mensajeError = $"El RFC debe tener 13 caracteres. RFC proporcionado tiene {rfcNormalizado.Length} caracteres.";
+                mensajeError = $"Error el RFC debe tener 13 caracteres.";
                 return false;
             }
 
@@ -307,7 +307,7 @@ namespace DesarrollosQAS
 
                 if (fechaInicio > fechaFin)
                 {
-                    mensajeError = "La fecha de inicio no puede ser mayor a la fecha de fin.";
+                    mensajeError = "Error la fecha de inicio no puede ser mayor a la fecha de fin.";
                     return false;
                 }
             }
@@ -325,12 +325,12 @@ namespace DesarrollosQAS
                 {
                     if (camposFaltantes.Count == 1)
                     {
-                        MostrarMensaje($"El campo '{camposFaltantes[0]}' es requerido.", false);
+                        MostrarMensaje($"Error el campo '{camposFaltantes[0]}' es requerido.", false);
                     }
                     else
                     {
                         StringBuilder mensaje = new StringBuilder();
-                        mensaje.AppendLine("Proceso no exitoso, ingrese información en los siguientes campos:");
+                        mensaje.AppendLine("Proceso no exitoso al guardar la solicitud, ingrese información en los siguientes campos:");
                         mensaje.AppendLine();
                         foreach (var campo in camposFaltantes)
                         {
@@ -388,8 +388,8 @@ namespace DesarrollosQAS
                     resultado = repo.ActualizarSolicitudRH(solicitud);
                     MostrarMensaje(
                         resultado
-                            ? $"Proceso exitoso al actualizar solicitud con folio N° {solicitud.ID_Solicitud}"
-                            : $"Proceso no exitoso al actualizar la solicitud con el folio N° {solicitud.ID_Solicitud}.",
+                            ? $"Proceso exitoso al actualizar solicitud con Folio: {solicitud.ID_Solicitud}"
+                            : $"Proceso no exitoso al actualizar la solicitud con el folio: {solicitud.ID_Solicitud}.",
                         resultado
                     );
                 }
@@ -400,16 +400,16 @@ namespace DesarrollosQAS
                     resultado = repo.CrearSolicitudRH(solicitud);
                     MostrarMensaje(
                         resultado
-                            ? $"Proceso exitoso, creación de la solicitud con folio N° {solicitud.ID_Solicitud}."
-                            : "Proceso no exitoso al crear la solicitud.",
+                            ? $"Proceso exitoso en la creación de la solicitud con Folio: {solicitud.ID_Solicitud}."
+                            : "Proceso no exitoso al crear la solicitud, verificar la información de los campos.",
                         resultado
                     );
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Trace.TraceError("Proceso no exitoso al guardar solicitud: {0}", ex);
-                MostrarMensaje("Error al guardar: " + ex.Message, false);
+                System.Diagnostics.Trace.TraceError("Proceso no exitoso al guardar la solicitud: {0}", ex);
+                MostrarMensaje("Proceso no exitoso al guardar la solicitud: " + ex.Message, false);
             }
         }
 

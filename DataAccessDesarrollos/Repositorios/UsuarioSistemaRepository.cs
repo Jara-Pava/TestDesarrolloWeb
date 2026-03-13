@@ -109,19 +109,19 @@ namespace DataAccessDesarrollos.Repositorios
                 if (usuarioConSigla != null && usuarioConEmail != null &&
                     usuarioConSigla.id_usuario == usuarioConEmail.id_usuario)
                 {
-                    mensajeError = $"Ya existe un usuario con la sigla '{siglaRed}' y el email '{email}'.";
+                    mensajeError = $"Proceso no exitoso el usuario con la sigla '{siglaRed}' y el email '{email}' ya existen.";
                     return true;
                 }
 
                 if (usuarioConSigla != null)
                 {
-                    mensajeError = $"Ya existe un usuario con la sigla de red '{siglaRed}'.";
+                    mensajeError = $"Proceso no exitoso ya existe un usuario con la sigla de red '{siglaRed}'.";
                     return true;
                 }
 
                 if (usuarioConEmail != null)
                 {
-                    mensajeError = $"Ya existe un usuario con el email '{email}'.";
+                    mensajeError = $"Proceso no exitoso ya existe un usuario con el email '{email}'.";
                     return true;
                 }
 

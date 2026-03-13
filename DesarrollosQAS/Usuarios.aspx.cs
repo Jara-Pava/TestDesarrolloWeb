@@ -1,6 +1,7 @@
 ﻿using DataAccessDesarrollos;
 using DataAccessDesarrollos.Repositorios;
 using DevExpress.Web;
+using DevExpress.XtraExport.Helpers;
 using System;
 using System.Text.RegularExpressions;
 
@@ -87,22 +88,22 @@ namespace DesarrollosQAS
         {
             if (e.Parameters.StartsWith("DELETE|"))
             {
+                string[] parts = e.Parameters.Split('|');
+                int visibleIndex = Convert.ToInt32(parts[1]);
+                int id = Convert.ToInt32(gridUsuarios.GetRowValues(visibleIndex, "id_usuario"));
+                string siglaRed = gridUsuarios.GetRowValues(visibleIndex, "sigla_red").ToString();
                 try
                 {
-                    string[] parts = e.Parameters.Split('|');
-                    int visibleIndex = Convert.ToInt32(parts[1]);
-
-                    int id = Convert.ToInt32(gridUsuarios.GetRowValues(visibleIndex, "id_usuario"));
                     var repo = new UsuarioSistemaRepository();
                     repo.EliminarUsuario(id);
 
                     gridUsuarios.DataBind();
-                    MostrarExito("Proceso exitoso, se ha eliminado el usuario.");
+                    MostrarExito($"Proceso exitoso al eliminar el usuario {siglaRed}");
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Trace.TraceError("Proceso no exitoso, no se ha eliminado el usuario: {0}", ex);
-                    MostrarError($"Proceso no exitoso, no se ha eliminado el usuario: {ex.Message}");
+                    MostrarError($"Proceso no exitoso al eliminar el usuario {siglaRed}: {ex.Message}");
                 }
             }
         }
@@ -111,39 +112,34 @@ namespace DesarrollosQAS
         {
             // Este método ya no elimina directamente, solo se usa para el evento del cliente
         }
-
         protected void gridUsuarios_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
         {
+            string nombre = e.NewValues["nombre"]?.ToString()?.Trim();
+            string siglaRed = e.NewValues["sigla_red"]?.ToString()?.Trim();
+            string email = e.NewValues["Email"]?.ToString()?.Trim();
             try
             {
-                string nombre = e.NewValues["nombre"]?.ToString()?.Trim();
-                string siglaRed = e.NewValues["sigla_red"]?.ToString()?.Trim();
-                string email = e.NewValues["Email"]?.ToString()?.Trim();
-
                 // En modo creación, siempre crear como activo
                 bool activo = true;
 
                 if (!ValidarNombre(nombre, out string errorNombre))
                 {
                     e.Cancel = true;
-                    gridUsuarios.CancelEdit();
-                    MostrarError(errorNombre);
+                    MostrarErrorConFormulario(errorNombre, true, -1);
                     return;
                 }
 
                 if (!ValidarSigla(siglaRed, out string errorSigla))
                 {
                     e.Cancel = true;
-                    gridUsuarios.CancelEdit();
-                    MostrarError(errorSigla);
+                    MostrarErrorConFormulario(errorSigla, true, -1);
                     return;
                 }
 
                 if (!ValidarEmail(email, out string errorEmail))
                 {
                     e.Cancel = true;
-                    gridUsuarios.CancelEdit();
-                    MostrarError(errorEmail);
+                    MostrarErrorConFormulario(errorEmail, true, -1);
                     return;
                 }
 
@@ -151,8 +147,7 @@ namespace DesarrollosQAS
                 if (repo.ExisteUsuario(siglaRed, email, out string mensajeExistencia))
                 {
                     e.Cancel = true;
-                    gridUsuarios.CancelEdit();
-                    MostrarError(mensajeExistencia);
+                    MostrarErrorConFormulario(mensajeExistencia, true, -1);
                     return;
                 }
 
@@ -161,30 +156,31 @@ namespace DesarrollosQAS
                     nombre = nombre,
                     sigla_red = siglaRed,
                     Email = email,
-                    activo = activo // Siempre true en creación
+                    activo = activo
                 };
 
                 if (!repo.CrearUsuario(usuario))
                 {
-                    throw new ApplicationException($"No se ha podido crear el usuario{usuario.nombre}");
+                    throw new ApplicationException($"No se ha podido crear el usuario {usuario.nombre}");
                 }
 
                 e.Cancel = true;
                 gridUsuarios.CancelEdit();
                 gridUsuarios.DataBind();
-                MostrarExito($"Proceso exitoso se ha creado el usuario con la sigla de red {usuario.sigla_red}");
+                MostrarExito($"Proceso exitoso al crear el usuario con la sigla de red {usuario.sigla_red}");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error en RowInserting: {0}", ex);
                 e.Cancel = true;
-                gridUsuarios.CancelEdit();
-                MostrarError($"Proceso no exitoso, no se ha podido crear el usuario por: {ex.Message}");
+                MostrarErrorConFormulario($"Proceso no exitoso al crear el usuario {siglaRed}: {ex.Message}", true, -1);
             }
         }
 
         protected void gridUsuarios_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
         {
+            int editIndex = gridUsuarios.EditingRowVisibleIndex;
+
             try
             {
                 string nombre = e.NewValues["nombre"]?.ToString()?.Trim();
@@ -193,16 +189,14 @@ namespace DesarrollosQAS
                 if (!ValidarNombre(nombre, out string errorNombre))
                 {
                     e.Cancel = true;
-                    gridUsuarios.CancelEdit();
-                    MostrarError(errorNombre);
+                    MostrarErrorConFormulario(errorNombre, false, editIndex);
                     return;
                 }
 
                 if (!ValidarEmail(email, out string errorEmail))
                 {
                     e.Cancel = true;
-                    gridUsuarios.CancelEdit();
-                    MostrarError(errorEmail);
+                    MostrarErrorConFormulario(errorEmail, false, editIndex);
                     return;
                 }
 
@@ -224,22 +218,152 @@ namespace DesarrollosQAS
                 var repo = new UsuarioSistemaRepository();
                 if (!repo.ActualizarUsuario(usuario))
                 {
-                    throw new ApplicationException($"Proceso no exitoso, no se ha podido actualizar el usuario con la sigla de red {usuario.sigla_red}");
+                    throw new ApplicationException($"Proceso no exitoso al actualizar el usuario con la sigla de red {usuario.sigla_red}");
                 }
 
                 e.Cancel = true;
                 gridUsuarios.CancelEdit();
                 gridUsuarios.DataBind();
-                MostrarExito($"Proceso exitoso, se ha actualizado el usuario con la sigla de red {usuario.sigla_red}.");
+                MostrarExito($"Proceso exitoso al actualizar el usuario con la sigla de red {usuario.sigla_red}.");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error al actualizar usuario: {0}", ex);
                 e.Cancel = true;
-                gridUsuarios.CancelEdit();
-                MostrarError($"Proceso no exitoso, no se ha podido actualizar el usuario por : {ex.Message}");
+                MostrarErrorConFormulario($"Proceso no exitoso al actualizar el usuario por : {ex.Message}", false, editIndex);
             }
         }
+
+        //protected void gridUsuarios_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
+        //{
+        //    string nombre = e.NewValues["nombre"]?.ToString()?.Trim();
+        //    string siglaRed = e.NewValues["sigla_red"]?.ToString()?.Trim();
+        //    string email = e.NewValues["Email"]?.ToString()?.Trim();
+        //    try
+        //    {
+
+        //        // En modo creación, siempre crear como activo
+        //        bool activo = true;
+
+        //        if (!ValidarNombre(nombre, out string errorNombre))
+        //        {
+        //            e.Cancel = true;
+        //            //gridUsuarios.CancelEdit();
+        //            MostrarError(errorNombre);
+        //            return;
+        //        }
+
+        //        if (!ValidarSigla(siglaRed, out string errorSigla))
+        //        {
+        //            e.Cancel = true;
+        //            gridUsuarios.CancelEdit();
+        //            MostrarError(errorSigla);
+        //            return;
+        //        }
+
+        //        if (!ValidarEmail(email, out string errorEmail))
+        //        {
+        //            e.Cancel = true;
+        //            gridUsuarios.CancelEdit();
+        //            MostrarError(errorEmail);
+        //            return;
+        //        }
+
+        //        var repo = new UsuarioSistemaRepository();
+        //        if (repo.ExisteUsuario(siglaRed, email, out string mensajeExistencia))
+        //        {
+        //            e.Cancel = true;
+        //            //gridUsuarios.CancelEdit();
+        //            MostrarError(mensajeExistencia);
+        //            return;
+        //        }
+
+        //        var usuario = new Usuario
+        //        {
+        //            nombre = nombre,
+        //            sigla_red = siglaRed,
+        //            Email = email,
+        //            activo = activo // Siempre true en creación
+        //        };
+
+        //        if (!repo.CrearUsuario(usuario))
+        //        {
+        //            throw new ApplicationException($"No se ha podido crear el usuario{usuario.nombre}");
+        //        }
+
+        //        e.Cancel = true;
+        //        gridUsuarios.CancelEdit();
+        //        gridUsuarios.DataBind();
+        //        MostrarExito($"Proceso exitoso al crear el usuario con la sigla de red {usuario.sigla_red}");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        System.Diagnostics.Trace.TraceError("Error en RowInserting: {0}", ex);
+        //        e.Cancel = true;
+        //        gridUsuarios.CancelEdit();
+        //        MostrarError($"Proceso no exitoso al crear el usuario {siglaRed}: {ex.Message}");
+        //    }
+        //}
+
+        //protected void gridUsuarios_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
+        //{
+        //    try
+        //    {
+        //        string nombre = e.NewValues["nombre"]?.ToString()?.Trim();
+        //        string email = e.NewValues["Email"]?.ToString()?.Trim();
+
+        //        if (!ValidarNombre(nombre, out string errorNombre))
+        //        {
+        //            e.Cancel = true;
+        //            //gridUsuarios.CancelEdit();
+        //            MostrarError(errorNombre);
+        //            return;
+        //        }
+
+        //        if (!ValidarEmail(email, out string errorEmail))
+        //        {
+        //            e.Cancel = true;
+        //            //gridUsuarios.CancelEdit();
+        //            MostrarError(errorEmail);
+        //            return;
+        //        }
+
+        //        string siglaRedOriginal = e.OldValues["sigla_red"]?.ToString();
+
+        //        // Obtener el valor del checkbox desde el template
+        //        ASPxCheckBox chkActivo = gridUsuarios.FindEditFormTemplateControl("chkActivo") as ASPxCheckBox;
+        //        bool activo = chkActivo != null ? chkActivo.Checked : false;
+
+        //        var usuario = new Usuario
+        //        {
+        //            id_usuario = Convert.ToInt32(e.Keys["id_usuario"]),
+        //            nombre = nombre,
+        //            sigla_red = siglaRedOriginal,
+        //            Email = email,
+        //            activo = activo
+        //        };
+
+        //        var repo = new UsuarioSistemaRepository();
+        //        if (!repo.ActualizarUsuario(usuario))
+        //        {
+        //            throw new ApplicationException($"Proceso no exitoso al actualizar el usuario con la sigla de red {usuario.sigla_red}");
+        //        }
+
+        //        e.Cancel = true;
+        //        //gridUsuarios.CancelEdit();
+        //        gridUsuarios.DataBind();
+        //        MostrarExito($"Proceso exitoso al actualizar el usuario con la sigla de red {usuario.sigla_red}.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        System.Diagnostics.Trace.TraceError("Error al actualizar usuario: {0}", ex);
+        //        e.Cancel = true;
+        //        gridUsuarios.CancelEdit();
+        //        MostrarError($"Proceso no exitoso al actualizar el usuario por : {ex.Message}");
+        //    }
+        //}
+
+
 
         #region Métodos de Validación
 
@@ -249,33 +373,27 @@ namespace DesarrollosQAS
 
             if (string.IsNullOrWhiteSpace(nombre))
             {
-                mensajeError = "El nombre no puede estar vacío o contener solo espacios.";
+                mensajeError = "Error el nombre no puede estar vacío o contener solo espacios.";
                 return false;
             }
 
             if (Regex.IsMatch(nombre, @"^[\W\d_]+$"))
             {
-                mensajeError = "El nombre debe contener al menos letras válidas.";
+                mensajeError = "Error el nombre debe contener al menos letras válidas.";
                 return false;
             }
 
-            if (nombre.Trim().Length < 2)
-            {
-                mensajeError = "El nombre debe tener al menos 2 caracteres.";
-                return false;
-            }
+            //if (Regex.IsMatch(nombre, @"[<>""';={}()\[\]]"))
+            //{
+            //    mensajeError = "El nombre contiene caracteres no permitidos.";
+            //    return false;
+            //}
 
-            if (Regex.IsMatch(nombre, @"[<>""';={}()\[\]]"))
-            {
-                mensajeError = "El nombre contiene caracteres no permitidos.";
-                return false;
-            }
-
-            if (nombre.Length > 200)
-            {
-                mensajeError = "El nombre no puede exceder 200 caracteres.";
-                return false;
-            }
+            //if (nombre.Length > 200)
+            //{
+            //    mensajeError = "El nombre no puede exceder 200 caracteres.";
+            //    return false;
+            //}
 
             return true;
         }
@@ -287,13 +405,6 @@ namespace DesarrollosQAS
             if (string.IsNullOrWhiteSpace(email))
             {
                 mensajeError = "El email es requerido.";
-                return false;
-            }
-
-            string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-            if (!Regex.IsMatch(email, emailPattern))
-            {
-                mensajeError = "El email no tiene un formato válido.";
                 return false;
             }
 
@@ -315,18 +426,26 @@ namespace DesarrollosQAS
                 mensajeError = "La sigla solo puede contener letras y números, sin espacios.";
                 return false;
             }
-
-            if (sigla.Length < 2 || sigla.Length > 50)
-            {
-                mensajeError = "La sigla debe tener entre 2 y 50 caracteres.";
-                return false;
-            }
-
             return true;
         }
 
         #endregion
 
+        //#region Métodos de Mensajes
+
+        //private void MostrarExito(string mensaje)
+        //{
+        //    gridUsuarios.JSProperties["cpMessageType"] = "success";
+        //    gridUsuarios.JSProperties["cpMessage"] = mensaje;
+        //}
+
+        //private void MostrarError(string mensaje)
+        //{
+        //    gridUsuarios.JSProperties["cpMessageType"] = "error";
+        //    gridUsuarios.JSProperties["cpMessage"] = mensaje;
+        //}
+
+        //#endregion
         #region Métodos de Mensajes
 
         private void MostrarExito(string mensaje)
@@ -341,6 +460,14 @@ namespace DesarrollosQAS
             gridUsuarios.JSProperties["cpMessage"] = mensaje;
         }
 
+        private void MostrarErrorConFormulario(string mensaje, bool isNewRow, int editIndex)
+        {
+            gridUsuarios.JSProperties["cpMessageType"] = "error";
+            gridUsuarios.JSProperties["cpMessage"] = mensaje;
+            gridUsuarios.JSProperties["cpShouldReopenEdit"] = true;
+            gridUsuarios.JSProperties["cpIsNewRow"] = isNewRow;
+            gridUsuarios.JSProperties["cpEditIndex"] = editIndex;
+        }
         #endregion
     }
 }

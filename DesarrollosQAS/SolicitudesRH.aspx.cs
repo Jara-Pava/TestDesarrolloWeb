@@ -214,8 +214,8 @@ namespace DesarrollosQAS
                     solicitud.FechaSolicitud = DateTime.Now;
                     resultado = repo.CrearSolicitudRH(solicitud);
                     mensaje = resultado
-                        ? $"Proceso exitoso, creación de la solicitud con folio N° {solicitud.ID_Solicitud}"
-                        : "Proceso no exitoso al crear la solicitud.";
+                        ? $"Proceso exitoso al crear la solicitud con el Folio: {solicitud.ID_Solicitud}"
+                        : $"Proceso no exitoso al crear la solicitud, verifique que los campos tengan la información correcta.";
                 }
                 else
                 {
@@ -223,8 +223,8 @@ namespace DesarrollosQAS
                     solicitud.ID_Solicitud = Convert.ToInt32(gridSolicitudesRH.GetRowValues(gridSolicitudesRH.EditingRowVisibleIndex, "ID_Solicitud"));
                     resultado = repo.ActualizarSolicitudRH(solicitud);
                     mensaje = resultado
-                        ? $"Proceso exitoso al actualizar solicitud con folio N° {solicitud.ID_Solicitud}"
-                        : $"Proceso no exitoso al actualizar la solicitud con el folio N° {solicitud.ID_Solicitud}.";
+                        ? $"Proceso exitoso al actualizar solicitud con el Folio: {solicitud.ID_Solicitud}"
+                        : $"Proceso no exitoso al actualizar la solicitud con el folio: {solicitud.ID_Solicitud}.";
                 }
 
                 // Cancelar edición y actualizar grid
@@ -238,7 +238,7 @@ namespace DesarrollosQAS
             {
                 System.Diagnostics.Trace.TraceError("Error al guardar solicitud: {0}", ex);
                 gridSolicitudesRH.CancelEdit();
-                MostrarMensaje($"Error al guardar: {ex.Message}", false);
+                MostrarMensaje($"Proceso no exitoso al guardar la solicitud: {ex.Message}", false);
             }
         }
 

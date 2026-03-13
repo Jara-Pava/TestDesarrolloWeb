@@ -3,19 +3,131 @@
 <asp:Content ContentPlaceHolderID="Content" runat="server">
     <script type="text/javascript">
 
+        // Variables globales para guardar el estado de reapertura del formulario
+        var shouldReopenForm = false;
+        var isNewRowForm = false;
+        var editRowIndex = -1;
+        var formDataToRestore = null;
+        var errorMessage = ""; // Variable para guardar el mensaje de error
+
         // Manejar mensajes después de operaciones del grid
         function OnGridEndCallback(s, e) {
             if (s.cpMessageType && s.cpMessage) {
                 if (s.cpMessageType === "success") {
                     lblMensajeExito.SetText(s.cpMessage);
                     pcMensajeExito.Show();
+
+                    // Resetear variables en caso de éxito
+                    shouldReopenForm = false;
+                    isNewRowForm = false;
+                    editRowIndex = -1;
+                    formDataToRestore = null;
                 } else if (s.cpMessageType === "error") {
-                    lblMensajeError.SetText(s.cpMessage);
-                    pcMensajeError.Show();
+                    // Guardar el mensaje de error
+                    errorMessage = s.cpMessage;
+
+                    // Guardar información sobre si se debe reabrir el formulario
+                    if (s.cpShouldReopenEdit) {
+                        shouldReopenForm = true;
+                        isNewRowForm = s.cpIsNewRow || false;
+                        editRowIndex = s.cpEditIndex || -1;
+
+                        // Guardar los valores del formulario antes de que se cierre
+                        GuardarDatosFormulario();
+                    }
+
+                    // IMPORTANTE: Cerrar el formulario antes de mostrar el error
+                    if (gridUsuarios.IsEditing()) {
+                        gridUsuarios.CancelEdit();
+                    }
+
+                    // Mostrar el popup de error DESPUÉS de cerrar el formulario
+                    setTimeout(function () {
+                        lblMensajeError.SetText(errorMessage);
+                        pcMensajeError.Show();
+                    }, 250);
                 }
 
                 delete s.cpMessageType;
                 delete s.cpMessage;
+                delete s.cpShouldReopenEdit;
+                delete s.cpIsNewRow;
+                delete s.cpEditIndex;
+            }
+        }
+
+        // Función para guardar los datos del formulario antes de cerrarlo
+        function GuardarDatosFormulario() {
+            try {
+                var txtSiglaRed = ASPxClientControl.GetControlCollection().GetByName("txtSiglaRed");
+                var txtNombre = ASPxClientControl.GetControlCollection().GetByName("txtNombre");
+                var txtEmail = ASPxClientControl.GetControlCollection().GetByName("txtEmail");
+                var chkActivo = ASPxClientControl.GetControlCollection().GetByName("chkActivo");
+
+                if (txtSiglaRed && txtNombre && txtEmail) {
+                    formDataToRestore = {
+                        siglaRed: txtSiglaRed.GetValue(),
+                        nombre: txtNombre.GetValue(),
+                        email: txtEmail.GetValue(),
+                        activo: chkActivo ? chkActivo.GetChecked() : true
+                    };
+                    console.log("Datos guardados:", formDataToRestore);
+                } else {
+                    console.log("No se encontraron todos los controles");
+                }
+            } catch (e) {
+                console.log("Error guardando datos del formulario: " + e);
+            }
+        }
+
+        // Función para restaurar los datos del formulario
+        function RestaurarDatosFormulario() {
+            if (formDataToRestore) {
+                setTimeout(function () {
+                    try {
+                        var txtSiglaRed = ASPxClientControl.GetControlCollection().GetByName("txtSiglaRed");
+                        var txtNombre = ASPxClientControl.GetControlCollection().GetByName("txtNombre");
+                        var txtEmail = ASPxClientControl.GetControlCollection().GetByName("txtEmail");
+                        var chkActivo = ASPxClientControl.GetControlCollection().GetByName("chkActivo");
+
+                        if (txtSiglaRed) txtSiglaRed.SetValue(formDataToRestore.siglaRed);
+                        if (txtNombre) txtNombre.SetValue(formDataToRestore.nombre);
+                        if (txtEmail) txtEmail.SetValue(formDataToRestore.email);
+                        if (chkActivo) chkActivo.SetChecked(formDataToRestore.activo);
+
+                        console.log("Datos restaurados correctamente");
+                        console.log("txtSiglaRed: ", txtSiglaRed);
+                        console.log("txtNombre: ", txtNombre);
+                        console.log("txtEmail: ", txtEmail);
+                        console.log("chkActivo: ", chkActivo);
+                    } catch (e) {
+                        console.log("Error restaurando datos del formulario: " + e);
+                    }
+                }, 300);
+            }
+        }
+
+        // Función para reabrir el formulario después de cerrar el popup de error
+        function CerrarErrorYReopenForm() {
+            pcMensajeError.Hide();
+
+            if (shouldReopenForm) {
+                // Reabrir el formulario después de un breve delay
+                setTimeout(function () {
+                    if (isNewRowForm) {
+                        gridUsuarios.AddNewRow();
+                    } else {
+                        gridUsuarios.StartEditRow(editRowIndex);
+                    }
+
+                    // Restaurar los datos del formulario
+                    RestaurarDatosFormulario();
+
+                    // Resetear las variables
+                    shouldReopenForm = false;
+                    isNewRowForm = false;
+                    editRowIndex = -1;
+                }, 200);
             }
         }
 
@@ -62,10 +174,16 @@
 
         // Cancelar edición
         function CancelarEdicion(s, e) {
+            // Resetear las variables cuando se cancela manualmente
+            shouldReopenForm = false;
+            isNewRowForm = false;
+            editRowIndex = -1;
+            formDataToRestore = null;
+
             gridUsuarios.CancelEdit();
         }
 
-    </script>
+</script>
 
     <div style="padding-top: 8px">
         <dx:ASPxLabel runat="server" ID="ASPxLabel1" Text="Usuarios" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
@@ -136,7 +254,7 @@
         <FooterContentTemplate>
             <div style="text-align: center; padding: 10px;">
                 <dx:ASPxButton ID="btnCerrarError" runat="server" Text="OK" Width="100px" AutoPostBack="False" BackColor="Teal" ForeColor="White" Font-Bold="true">
-                    <ClientSideEvents Click="function(s, e) { pcMensajeError.Hide(); }" />
+                    <ClientSideEvents Click="CerrarErrorYReopenForm" />
                 </dx:ASPxButton>
             </div>
         </FooterContentTemplate>
@@ -160,7 +278,7 @@
             <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
         </Styles>
         <Columns>
-            <dx:GridViewCommandColumn Caption="Acciones" Width="100px"
+            <dx:GridViewCommandColumn Caption="Acciones" Width="50"
                 ShowNewButtonInHeader="true"
                 ShowEditButton="true"
                 ButtonRenderMode="Image">
@@ -171,22 +289,22 @@
                 </CustomButtons>
             </dx:GridViewCommandColumn>
             <dx:GridViewDataTextColumn FieldName="id_usuario" Caption="ID" Visible="false" ReadOnly="true" />
-            <dx:GridViewDataTextColumn FieldName="sigla_red" Caption="Sigla Red">
+            <dx:GridViewDataTextColumn FieldName="sigla_red" Caption="Sigla Red" HeaderStyle-HorizontalAlign="Center">
                 <PropertiesTextEdit NullText="Ingrese sigla de red">
                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
                 </PropertiesTextEdit>
             </dx:GridViewDataTextColumn>
-            <dx:GridViewDataTextColumn FieldName="nombre" Caption="Nombre">
+            <dx:GridViewDataTextColumn FieldName="nombre" Caption="Nombre" HeaderStyle-HorizontalAlign="Center">
                 <PropertiesTextEdit NullText="Ingrese nombre completo">
                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
                 </PropertiesTextEdit>
             </dx:GridViewDataTextColumn>
-            <dx:GridViewDataTextColumn FieldName="Email" Caption="Email">
+            <dx:GridViewDataTextColumn FieldName="Email" Caption="Email" HeaderStyle-HorizontalAlign="Center">
                 <PropertiesTextEdit NullText="ejemplo@correo.com">
                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
                 </PropertiesTextEdit>
             </dx:GridViewDataTextColumn>
-            <dx:GridViewDataCheckColumn FieldName="activo" Caption="Activo" />
+            <dx:GridViewDataCheckColumn FieldName="activo" Caption="Activo" HeaderStyle-HorizontalAlign="Center" />
         </Columns>
         <Settings GridLines="Both" />
         <Templates>
@@ -214,7 +332,8 @@
                                 <br />
                                 <dx:ASPxTextBox ID="txtNombre" runat="server" Width="95%"
                                     Text='<%# Bind("nombre") %>'
-                                    NullText="Ingrese nombre completo">
+                                    NullText="Ingrese nombre completo"
+                                    ClientInstanceName="txtNombre">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
                                     <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
                                         <RequiredField IsRequired="true" ErrorText=" " />
@@ -229,7 +348,8 @@
                                 <br />
                                 <dx:ASPxTextBox ID="txtEmail" runat="server" Width="97.5%"
                                     Text='<%# Bind("Email") %>'
-                                    NullText="ejemplo@correo.com">
+                                    NullText="ejemplo@correo.com"
+                                    ClientInstanceName="txtEmail">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
                                     <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
                                         <RequiredField IsRequired="true" ErrorText=" " />
@@ -242,7 +362,8 @@
                                 <dx:ASPxLabel ID="lblActivo" runat="server" Text="Activo:" AssociatedControlID="chkActivo" />
                                 <dx:ASPxCheckBox ID="chkActivo" runat="server"
                                     Checked='<%# Eval("activo") == null ? true : (bool)Eval("activo") %>'
-                                    Text="" RootStyle-HoverStyle-BackColor="Teal"/>
+                                    Text="" RootStyle-HoverStyle-BackColor="Teal"
+                                    ClientInstanceName="chkActivo" />
                             </td>
                             <td style="width: 50%; padding: 10px; vertical-align: top;">
                                 <!-- Celda vacía para mantener el diseño balanceado -->
