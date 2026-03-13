@@ -321,9 +321,9 @@
                                     Text='<%# Bind("sigla_red") %>'
                                     NullText="Ingrese sigla de red">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
+<%--                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
                                         <RequiredField IsRequired="true" ErrorText=" " />
-                                    </ValidationSettings>
+                                    </ValidationSettings>--%>
                                 </dx:ASPxTextBox>
                             </td>
                             <td colspan="1" style="padding: 10px; vertical-align: top;">
@@ -335,9 +335,9 @@
                                     NullText="Ingrese nombre completo"
                                     ClientInstanceName="txtNombre">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
+<%--                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
                                         <RequiredField IsRequired="true" ErrorText=" " />
-                                    </ValidationSettings>
+                                    </ValidationSettings>--%>
                                 </dx:ASPxTextBox>
                             </td>
                         </tr>
@@ -351,9 +351,9 @@
                                     NullText="ejemplo@correo.com"
                                     ClientInstanceName="txtEmail">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
+<%--                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
                                         <RequiredField IsRequired="true" ErrorText=" " />
-                                    </ValidationSettings>
+                                    </ValidationSettings>--%>
                                 </dx:ASPxTextBox>
                             </td>
                         </tr>

@@ -135,6 +135,34 @@ namespace DataAccessDesarrollos.Repositorios
             }
         }
 
+        public bool ExisteUsuarioEmail(string siglaRed, string email, out string mensajeError)
+        {
+            mensajeError = string.Empty;
+
+            try
+            {
+                var usuarios = ObtenerTodosUsuarios();
+                var usuarioConSigla = usuarios.FirstOrDefault(u =>
+                    u.sigla_red?.Trim().Equals(siglaRed?.Trim(), StringComparison.OrdinalIgnoreCase) == true);
+
+                var usuarioConEmail = usuarios.FirstOrDefault(u =>
+                    u.Email?.Trim().Equals(email?.Trim(), StringComparison.OrdinalIgnoreCase) == true);
+
+                if (usuarioConEmail != null && usuarioConSigla.id_usuario != usuarioConEmail.id_usuario)
+                {
+                    mensajeError = $"Proceso no exitoso ya existe un usuario con el email '{email}'.";
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error en ExisteUsuarioEmail: {0}", ex);
+                mensajeError = "Proceso no exitoso ha ocurrido un error en el servicio ExisteUsuarioEmail.";
+                return true; // Por seguridad, retornamos true para evitar duplicados en caso de error
+            }
+        }
 
         public bool EliminarUsuario(int id)
         {

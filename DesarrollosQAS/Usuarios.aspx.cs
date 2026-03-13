@@ -216,6 +216,14 @@ namespace DesarrollosQAS
                 };
 
                 var repo = new UsuarioSistemaRepository();
+
+                if (repo.ExisteUsuarioEmail(siglaRedOriginal,email, out string mensajeExistencia))
+                {
+                    e.Cancel = true;
+                    MostrarErrorConFormulario(mensajeExistencia, true, -1);
+                    return;
+                }
+
                 if (!repo.ActualizarUsuario(usuario))
                 {
                     throw new ApplicationException($"Proceso no exitoso al actualizar el usuario con la sigla de red {usuario.sigla_red}");
