@@ -1,37 +1,84 @@
-﻿using System.Web;
+﻿using DataAccessDesarrollos.Repositorios;
+using System;
+using System.Linq;
+using System.Web;
 
-namespace DesarrollosQAS.Model {
-    public class ApplicationUser {
+namespace DesarrollosQAS.Model
+{
+    public class ApplicationUser
+    {
+        public int IdUsuario { get; set; }
         public string UserName { get; set; }
-        public string FirstName{ get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public string AvatarUrl { get; set; }
     }
 
-    public static class AuthHelper {
-        public static bool SignIn(string userName, string password) {
-            HttpContext.Current.Session["User"] = CreateDefualtUser();  // Mock user data
-            return true;
+    public static class AuthHelper
+    {
+        /// <summary>
+        /// Autentica al usuario buscándolo en SEC_Usuarios por sigla_red
+        /// </summary>
+        public static bool SignIn(string userName, string password)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+                return false;
+
+            try
+            {
+                var repo = new UsuarioSistemaRepository();
+                var usuarios = repo.ObtenerTodosUsuarios();
+                var usuario = usuarios.FirstOrDefault(u =>
+                    u.sigla_red != null &&
+                    u.sigla_red.Trim().Equals(userName.Trim(), StringComparison.OrdinalIgnoreCase) &&
+                    u.activo);
+
+                if (usuario == null)
+                    return false;
+
+                // Guardar el usuario autenticado en sesión
+                HttpContext.Current.Session["User"] = new ApplicationUser
+                {
+                    IdUsuario = usuario.id_usuario,
+                    UserName = usuario.sigla_red,
+                    FirstName = usuario.nombre,
+                    LastName = string.Empty,
+                    Email = usuario.Email,
+                    AvatarUrl = "~/Content/Photo/default.jpg"
+                };
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.TraceError("Error en SignIn: {0}", ex);
+                return false;
+            }
         }
-        public static void SignOut() {
+
+        public static void SignOut()
+        {
             HttpContext.Current.Session["User"] = null;
         }
-        public static bool IsAuthenticated() {
+
+        public static bool IsAuthenticated()
+        {
             return GetLoggedInUserInfo() != null;
         }
 
-        public static ApplicationUser GetLoggedInUserInfo() {
+        public static ApplicationUser GetLoggedInUserInfo()
+        {
             return HttpContext.Current.Session["User"] as ApplicationUser;
         }
-        private static ApplicationUser CreateDefualtUser() {
-            return new ApplicationUser {
-                UserName = "JBell",
-                FirstName = "Julia",
-                LastName = "Bell",
-                Email = "julia.bell@example.com",
-                AvatarUrl = "~/Content/Photo/Julia_Bell.jpg"
-            };
+
+        /// <summary>
+        /// Obtiene el ID del usuario logueado actualmente
+        /// </summary>
+        public static int GetCurrentUserId()
+        {
+            var user = GetLoggedInUserInfo();
+            return user?.IdUsuario ?? 0;
         }
     }
 }

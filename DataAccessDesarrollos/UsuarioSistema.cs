@@ -16,14 +16,6 @@ namespace DataAccessDesarrollos
         public bool activo { get; set; }
         public string Email { get; set; }
     }
-    public class Rol
-    {
-        public int id_rol { get; set; }
-        public string nombre_rol { get; set; }
-        public string descripcion { get; set; }
-        public bool activo { get; set; }
-        public DateTime fecha_creacion { get; set; }
-    }
 
     public class UsuarioRol
     {

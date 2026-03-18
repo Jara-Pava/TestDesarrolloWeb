@@ -8,13 +8,16 @@
 <head runat="server">
     <meta name="viewport" content="width=device-width, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=11" />
-    <title>Test Aplicaciones</title>
-    <link href="Content/Site.css" rel="stylesheet" />
-    <script src="Content/Site.js" type="text/javascript"></script>
-    <link rel="shortcut icon" href="Images/techint.ico" type="image/vnd.microsoft.icon" />
+    <title>PRUEBA DEL AMOR</title>
+    <link rel="shortcut icon" href="~/Images/techint.ico" type="image/vnd.microsoft.icon" />
 </head>
 <body>
     <form id="form1" runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <asp:ScriptReference Path="~/Content/Site.js" />
+            </Scripts>
+        </asp:ScriptManager>
         <header>
             <dx:ASPxPanel runat="server" ClientInstanceName="TopPanel" CssClass="header-panel" FixedPosition="WindowTop" BackColor="#353943">
                 <PanelCollection>
@@ -68,4 +71,3 @@
     </form>
 </body>
 </html>
-

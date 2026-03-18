@@ -132,21 +132,20 @@
     <!-- Grid de Solicitudes RH -->
     <dx:ASPxGridView ID="gridSolicitudesEspeciales" runat="server"
         KeyFieldName="ID_Solicitud"
-        Width="100%"
         ForeColor="Black"
         ClientInstanceName="gridSolicitudesEspeciales"
         OnDataBinding="gridSolicitudesEspeciales_DataBinding"
         OnCustomButtonCallback="gridSolicitudesEspeciales_CustomButtonCallback"
         OnCustomCallback="gridSolicitudesEspeciales_CustomCallback"
-        EnableRowsCache="false">
+        EnableRowsCache="false"
+        OnDataBound="gridSolicitudesEspeciales_DataBound">
         <ClientSideEvents
             EndCallback="OnGridSolicitudesEndCallback"
             CustomButtonClick="function(s, e) { OnCustomButtonClickSolicitud(s, e); }" />
         <Styles>
             <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
         </Styles>
-        <Settings ShowColumnHeaders="true" />
-        <SettingsResizing ColumnResizeMode="Control" />
+        <Settings ShowColumnHeaders="true" HorizontalScrollBarMode="visible"/>
         <Columns>
             <dx:GridViewCommandColumn Caption="Acciones" Width="80" ButtonRenderMode="Image">
                 <HeaderTemplate>
@@ -220,6 +219,7 @@
         <SettingsSearchPanel Visible="true" />
         <SettingsPager PageSize="25">
         </SettingsPager>
+        
         <StylesPager CurrentPageNumber-BackColor="#353943" PageSizeItem-HoverStyle-BackColor="Teal"></StylesPager>
     </dx:ASPxGridView>
 

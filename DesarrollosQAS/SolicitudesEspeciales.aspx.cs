@@ -1,6 +1,8 @@
 ﻿using DataAccessDesarrollos;
 using DataAccessDesarrollos.Repositorios;
 using DevExpress.Web;
+using DevExpress.Web.Internal;
+using DevExpress.Web.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +15,7 @@ namespace DesarrollosQAS
     public partial class SolicitudesEspeciales : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
-        {
+        { 
             // Los catálogos SIEMPRE deben cargarse para que los ComboBox funcionen correctamente
             CargarCatalogos();
 
@@ -113,6 +115,20 @@ namespace DesarrollosQAS
         protected void gridSolicitudesEspeciales_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
         {
             // Este método ya no elimina directamente, solo se usa para el evento del cliente
+        }
+
+        protected void gridSolicitudesEspeciales_DataBound(object sender, EventArgs e) {
+            SetColummnsWidth(sender as ASPxGridView);
+        }
+
+        private void SetColummnsWidth(ASPxGridView grid) {
+            var demoAreaWidth = 894;
+            var columnWidth = Math.Max(115, demoAreaWidth / grid.Columns.Count);
+            for (var i = 1; i < grid.Columns.Count; i++)
+            {
+                grid.Columns[i].MinWidth = columnWidth;
+            }
+            grid.Columns[0].MinWidth = demoAreaWidth - (grid.Columns.Count - 1) * columnWidth;
         }
 
         #region Métodos de Mensajes

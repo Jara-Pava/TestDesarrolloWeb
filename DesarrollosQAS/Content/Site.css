@@ -260,3 +260,39 @@ main {
 .dxgvStatusBar_XafTheme a[data-args*=UpdateEdit] {
     display: none;
 }
+
+/* =============================================
+   DevExpress Office365 Theme Overrides (Global)
+   ============================================= */
+tr > .dxflCaptionCell_Office365 {
+    padding-bottom: 15px !important;
+}
+
+.dxflGroupBox_Office365 {
+    margin-bottom: 0px;
+    padding: 0 0 12px;
+    text-align: center;
+}
+
+.dxpLite_Office365 .dxp-button:not(.dxp-disabledButton):hover {
+    background-color: teal;
+}
+
+/* =============================================
+   DevExpress GridView Header Styles (Global)
+   ============================================= */
+.dxgvHeader_Office365 {
+    background-color: #353943 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.dxgvAdaptiveHeaderPanel_Office365 {
+    background-color: #353943 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.dxgvHeader_Office365 {
+    background-color: teal;
+}

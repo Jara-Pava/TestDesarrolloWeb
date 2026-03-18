@@ -123,6 +123,7 @@
     <Content Include="Content\Images\priority2.svg" />
     <Content Include="Content\Images\priority3-white.svg" />
     <Content Include="Content\Images\priority3.svg" />
+    <Content Include="Images\rol-de-usuario.png" />
     <Content Include="Content\Images\Scheduler-white.svg" />
     <Content Include="Content\Images\Scheduler.svg" />
     <Content Include="Content\Images\search-selected.svg" />
@@ -311,6 +312,8 @@
     <Content Include="Images\verPonderado.png" />
     <Content Include="Images\VolverNegro.png" />
     <Content Include="Images\XSALogo462x306.png" />
+    <Content Include="Pages\Roles.aspx" />
+    <Content Include="Pages\SinAcceso.aspx" />
     <Content Include="SolicitudesEspeciales.aspx" />
     <Content Include="SolicitudEspecial.aspx" />
     <Content Include="SolicitudesRH.aspx" />
@@ -357,6 +360,20 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Roles.aspx.cs">
+      <DependentUpon>Roles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Roles.aspx.designer.cs">
+      <DependentUpon>Roles.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SinAcceso.aspx.cs">
+      <DependentUpon>SinAcceso.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SinAcceso.aspx.designer.cs">
+      <DependentUpon>SinAcceso.aspx</DependentUpon>
     </Compile>
     <Compile Include="Root.master.cs">
       <DependentUpon>Root.master</DependentUpon>
