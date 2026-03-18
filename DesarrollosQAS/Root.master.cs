@@ -36,7 +36,7 @@ namespace DesarrollosQAS
             var user = AuthHelper.GetLoggedInUserInfo();
             if (user != null)
             {
-                lblUsuario.Text = user.FirstName;
+                lblUsuario.Text = user.UserName;
             }
             else
             {

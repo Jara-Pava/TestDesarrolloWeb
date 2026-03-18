@@ -13,6 +13,7 @@ namespace DesarrollosQAS.Model
         public string LastName { get; set; }
         public string Email { get; set; }
         public string AvatarUrl { get; set; }
+        public bool Activo { get; set; }
     }
 
     public static class AuthHelper
@@ -37,6 +38,8 @@ namespace DesarrollosQAS.Model
                 if (usuario == null)
                     return false;
 
+                if(!usuario.activo)
+                    return false;
                 // Guardar el usuario autenticado en sesión
                 HttpContext.Current.Session["User"] = new ApplicationUser
                 {
@@ -45,7 +48,8 @@ namespace DesarrollosQAS.Model
                     FirstName = usuario.nombre,
                     LastName = string.Empty,
                     Email = usuario.Email,
-                    AvatarUrl = "~/Content/Photo/default.jpg"
+                    AvatarUrl = "~/Content/Photo/default.jpg",
+                    Activo = usuario.activo
                 };
 
                 return true;

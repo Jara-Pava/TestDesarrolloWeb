@@ -145,7 +145,7 @@
         <Styles>
             <Header BackColor="#353943" ForeColor="White" Font-Bold="true"></Header>
         </Styles>
-        <Settings ShowColumnHeaders="true" HorizontalScrollBarMode="visible"/>
+        <Settings ShowColumnHeaders="true"/>
         <Columns>
             <dx:GridViewCommandColumn Caption="Acciones" Width="80" ButtonRenderMode="Image">
                 <HeaderTemplate>

@@ -183,12 +183,33 @@
             gridUsuarios.CancelEdit();
         }
 
+        // Filtrar grid por estado de usuario
+        function OnFiltroEstadoChanged(s, e) {
+            gridUsuarios.PerformCallback('FILTER|' + s.GetValue());
+        }
+
 </script>
 
     <div style="padding-top: 8px">
         <dx:ASPxLabel runat="server" ID="ASPxLabel1" Text="Usuarios" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
     </div>
     <br />
+
+    <!-- Filtro de estado -->
+    <div style="margin-bottom: 10px; display: flex; align-items: center;">
+        <dx:ASPxLabel runat="server" Text="Mostrar:" Font-Bold="true" Style="margin-right: 8px;" />
+        <dx:ASPxComboBox ID="cmbFiltroEstado" runat="server" Width="200px"
+            ClientInstanceName="cmbFiltroEstado"
+            ValueType="System.String"
+            SelectedIndex="0">
+            <Items>
+                <dx:ListEditItem Text="Solo Activos" Value="activos" />
+                <dx:ListEditItem Text="Solo Inactivos" Value="inactivos" />
+                <dx:ListEditItem Text="Todos" Value="todos" />
+            </Items>
+            <ClientSideEvents SelectedIndexChanged="OnFiltroEstadoChanged" />
+        </dx:ASPxComboBox>
+    </div>
 
     <!-- Popup de Confirmación de Eliminación -->
     <dx:ASPxPopupControl ID="pcConfirmarEliminacion" runat="server" Width="450" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
@@ -306,7 +327,7 @@
             </dx:GridViewDataTextColumn>
             <dx:GridViewDataCheckColumn FieldName="activo" Caption="Activo" HeaderStyle-HorizontalAlign="Center" />
         </Columns>
-        <Settings GridLines="Both" />
+        <Settings/>
         <Templates>
             <EditForm>
                 <div style="padding: 20px;">
@@ -321,9 +342,6 @@
                                     Text='<%# Bind("sigla_red") %>'
                                     NullText="Ingrese sigla de red">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                                    <%--                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
-                                        <RequiredField IsRequired="true" ErrorText=" " />
-                                    </ValidationSettings>--%>
                                 </dx:ASPxTextBox>
                             </td>
                             <td colspan="1" style="padding: 10px; vertical-align: top;">
@@ -335,9 +353,6 @@
                                     NullText="Ingrese nombre completo"
                                     ClientInstanceName="txtNombre">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                                    <%--                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
-                                        <RequiredField IsRequired="true" ErrorText=" " />
-                                    </ValidationSettings>--%>
                                 </dx:ASPxTextBox>
                             </td>
                         </tr>
@@ -351,9 +366,6 @@
                                     NullText="ejemplo@correo.com"
                                     ClientInstanceName="txtEmail">
                                     <ClientSideEvents KeyDown="OnEditFormKeyDown" />
-                                    <%--                                    <ValidationSettings ValidationGroup="EditForm" Display="Dynamic" ErrorTextPosition="Right">
-                                        <RequiredField IsRequired="true" ErrorText=" " />
-                                    </ValidationSettings>--%>
                                 </dx:ASPxTextBox>
                             </td>
                         </tr>

@@ -24,6 +24,15 @@ namespace DesarrollosQAS
         protected global::DevExpress.Web.ASPxLabel ASPxLabel1;
 
         /// <summary>
+        /// cmbFiltroEstado control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxComboBox cmbFiltroEstado;
+
+        /// <summary>
         /// pcConfirmarEliminacion control.
         /// </summary>
         /// <remarks>

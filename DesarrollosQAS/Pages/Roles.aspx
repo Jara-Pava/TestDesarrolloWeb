@@ -23,19 +23,55 @@
     </style>
 
     <script type="text/javascript">
+        var pendingSuccessMessage = "";
+
         // Manejar mensajes después de operaciones del grid
         function OnGridRolesEndCallback(s, e) {
+            // Si hay un mensaje de éxito pendiente (viene de un CancelEdit anterior), mostrarlo
+            if (pendingSuccessMessage) {
+                var msg = pendingSuccessMessage;
+                pendingSuccessMessage = "";
+                setTimeout(function () {
+                    lblMensajeExito.SetText(msg);
+                    pcMensajeExito.Show();
+                }, 100);
+                return;
+            }
+
             if (s.cpMessageType && s.cpMessage) {
                 if (s.cpMessageType === "success") {
-                    lblMensajeExito.SetText(s.cpMessage);
-                    pcMensajeExito.Show();
-                } else if (s.cpMessageType === "error") {
-                    lblMensajeError.SetText(s.cpMessage);
-                    pcMensajeError.Show();
-                }
+                    var successMsg = s.cpMessage;
 
-                delete s.cpMessageType;
-                delete s.cpMessage;
+                    delete s.cpMessageType;
+                    delete s.cpMessage;
+                    delete s.cpShouldCloseEdit;
+
+                    if (gridRoles.IsEditing()) {
+                        pendingSuccessMessage = successMsg;
+                        gridRoles.CancelEdit();
+                    } else {
+                        setTimeout(function () {
+                            lblMensajeExito.SetText(successMsg);
+                            pcMensajeExito.Show();
+                        }, 100);
+                    }
+
+                } else if (s.cpMessageType === "error") {
+                    // Guardar mensaje y limpiar propiedades
+                    var errorMsg = s.cpMessage;
+
+                    delete s.cpMessageType;
+                    delete s.cpMessage;
+                    delete s.cpShouldReopenEdit;
+                    delete s.cpIsNewRow;
+                    delete s.cpEditIndex;
+
+                    // NO cerrar el formulario — mostrar el error encima del EditForm abierto
+                    setTimeout(function () {
+                        lblMensajeError.SetText(errorMsg);
+                        pcMensajeError.Show();
+                    }, 100);
+                }
             }
         }
 
@@ -72,6 +108,7 @@
 
         // Cancelar edición
         function CancelarEdicion(s, e) {
+            pendingSuccessMessage = "";
             gridRoles.CancelEdit();
         }
     </script>
@@ -158,6 +195,7 @@
         OnRowInserting="gridRoles_RowInserting"
         OnDataBinding="gridRoles_DataBinding"
         OnCustomCallback="gridRoles_CustomCallback"
+        OnHtmlEditFormCreated="gridRoles_HtmlEditFormCreated"
         Width="100%">
         <ClientSideEvents
             EndCallback="OnGridRolesEndCallback"
@@ -177,12 +215,12 @@
                 </CustomButtons>
             </dx:GridViewCommandColumn>
             <dx:GridViewDataTextColumn FieldName="id_rol" Visible="False" ReadOnly="True" HeaderStyle-HorizontalAlign="Center" />
-            <dx:GridViewDataTextColumn FieldName="nombre" Caption="Nombre <br/> del Rol" Width="100" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="nombre" Caption="Nombre del rol" CellStyle-HorizontalAlign="Center" Width="100" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataTextColumn FieldName="descripcion" Caption="Descripcion" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataCheckColumn FieldName="activo" Caption="Activo" Width="100" HeaderStyle-HorizontalAlign="Center" />
-            <dx:GridViewDataDateColumn AdaptivePriority="1" FieldName="fecha_creacion" Caption="Fecha <br/> de <br/> Creación" ReadOnly="True" Width="100" HeaderStyle-HorizontalAlign="Center" />
-            <dx:GridViewDataTextColumn FieldName="creado_por" Visible="false" Caption="Creado <br/> Por" ReadOnly="True" Width="100" HeaderStyle-HorizontalAlign="Center" />
-            <dx:GridViewDataTextColumn FieldName="nombre_creador" Caption="Creado <br/> Por" ReadOnly="True" Width="150" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataDateColumn AdaptivePriority="1" FieldName="fecha_creacion" Caption="Fecha de creación" ReadOnly="True" CellStyle-HorizontalAlign="Center" Width="100" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="creado_por" Visible="false" Caption="Creado por" ReadOnly="True" Width="100" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="nombre_creador" Caption="Creado por" ReadOnly="True" Width="150" HeaderStyle-HorizontalAlign="Center" />
         </Columns>
 
         <Templates>
@@ -230,12 +268,12 @@
                                 </dx:LayoutItem>
 
                                 <%--CheckBox Activo--%>
-                                <dx:LayoutItem ColumnSpan="2" Caption="Activo" CaptionSettings-Location="Left">
+                                <dx:LayoutItem ColumnSpan="2" FieldName="layoutItemActivo" Caption="Activo" CaptionSettings-Location="Left">
                                     <ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>
                                     <LayoutItemNestedControlCollection>
                                         <dx:LayoutItemNestedControlContainer>
                                             <dx:ASPxCheckBox ID="chkActivo" runat="server" ClientInstanceName="activo"
-                                                Checked='<%# Eval("activo") == null ? true : (bool)Eval("activo") %>' />
+                                                Checked='<%# Eval("activo") == null ? true : (bool)Eval("activo") %>'/>
                                         </dx:LayoutItemNestedControlContainer>
                                     </LayoutItemNestedControlCollection>
                                 </dx:LayoutItem>
@@ -270,17 +308,6 @@
                         </dx:LayoutGroup>
                     </Items>
                 </dx:ASPxFormLayout>
-
-                <div style="text-align: center; margin-top: 20px; padding: 15px; border-top: 1px solid #ddd;">
-                    <%--                    <dx:ASPxButton ID="btnGuardar" runat="server" Text="Guardar" Width="120px" AutoPostBack="false"
-                        BackColor="Teal" ForeColor="White" Font-Bold="true">
-                        <ClientSideEvents Click="GuardarRol" />
-                    </dx:ASPxButton>--%>
-                    <%--<dx:ASPxButton ID="btnCancelar" runat="server" Text="Cancelar" Width="120px" AutoPostBack="false"
-                        BackColor="DarkRed" ForeColor="White" Font-Bold="true" Style="margin-left: 150px;">
-                        <ClientSideEvents Click="CancelarEdicion" />
-                    </dx:ASPxButton>--%>
-                </div>
             </EditForm>
         </Templates>
         <SettingsEditing Mode="PopupEditForm" />

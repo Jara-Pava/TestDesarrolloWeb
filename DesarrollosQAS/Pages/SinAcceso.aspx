@@ -71,7 +71,7 @@
             <div class="icon-lock">&#128274;</div>
             <h1>Acceso Denegado</h1>
             <p class="message">
-                Su usuario de red no se encuentra registrado en el sistema.
+                Su usuario de red no se encuentra registrado o activo en el sistema.
                 <br />
                 Contacte al administrador para solicitar acceso.
             </p>

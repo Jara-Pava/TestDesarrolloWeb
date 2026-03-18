@@ -172,7 +172,8 @@ namespace DataAccessDesarrollos.Repositorios
             {
                 using (var da = new DataAccess())
                 {
-                    int rows = da.ExecuteNonQueryByCode("usp_DeleteUsers", cmd =>
+                    // Eliminación lógica: desactivar el usuario en lugar de borrarlo
+                    int rows = da.ExecuteNonQueryByCode("usp_SoftDeleteUser", cmd =>
                     {
                         cmd.Parameters.AddWithValue("@id_usuario", id);
                     });

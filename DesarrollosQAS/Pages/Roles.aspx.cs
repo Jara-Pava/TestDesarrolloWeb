@@ -107,9 +107,8 @@ namespace DesarrollosQAS.Pages
                 }
 
                 e.Cancel = true;
-                gridRoles.CancelEdit();
                 gridRoles.DataBind();
-                MostrarExito($"Proceso exitoso al actualizar el rol {nombre}.");
+                MostrarExitoConCierre($"Proceso exitoso al actualizar el rol {nombre}.");
             }
             catch (Exception ex)
             {
@@ -134,12 +133,9 @@ namespace DesarrollosQAS.Pages
                 ASPxTextBox txtNombre = FindControlRecursive(formLayout, "txtNombre") as ASPxTextBox;
                 ASPxMemo txtDescripcion = FindControlRecursive(formLayout, "txtDescripcion") as ASPxMemo;
                 ASPxCheckBox chkActivo = FindControlRecursive(formLayout, "chkActivo") as ASPxCheckBox;
-                ASPxTextBox txtCreado_por = FindControlRecursive(formLayout, "txtCreado_porTRU") as ASPxTextBox;
-
 
                 string nombreUsuario = Environment.UserName;
 
-                // Encontrar el ID del usuario en base al nombre de usuario
                 // Obtener el ID del usuario logueado
                 int idUsuarioActual = AuthHelper.GetCurrentUserId();
 
@@ -177,9 +173,8 @@ namespace DesarrollosQAS.Pages
                 }
 
                 e.Cancel = true;
-                gridRoles.CancelEdit();
                 gridRoles.DataBind();
-                MostrarExito($"Proceso exitoso al crear el rol {nombre}.");
+                MostrarExitoConCierre($"Proceso exitoso al crear el rol {nombre}.");
             }
             catch (Exception ex)
             {
@@ -226,6 +221,13 @@ namespace DesarrollosQAS.Pages
             gridRoles.JSProperties["cpMessage"] = mensaje;
         }
 
+        private void MostrarExitoConCierre(string mensaje)
+        {
+            gridRoles.JSProperties["cpMessageType"] = "success";
+            gridRoles.JSProperties["cpMessage"] = mensaje;
+            gridRoles.JSProperties["cpShouldCloseEdit"] = true;
+        }
+
         private void MostrarError(string mensaje)
         {
             gridRoles.JSProperties["cpMessageType"] = "error";
@@ -233,5 +235,22 @@ namespace DesarrollosQAS.Pages
         }
 
         #endregion
+
+        protected void gridRoles_HtmlEditFormCreated(object sender, ASPxGridViewEditFormEventArgs e)
+        {
+            ASPxFormLayout formLayout = gridRoles.FindEditFormTemplateControl("FormLayoutRoles") as ASPxFormLayout;
+            if (formLayout != null){
+                LayoutItem layoutItem = formLayout.FindItemByFieldName("layoutItemActivo");
+                if(gridRoles.IsNewRowEditing)
+                {
+                    layoutItem.Visible = false;
+                }
+                else
+                {
+                    layoutItem.Visible = true;
+                }
+            }
+        }
+
     }
 }

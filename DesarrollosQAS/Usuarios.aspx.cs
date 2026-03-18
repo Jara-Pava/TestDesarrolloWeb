@@ -3,16 +3,25 @@ using DataAccessDesarrollos.Repositorios;
 using DevExpress.Web;
 using DevExpress.XtraExport.Helpers;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace DesarrollosQAS
 {
     public partial class Usuarios : System.Web.UI.Page
     {
+        // Mantener el filtro seleccionado entre postbacks
+        private string FiltroEstado
+        {
+            get { return ViewState["FiltroEstado"] as string ?? "activos"; }
+            set { ViewState["FiltroEstado"] = value; }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                FiltroEstado = "activos";
                 BindGrid();
             }
 
@@ -25,14 +34,41 @@ namespace DesarrollosQAS
         private void BindGrid()
         {
             var repo = new UsuarioSistemaRepository();
-            gridUsuarios.DataSource = repo.ObtenerTodosUsuarios();
+            var usuarios = repo.ObtenerTodosUsuarios();
+
+            switch (FiltroEstado)
+            {
+                case "activos":
+                    gridUsuarios.DataSource = usuarios.Where(u => u.activo).ToList();
+                    break;
+                case "inactivos":
+                    gridUsuarios.DataSource = usuarios.Where(u => !u.activo).ToList();
+                    break;
+                default: // "todos"
+                    gridUsuarios.DataSource = usuarios;
+                    break;
+            }
+
             gridUsuarios.DataBind();
         }
 
         protected void gridUsuarios_DataBinding(object sender, EventArgs e)
         {
             var repo = new UsuarioSistemaRepository();
-            gridUsuarios.DataSource = repo.ObtenerTodosUsuarios();
+            var usuarios = repo.ObtenerTodosUsuarios();
+
+            switch (FiltroEstado)
+            {
+                case "activos":
+                    gridUsuarios.DataSource = usuarios.Where(u => u.activo).ToList();
+                    break;
+                case "inactivos":
+                    gridUsuarios.DataSource = usuarios.Where(u => !u.activo).ToList();
+                    break;
+                default:
+                    gridUsuarios.DataSource = usuarios;
+                    break;
+            }
         }
 
         protected void gridUsuarios_HtmlEditFormCreated(object sender, ASPxGridViewEditFormEventArgs e)
@@ -86,6 +122,16 @@ namespace DesarrollosQAS
 
         protected void gridUsuarios_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
         {
+            // Manejar filtro de estado
+            if (e.Parameters.StartsWith("FILTER|"))
+            {
+                string[] parts = e.Parameters.Split('|');
+                FiltroEstado = parts[1];
+                BindGrid();
+                return;
+            }
+
+            // Manejar eliminación (soft delete)
             if (e.Parameters.StartsWith("DELETE|"))
             {
                 string[] parts = e.Parameters.Split('|');
@@ -97,7 +143,7 @@ namespace DesarrollosQAS
                     var repo = new UsuarioSistemaRepository();
                     repo.EliminarUsuario(id);
 
-                    gridUsuarios.DataBind();
+                    BindGrid();
                     MostrarExito($"Proceso exitoso al eliminar el usuario {siglaRed}");
                 }
                 catch (Exception ex)
@@ -166,7 +212,7 @@ namespace DesarrollosQAS
 
                 e.Cancel = true;
                 gridUsuarios.CancelEdit();
-                gridUsuarios.DataBind();
+                BindGrid();
                 MostrarExito($"Proceso exitoso al crear el usuario con la sigla de red {usuario.sigla_red}");
             }
             catch (Exception ex)
@@ -217,7 +263,7 @@ namespace DesarrollosQAS
 
                 var repo = new UsuarioSistemaRepository();
 
-                if (repo.ExisteUsuarioEmail(siglaRedOriginal,email, out string mensajeExistencia))
+                if (repo.ExisteUsuarioEmail(siglaRedOriginal, email, out string mensajeExistencia))
                 {
                     e.Cancel = true;
                     MostrarErrorConFormulario(mensajeExistencia, true, -1);
@@ -231,7 +277,7 @@ namespace DesarrollosQAS
 
                 e.Cancel = true;
                 gridUsuarios.CancelEdit();
-                gridUsuarios.DataBind();
+                BindGrid();
                 MostrarExito($"Proceso exitoso al actualizar el usuario con la sigla de red {usuario.sigla_red}.");
             }
             catch (Exception ex)
@@ -241,137 +287,6 @@ namespace DesarrollosQAS
                 MostrarErrorConFormulario($"Proceso no exitoso al actualizar el usuario por : {ex.Message}", false, editIndex);
             }
         }
-
-        //protected void gridUsuarios_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
-        //{
-        //    string nombre = e.NewValues["nombre"]?.ToString()?.Trim();
-        //    string siglaRed = e.NewValues["sigla_red"]?.ToString()?.Trim();
-        //    string email = e.NewValues["Email"]?.ToString()?.Trim();
-        //    try
-        //    {
-
-        //        // En modo creación, siempre crear como activo
-        //        bool activo = true;
-
-        //        if (!ValidarNombre(nombre, out string errorNombre))
-        //        {
-        //            e.Cancel = true;
-        //            //gridUsuarios.CancelEdit();
-        //            MostrarError(errorNombre);
-        //            return;
-        //        }
-
-        //        if (!ValidarSigla(siglaRed, out string errorSigla))
-        //        {
-        //            e.Cancel = true;
-        //            gridUsuarios.CancelEdit();
-        //            MostrarError(errorSigla);
-        //            return;
-        //        }
-
-        //        if (!ValidarEmail(email, out string errorEmail))
-        //        {
-        //            e.Cancel = true;
-        //            gridUsuarios.CancelEdit();
-        //            MostrarError(errorEmail);
-        //            return;
-        //        }
-
-        //        var repo = new UsuarioSistemaRepository();
-        //        if (repo.ExisteUsuario(siglaRed, email, out string mensajeExistencia))
-        //        {
-        //            e.Cancel = true;
-        //            //gridUsuarios.CancelEdit();
-        //            MostrarError(mensajeExistencia);
-        //            return;
-        //        }
-
-        //        var usuario = new Usuario
-        //        {
-        //            nombre = nombre,
-        //            sigla_red = siglaRed,
-        //            Email = email,
-        //            activo = activo // Siempre true en creación
-        //        };
-
-        //        if (!repo.CrearUsuario(usuario))
-        //        {
-        //            throw new ApplicationException($"No se ha podido crear el usuario{usuario.nombre}");
-        //        }
-
-        //        e.Cancel = true;
-        //        gridUsuarios.CancelEdit();
-        //        gridUsuarios.DataBind();
-        //        MostrarExito($"Proceso exitoso al crear el usuario con la sigla de red {usuario.sigla_red}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        System.Diagnostics.Trace.TraceError("Error en RowInserting: {0}", ex);
-        //        e.Cancel = true;
-        //        gridUsuarios.CancelEdit();
-        //        MostrarError($"Proceso no exitoso al crear el usuario {siglaRed}: {ex.Message}");
-        //    }
-        //}
-
-        //protected void gridUsuarios_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
-        //{
-        //    try
-        //    {
-        //        string nombre = e.NewValues["nombre"]?.ToString()?.Trim();
-        //        string email = e.NewValues["Email"]?.ToString()?.Trim();
-
-        //        if (!ValidarNombre(nombre, out string errorNombre))
-        //        {
-        //            e.Cancel = true;
-        //            //gridUsuarios.CancelEdit();
-        //            MostrarError(errorNombre);
-        //            return;
-        //        }
-
-        //        if (!ValidarEmail(email, out string errorEmail))
-        //        {
-        //            e.Cancel = true;
-        //            //gridUsuarios.CancelEdit();
-        //            MostrarError(errorEmail);
-        //            return;
-        //        }
-
-        //        string siglaRedOriginal = e.OldValues["sigla_red"]?.ToString();
-
-        //        // Obtener el valor del checkbox desde el template
-        //        ASPxCheckBox chkActivo = gridUsuarios.FindEditFormTemplateControl("chkActivo") as ASPxCheckBox;
-        //        bool activo = chkActivo != null ? chkActivo.Checked : false;
-
-        //        var usuario = new Usuario
-        //        {
-        //            id_usuario = Convert.ToInt32(e.Keys["id_usuario"]),
-        //            nombre = nombre,
-        //            sigla_red = siglaRedOriginal,
-        //            Email = email,
-        //            activo = activo
-        //        };
-
-        //        var repo = new UsuarioSistemaRepository();
-        //        if (!repo.ActualizarUsuario(usuario))
-        //        {
-        //            throw new ApplicationException($"Proceso no exitoso al actualizar el usuario con la sigla de red {usuario.sigla_red}");
-        //        }
-
-        //        e.Cancel = true;
-        //        //gridUsuarios.CancelEdit();
-        //        gridUsuarios.DataBind();
-        //        MostrarExito($"Proceso exitoso al actualizar el usuario con la sigla de red {usuario.sigla_red}.");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        System.Diagnostics.Trace.TraceError("Error al actualizar usuario: {0}", ex);
-        //        e.Cancel = true;
-        //        gridUsuarios.CancelEdit();
-        //        MostrarError($"Proceso no exitoso al actualizar el usuario por : {ex.Message}");
-        //    }
-        //}
-
-
 
         #region Métodos de Validación
 
@@ -390,18 +305,6 @@ namespace DesarrollosQAS
                 mensajeError = "Error el nombre debe contener al menos letras válidas.";
                 return false;
             }
-
-            //if (Regex.IsMatch(nombre, @"[<>""';={}()\[\]]"))
-            //{
-            //    mensajeError = "El nombre contiene caracteres no permitidos.";
-            //    return false;
-            //}
-
-            //if (nombre.Length > 200)
-            //{
-            //    mensajeError = "El nombre no puede exceder 200 caracteres.";
-            //    return false;
-            //}
 
             return true;
         }
@@ -439,21 +342,6 @@ namespace DesarrollosQAS
 
         #endregion
 
-        //#region Métodos de Mensajes
-
-        //private void MostrarExito(string mensaje)
-        //{
-        //    gridUsuarios.JSProperties["cpMessageType"] = "success";
-        //    gridUsuarios.JSProperties["cpMessage"] = mensaje;
-        //}
-
-        //private void MostrarError(string mensaje)
-        //{
-        //    gridUsuarios.JSProperties["cpMessageType"] = "error";
-        //    gridUsuarios.JSProperties["cpMessage"] = mensaje;
-        //}
-
-        //#endregion
         #region Métodos de Mensajes
 
         private void MostrarExito(string mensaje)
