@@ -43,11 +43,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess.cs" />
+    <Compile Include="Interfaces\IModuloCatalago.cs" />
     <Compile Include="Interfaces\IRoles.cs" />
     <Compile Include="Interfaces\ISolicitudRHRepository.cs" />
     <Compile Include="Interfaces\UsuarioSistema.cs" />
+    <Compile Include="ModuloCatalago.cs" />
+    <Compile Include="ModuloTreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QASConfig.cs" />
+    <Compile Include="Repositorios\ModuloCatalagoReporitory.cs" />
     <Compile Include="Repositorios\RolesRepository.cs" />
     <Compile Include="Repositorios\SolicitudRHRepository.cs" />
     <Compile Include="Repositorios\UsuarioSistemaRepository.cs" />

@@ -40,6 +40,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.ExpressApp.TreeListEditors.v22.1, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\DevExpress 22.1\Components\Bin\Framework\DevExpress.ExpressApp.TreeListEditors.v22.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxTreeList.v22.1, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\DevExpress 22.1\Components\Bin\Framework\DevExpress.Web.ASPxTreeList.v22.1.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Web.Resources.v22.1, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -123,6 +131,13 @@
     <Content Include="Content\Images\priority2.svg" />
     <Content Include="Content\Images\priority3-white.svg" />
     <Content Include="Content\Images\priority3.svg" />
+    <Content Include="Images\catalogo.png" />
+    <Content Include="Images\circulo-asginacion.png" />
+    <Content Include="Images\circulo-asig.png" />
+    <Content Include="Images\cubitos.png" />
+    <Content Include="Images\empresa_contra.png" />
+    <Content Include="Images\industria.png" />
+    <Content Include="Images\proyecto.png" />
     <Content Include="Images\rol-de-usuario.png" />
     <Content Include="Content\Images\Scheduler-white.svg" />
     <Content Include="Content\Images\Scheduler.svg" />
@@ -299,6 +314,7 @@
     <Content Include="Images\TipoCambio.svg" />
     <Content Include="Images\TipoEquipo.svg" />
     <Content Include="Images\tipotemplate.png" />
+    <Content Include="Images\tipo_visita.png" />
     <Content Include="Images\ToolsColor.png" />
     <Content Include="Images\Trash.png" />
     <Content Include="Images\upload.png" />
@@ -312,8 +328,14 @@
     <Content Include="Images\verPonderado.png" />
     <Content Include="Images\VolverNegro.png" />
     <Content Include="Images\XSALogo462x306.png" />
+    <Content Include="Pages\EmpresasContratistas.aspx" />
+    <Content Include="Pages\Modulos.aspx" />
+    <Content Include="Pages\Plantas.aspx" />
+    <Content Include="Pages\Proyectos.aspx" />
     <Content Include="Pages\Roles.aspx" />
+    <Content Include="Pages\RolModulo.aspx" />
     <Content Include="Pages\SinAcceso.aspx" />
+    <Content Include="Pages\TiposVisitas.aspx" />
     <Content Include="SolicitudesEspeciales.aspx" />
     <Content Include="SolicitudEspecial.aspx" />
     <Content Include="SolicitudesRH.aspx" />
@@ -361,6 +383,34 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Pages\EmpresasContratistas.aspx.cs">
+      <DependentUpon>EmpresasContratistas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\EmpresasContratistas.aspx.designer.cs">
+      <DependentUpon>EmpresasContratistas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Modulos.aspx.cs">
+      <DependentUpon>Modulos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Modulos.aspx.designer.cs">
+      <DependentUpon>Modulos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Plantas.aspx.cs">
+      <DependentUpon>Plantas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Plantas.aspx.designer.cs">
+      <DependentUpon>Plantas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Proyectos.aspx.cs">
+      <DependentUpon>Proyectos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Proyectos.aspx.designer.cs">
+      <DependentUpon>Proyectos.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Roles.aspx.cs">
       <DependentUpon>Roles.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -368,12 +418,26 @@
     <Compile Include="Pages\Roles.aspx.designer.cs">
       <DependentUpon>Roles.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\RolModulo.aspx.cs">
+      <DependentUpon>RolModulo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\RolModulo.aspx.designer.cs">
+      <DependentUpon>RolModulo.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SinAcceso.aspx.cs">
       <DependentUpon>SinAcceso.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\SinAcceso.aspx.designer.cs">
       <DependentUpon>SinAcceso.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TiposVisitas.aspx.cs">
+      <DependentUpon>TiposVisitas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\TiposVisitas.aspx.designer.cs">
+      <DependentUpon>TiposVisitas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Root.master.cs">
       <DependentUpon>Root.master</DependentUpon>

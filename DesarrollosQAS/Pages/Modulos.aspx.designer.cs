@@ -11,7 +11,7 @@ namespace DesarrollosQAS.Pages
 {
 
 
-    public partial class Roles
+    public partial class Modulo
     {
 
         /// <summary>
@@ -69,30 +69,21 @@ namespace DesarrollosQAS.Pages
         protected global::DevExpress.Web.ASPxLabel lblTitulo;
 
         /// <summary>
-        /// gridRoles control.
+        /// gridModulo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxGridView gridRoles;
+        protected global::DevExpress.Web.ASPxGridView gridModulo;
 
         /// <summary>
-        /// btnDeleteRol control.
+        /// btnDeleteModulo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.GridViewCommandColumnCustomButton btnDeleteRol;
-
-        /// <summary>
-        /// btnAsignarModulo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.GridViewCommandColumnCustomButton btnAsignarModulo;
+        protected global::DevExpress.Web.GridViewCommandColumnCustomButton btnDeleteModulo;
     }
 }

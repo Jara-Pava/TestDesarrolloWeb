@@ -3,7 +3,6 @@
 <%@ Register Src="~/UserControls/Navigation.ascx" TagPrefix="uc" TagName="Navigation" %>
 
 <!DOCTYPE html>
-
 <html lang="en">
 <head runat="server">
     <meta name="viewport" content="width=device-width, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
@@ -13,6 +12,11 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <style>
+            .nav-tree-view .dxtv-subnd {
+                margin-left: 18px;
+            }
+        </style>
         <asp:ScriptManager runat="server">
             <Scripts>
                 <asp:ScriptReference Path="~/Content/Site.js" />
@@ -40,9 +44,12 @@
                                     <dx:ASPxLabel runat="server" Text="Desarrollo Aplicaciones" CssClass="page-header" ForeColor="White" Width="100%"/>
                                 </asp:TableCell>
                                 <asp:TableCell></asp:TableCell>
-                                <asp:TableCell HorizontalAlign="Right">
-                                    <dx:ASPxLabel runat="server" Text="Usuario: " Font-Bold="true" ForeColor="White"></dx:ASPxLabel>
-                                    <dx:ASPxLabel runat="server" Text="" ID="lblUsuario" Font-Bold="false" ForeColor="White"></dx:ASPxLabel>
+                                <asp:TableCell CssClass="">
+                                    <div style="padding-right:10%; padding-left:60%;">
+                                        <dx:ASPxLabel runat="server" Text="Usuario: " Font-Bold="true" ForeColor="White">
+                                        </dx:ASPxLabel>
+                                        <dx:ASPxLabel runat="server" Text="" ID="lblUsuario" Font-Bold="false" ForeColor="White"></dx:ASPxLabel>
+                                    </div>
                                 </asp:TableCell>
                             </asp:TableRow>
                         </asp:Table>
