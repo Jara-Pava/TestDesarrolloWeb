@@ -76,7 +76,7 @@ namespace DesarrollosQAS.Pages
                 if (string.IsNullOrWhiteSpace(nombre))
                 {
                     e.Cancel = true;
-                    MostrarError("El nombre del rol es requerido.");
+                    MostrarError("Error el nombre del rol es requerido.");
                     return;
                 }
 

@@ -13,7 +13,7 @@
         }
 
         .dxpLite_Office365 .dxp-button:not(.dxp-disabledButton):hover {
-            background-color: teal;
+background-color: teal;
         }
 
         .dxgvHeader_Office365 {

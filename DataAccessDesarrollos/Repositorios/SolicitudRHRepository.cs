@@ -158,6 +158,101 @@ namespace DataAccessDesarrollos.Repositorios
             }
         }
 
+        public bool ExisteContratistaConNombre(string nombre, int? idContratista = null)
+        {
+            try
+            {
+                var contratistas = ObtenerContratistas();
+                return contratistas.Any(r =>
+                    r.Nombre.Equals(nombre, StringComparison.OrdinalIgnoreCase) &&
+                    (!idContratista.HasValue || r.id_contratista != idContratista.Value));
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error ExisteRolConNombre: {0}", ex);
+                return false;
+            }
+        }
+
+        // Stored Procedure Insertar contratista
+        public bool CrearContratista(EmpresaContratista contratista)
+        {
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    var result = da.ExecuteScalarByCode("rhsp_InsertContratista", cmd =>
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@Nombre", contratista.Nombre));
+                        cmd.Parameters.Add(new SqlParameter("@RFC", contratista.RFC));
+                        cmd.Parameters.Add(new SqlParameter("@Responsable", contratista.Responsable));
+                        cmd.Parameters.Add(new SqlParameter("@Email", contratista.Email));
+                        cmd.Parameters.Add(new SqlParameter("@Telefono", contratista.Telefono));
+                    });
+                    if (result != null && result != DBNull.Value)
+                    {
+                        contratista.id_contratista = Convert.ToInt32(result);
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error InsertarContratista: {0}", ex);
+                return false;
+            }
+        }
+
+
+        // Stored Procedure Actualizar contratista
+        public bool ActualizarContratista(EmpresaContratista contratista)
+        {
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    int result = da.ExecuteNonQueryByCode("rhsp_UpdateContratista", cmd =>
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@id_contratista", contratista.id_contratista));
+                        cmd.Parameters.Add(new SqlParameter("@Nombre", contratista.Nombre));
+                        cmd.Parameters.Add(new SqlParameter("@RFC", contratista.RFC));
+                        cmd.Parameters.Add(new SqlParameter("@Responsable", contratista.Responsable));
+                        cmd.Parameters.Add(new SqlParameter("@Email", contratista.Email));
+                        cmd.Parameters.Add(new SqlParameter("@Telefono", contratista.Telefono));
+                        cmd.Parameters.Add(new SqlParameter("@Activo", contratista.Activo));
+                    });
+                    return result > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error ActualizarContratista: {0}", ex);
+                return false;
+            }
+        }
+
+        // Stored Procedure Eliminar contratista
+        public bool EliminarContratista(int idContratista)
+        {
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    int result = da.ExecuteNonQueryByCode("rhsp_DeleteContratista", cmd =>
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@id_contratista", idContratista));
+                    });
+                    return result > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error EliminarContratista: {0}", ex);
+                return false;
+            }
+        }
+
         public List<Planta> ObtenerPlantas()
         {
             try

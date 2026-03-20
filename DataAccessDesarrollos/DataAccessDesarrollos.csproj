@@ -48,7 +48,6 @@
     <Compile Include="Interfaces\ISolicitudRHRepository.cs" />
     <Compile Include="Interfaces\UsuarioSistema.cs" />
     <Compile Include="ModuloCatalago.cs" />
-    <Compile Include="ModuloTreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QASConfig.cs" />
     <Compile Include="Repositorios\ModuloCatalagoReporitory.cs" />
