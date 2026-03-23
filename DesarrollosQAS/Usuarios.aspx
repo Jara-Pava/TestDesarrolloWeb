@@ -196,16 +196,16 @@
     <br />
 
     <!-- Filtro de estado -->
-    <div style="margin-bottom: 10px; display: flex; align-items: center;">
-        <dx:ASPxLabel runat="server" Text="Mostrar:" Font-Bold="true" Style="margin-right: 8px;" />
+    <div style="margin-bottom: 3%; display: flex; align-items:center; flex-direction:row; justify-content:flex-end">
+        <dx:ASPxLabel runat="server" Text="Estatus:" Font-Bold="true" Style="margin-right: 8px;" />
         <dx:ASPxComboBox ID="cmbFiltroEstado" runat="server" Width="200px"
             ClientInstanceName="cmbFiltroEstado"
             ValueType="System.String"
             SelectedIndex="0">
             <Items>
-                <dx:ListEditItem Text="Solo Activos" Value="activos" />
-                <dx:ListEditItem Text="Solo Inactivos" Value="inactivos" />
                 <dx:ListEditItem Text="Todos" Value="todos" />
+                <dx:ListEditItem Text="Activos" Value="activos" />
+                <dx:ListEditItem Text="Inactivos" Value="inactivos" />
             </Items>
             <ClientSideEvents SelectedIndexChanged="OnFiltroEstadoChanged" />
         </dx:ASPxComboBox>

@@ -21,7 +21,7 @@ namespace DesarrollosQAS
         {
             if (!IsPostBack)
             {
-                FiltroEstado = "activos";
+                FiltroEstado = "default";
                 BindGrid();
             }
 
