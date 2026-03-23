@@ -92,12 +92,15 @@ namespace DesarrollosQAS.Pages
 
                 bool activo = chkActivo != null ? chkActivo.Checked : false;
 
+                int idUsuarioActual = Model.AuthHelper.GetCurrentUserId();
+
                 var item = new ModuloCatalogo
                 {
                     id_modulo_catalogo = id,
                     nombre = nombre,
                     descripcion = descripcion,
-                    activo = activo
+                    activo = activo,
+                    modificado_por = idUsuarioActual > 0 ? (int?)idUsuarioActual : null
                 };
 
                 if (!repo.Actualizar(item))

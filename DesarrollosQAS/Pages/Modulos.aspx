@@ -5,14 +5,17 @@
         tr > .dxflCaptionCell_Office365 {
             padding-bottom: 15px !important;
         }
+
         .dxflGroupBox_Office365 {
             margin-bottom: 0px;
             padding: 0 0 12px;
             text-align: center;
         }
+
         .dxpLite_Office365 .dxp-button:not(.dxp-disabledButton):hover {
             background-color: teal;
         }
+
         .dxgvHeader_Office365 {
             background-color: #353943;
             color: white;
@@ -103,7 +106,8 @@
             <dx:PopupControlContentControl runat="server">
                 <div style="padding: 30px; text-align: center;">
                     <dx:ASPxLabel runat="server" Text="¿Está seguro que desea eliminar este módulo/catálogo?" Font-Size="16px" Font-Bold="true" />
-                    <br /><br />
+                    <br />
+                    <br />
                 </div>
             </dx:PopupControlContentControl>
         </ContentCollection>
@@ -201,6 +205,8 @@
             <dx:GridViewDataDateColumn FieldName="fecha_creacion" Caption="Fecha de creación" ReadOnly="True" CellStyle-HorizontalAlign="Center" Width="150" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataTextColumn FieldName="creado_por" Visible="false" ReadOnly="True" />
             <dx:GridViewDataTextColumn FieldName="nombre_creador" Caption="Creado por" ReadOnly="True" Width="150" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="modificado_por" Visible="false" ReadOnly="True" />
+            <dx:GridViewDataTextColumn FieldName="nombre_modificador" Caption="Modificado por" ReadOnly="True" Width="150" HeaderStyle-HorizontalAlign="Center" />
         </Columns>
 
         <Templates>
