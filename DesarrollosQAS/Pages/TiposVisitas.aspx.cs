@@ -3,6 +3,7 @@ using DataAccessDesarrollos.Repositorios;
 using DevExpress.Web;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 
 namespace DesarrollosQAS.Pages
@@ -20,7 +21,7 @@ namespace DesarrollosQAS.Pages
         private void BindGrid()
         {
             var repo = new SolicitudRHRepository();
-            gridTiposVisita.DataSource = repo.ObtenerTiposSolicitud();
+            gridTiposVisita.DataSource = repo.ObtenerTiposSolicitud().OrderBy(p => p.ID_TipoVisita).ToList();
             gridTiposVisita.DataBind();
         }
 
@@ -192,13 +193,13 @@ namespace DesarrollosQAS.Pages
 
         protected void gridTiposVisita_HtmlEditFormCreated(object sender, DevExpress.Web.ASPxGridViewEditFormEventArgs e)
         {
-            ASPxFormLayout formLayout = gridTiposVisita.FindEditFormTemplateControl("FormLayoutTipoVisita") as ASPxFormLayout;
-            if (formLayout != null)
-            {
-                LayoutItem layoutItem = formLayout.FindItemByFieldName("layoutItemActivo");
-                if (layoutItem != null)
-                    layoutItem.Visible = !gridTiposVisita.IsNewRowEditing;
-            }
+            //ASPxFormLayout formLayout = gridTiposVisita.FindEditFormTemplateControl("FormLayoutTipoVisita") as ASPxFormLayout;
+            //if (formLayout != null)
+            //{
+            //    LayoutItem layoutItem = formLayout.FindItemByFieldName("layoutItemActivo");
+            //    if (layoutItem != null)
+            //        layoutItem.Visible = !gridTiposVisita.IsNewRowEditing;
+            //}
         }
 
         #region Métodos de Mensajes

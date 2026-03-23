@@ -26,7 +26,7 @@ namespace DesarrollosQAS.Pages
         private void BindGrid()
         {
             var repo = new SolicitudRHRepository();
-            List<EmpresaContratista> empresasContratistas = repo.ObtenerContratistas();
+            List<EmpresaContratista> empresasContratistas = repo.ObtenerContratistas().OrderBy(p => p.id_contratista).ToList();
             gridContratistas.DataSource = empresasContratistas;
             gridContratistas.DataBind();
         }
@@ -35,7 +35,7 @@ namespace DesarrollosQAS.Pages
         protected void gridContratistas_DataBinding(object sender, EventArgs e)
         {
             var repo = new SolicitudRHRepository();
-            gridContratistas.DataSource = repo.ObtenerContratistas();
+            gridContratistas.DataSource = repo.ObtenerContratistas().OrderBy(p => p.id_contratista).ToList();
         }
         private Control FindControlRecursive(Control root, string id)
         {
@@ -262,19 +262,19 @@ namespace DesarrollosQAS.Pages
 
         protected void gridContratistas_HtmlEditFormCreated(object sender, DevExpress.Web.ASPxGridViewEditFormEventArgs e)
         {
-            ASPxFormLayout formLayout = gridContratistas.FindEditFormTemplateControl("FormLayoutContratistas") as ASPxFormLayout;
-            if (formLayout != null)
-            {
-                LayoutItem layoutItem = formLayout.FindItemByFieldName("layoutItemActivo");
-                if (gridContratistas.IsNewRowEditing)
-                {
-                    layoutItem.Visible = false;
-                }
-                else
-                {
-                    layoutItem.Visible = true;
-                }
-            }
+            //ASPxFormLayout formLayout = gridContratistas.FindEditFormTemplateControl("FormLayoutContratistas") as ASPxFormLayout;
+            //if (formLayout != null)
+            //{
+            //    LayoutItem layoutItem = formLayout.FindItemByFieldName("layoutItemActivo");
+            //    if (gridContratistas.IsNewRowEditing)
+            //    {
+            //        layoutItem.Visible = false;
+            //    }
+            //    else
+            //    {
+            //        layoutItem.Visible = true;
+            //    }
+            //}
         }
         #region Métodos de Mensajes
 

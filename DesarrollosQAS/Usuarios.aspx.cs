@@ -34,7 +34,7 @@ namespace DesarrollosQAS
         private void BindGrid()
         {
             var repo = new UsuarioSistemaRepository();
-            var usuarios = repo.ObtenerTodosUsuarios();
+            var usuarios = repo.ObtenerTodosUsuarios().OrderBy(p => p.id_usuario).ToList();
 
             switch (FiltroEstado)
             {
@@ -55,7 +55,7 @@ namespace DesarrollosQAS
         protected void gridUsuarios_DataBinding(object sender, EventArgs e)
         {
             var repo = new UsuarioSistemaRepository();
-            var usuarios = repo.ObtenerTodosUsuarios();
+            var usuarios = repo.ObtenerTodosUsuarios().OrderBy(p => p.id_usuario).ToList();
 
             switch (FiltroEstado)
             {

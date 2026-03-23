@@ -24,7 +24,7 @@ namespace DesarrollosQAS.Pages
         private void BindGrid()
         {
             var repo = new SolicitudRHRepository();
-            List<Planta> plantas = repo.ObtenerPlantas();
+            List<Planta> plantas = repo.ObtenerPlantas().OrderBy(p => p.ID_Planta).ToList();
             gridPlantas.DataSource = plantas;
             gridPlantas.DataBind();
         }
@@ -83,7 +83,7 @@ namespace DesarrollosQAS.Pages
         protected void gridPlantas_DataBinding(object sender, EventArgs e)
         {
             var repo = new SolicitudRHRepository();
-            gridPlantas.DataSource = repo.ObtenerPlantas();
+            gridPlantas.DataSource = repo.ObtenerPlantas().OrderBy(p => p.ID_Planta).ToList();
         }
 
         protected void gridPlantas_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
@@ -216,19 +216,19 @@ namespace DesarrollosQAS.Pages
 
         protected void gridPlantas_HtmlEditFormCreated(object sender, DevExpress.Web.ASPxGridViewEditFormEventArgs e)
         {
-            ASPxFormLayout formLayout = gridPlantas.FindEditFormTemplateControl("FormLayoutPlanta") as ASPxFormLayout;
-            if (formLayout != null)
-            {
-                LayoutItem layoutItem = formLayout.FindItemByFieldName("layoutItemActivo");
-                if (gridPlantas.IsNewRowEditing)
-                {
-                    layoutItem.Visible = false;
-                }
-                else
-                {
-                    layoutItem.Visible = true;
-                }
-            }
+            //ASPxFormLayout formLayout = gridPlantas.FindEditFormTemplateControl("FormLayoutPlanta") as ASPxFormLayout;
+            //if (formLayout != null)
+            //{
+            //    LayoutItem layoutItem = formLayout.FindItemByFieldName("layoutItemActivo");
+            //    if (gridPlantas.IsNewRowEditing)
+            //    {
+            //        layoutItem.Visible = false;
+            //    }
+            //    else
+            //    {
+            //        layoutItem.Visible = true;
+            //    }
+            //}
         }
         #region Métodos de Mensajes
 

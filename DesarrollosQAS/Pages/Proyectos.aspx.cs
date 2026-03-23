@@ -183,13 +183,13 @@ namespace DesarrollosQAS.Pages
 
         protected void gridProyectos_HtmlEditFormCreated(object sender, DevExpress.Web.ASPxGridViewEditFormEventArgs e)
         {
-            ASPxFormLayout formLayout = gridProyectos.FindEditFormTemplateControl("FormLayoutProyecto") as ASPxFormLayout;
-            if (formLayout != null)
-            {
-                LayoutItem layoutItem = formLayout.FindItemByFieldName("layoutItemActivo");
-                if (layoutItem != null)
-                    layoutItem.Visible = !gridProyectos.IsNewRowEditing;
-            }
+            //ASPxFormLayout formLayout = gridProyectos.FindEditFormTemplateControl("FormLayoutProyecto") as ASPxFormLayout;
+            //if (formLayout != null)
+            //{
+            //    LayoutItem layoutItem = formLayout.FindItemByFieldName("layoutItemActivo");
+            //    if (layoutItem != null)
+            //        layoutItem.Visible = !gridProyectos.IsNewRowEditing;
+            //}
         }
 
         #region Métodos de Mensajes

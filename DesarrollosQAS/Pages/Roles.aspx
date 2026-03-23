@@ -188,7 +188,7 @@ background-color: teal;
         </FooterContentTemplate>
     </dx:ASPxPopupControl>
 
-    <div style="padding-top: 8px">
+    <div style="padding-top: 8px; padding-left:4%; padding-right:4%">
         <dx:ASPxLabel runat="server" ID="lblTitulo" Text="Roles" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
     </div>
     <br />
@@ -201,7 +201,7 @@ background-color: teal;
         OnDataBinding="gridRoles_DataBinding"
         OnCustomCallback="gridRoles_CustomCallback"
         OnHtmlEditFormCreated="gridRoles_HtmlEditFormCreated"
-        Width="100%">
+        Width="100%" Paddings-PaddingLeft="4%" Paddings-PaddingRight="4%">
         <ClientSideEvents
             EndCallback="OnGridRolesEndCallback"
             CustomButtonClick="OnCustomButtonClickRol" />

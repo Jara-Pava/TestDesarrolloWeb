@@ -1,6 +1,11 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EmpresasContratistas.aspx.cs" Inherits="DesarrollosQAS.Pages.EmpresasContratistas" MasterPageFile="~/Root.master" %>
 
 <asp:Content ID="contentEmpresasContratistas" ContentPlaceHolderID="Content" runat="server">
+    <style>
+        .dxflLastChildInRowSys {
+            align-content: baseline;
+        }
+    </style>
 
     <script type="text/javascript">
         var pendingSuccessMessage = "";
@@ -91,7 +96,7 @@
         function GuardarContratista(s, e) {
             //Console para verificar que se está llamando a la función
             console.log("Guardando contratista...");
-            
+
             gridContratistas.UpdateEdit();
         }
 
@@ -105,7 +110,7 @@
     <!-- Popup de Confirmación de Eliminación -->
     <dx:ASPxPopupControl ID="pcConfirmarEliminacion" runat="server" Width="450" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcConfirmarEliminacion"
-        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
+        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="true">
         <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
@@ -133,7 +138,7 @@
     <!-- Popup de Éxito -->
     <dx:ASPxPopupControl ID="pcMensajeExito" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeExito"
-        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
+        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="true">
         <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
@@ -154,7 +159,7 @@
     <!-- Popup de Error -->
     <dx:ASPxPopupControl ID="pcMensajeError" runat="server" Width="400" CloseAction="CloseButton" CloseOnEscape="true" Modal="True"
         PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" ClientInstanceName="pcMensajeError"
-        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="false">
+        HeaderText=" " PopupAnimationType="Fade" ShowFooter="true" ShowOnPageLoad="false" ShowCloseButton="true">
         <HeaderStyle BackColor="#353943" ForeColor="White" Font-Bold="true" />
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
@@ -172,7 +177,7 @@
         </FooterContentTemplate>
     </dx:ASPxPopupControl>
 
-    <div style="padding-top: 8px">
+    <div style="padding-top: 8px; padding-left: 4%; padding-right=4%">
         <dx:ASPxLabel runat="server" ID="lblTitulo" Text="Empresas Contratistas" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
     </div>
     <br />
@@ -184,8 +189,8 @@
         OnRowInserting="gridContratistas_RowInserting"
         OnCustomCallback="gridContratistas_CustomCallback"
         OnHtmlEditFormCreated="gridContratistas_HtmlEditFormCreated"
-        Width="100%">
-        <ClientSideEvents 
+        Width="100%" Paddings-PaddingLeft="4%" Paddings-PaddingRight="4%">
+        <ClientSideEvents
             EndCallback="OnGridContratistasEndCallback"
             CustomButtonClick="OnCustomButtonClickContratista" />
         <Styles>
@@ -217,7 +222,7 @@
                     <Styles LayoutGroupBox-Caption-Font-Size="X-Large" LayoutGroupBox-Caption-Font-Bold="true" LayoutGroupBox-Caption-ForeColor="#353943"></Styles>
                     <Styles LayoutGroupBox-Caption-BackgroundImage-HorizontalPosition="center" LayoutItem-Caption-ForeColor="#353943" LayoutGroupBox-Caption-Paddings-Padding="0"></Styles>
                     <Items>
-                        <dx:LayoutGroup ShowCaption="false" ColumnCount="2" SettingsItems-Width="50%" SettingsItemCaptions-Location="Top" ParentContainerStyle-Paddings-Padding="0" Paddings-PaddingLeft="25" Paddings-PaddingRight="25">
+                        <dx:LayoutGroup ShowCaption="false" ColumnCount="2" SettingsItemCaptions-Location="Top" ParentContainerStyle-Paddings-Padding="0" Paddings-PaddingLeft="25" Paddings-PaddingRight="25">
                             <CellStyle Font-Size="14px" />
                             <GroupBoxStyle Border-BorderStyle="None" />
                             <Items>
@@ -275,7 +280,7 @@
                                 </dx:LayoutItem>
 
                                 <%-- Activo --%>
-                                <dx:LayoutItem ColumnSpan="2" FieldName="layoutItemActivo" Caption="Activo" CaptionSettings-Location="Left">
+                                <dx:LayoutItem ColumnSpan="1" FieldName="layoutItemActivo" Caption="Activo" CaptionSettings-Location="Left">
                                     <%--<CaptionSettings Location="Top"/>--%>
                                     <%--<ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>--%>
                                     <LayoutItemNestedControlCollection>
@@ -287,8 +292,7 @@
                                 </dx:LayoutItem>
 
                                 <%-- Guardar --%>
-                                <dx:LayoutItem ColumnSpan="1" ShowCaption="false" Paddings-PaddingTop="30">
-                                    <%--<ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>--%>
+                                <%--<dx:LayoutItem ColumnSpan="1" ShowCaption="false" Paddings-PaddingTop="30">
                                     <LayoutItemNestedControlCollection>
                                         <dx:LayoutItemNestedControlContainer>
                                             <div style="text-align: left;">
@@ -299,11 +303,10 @@
                                             </div>
                                         </dx:LayoutItemNestedControlContainer>
                                     </LayoutItemNestedControlCollection>
-                                </dx:LayoutItem>
+                                </dx:LayoutItem>--%>
 
                                 <%-- Cancelar --%>
-                                <dx:LayoutItem ColumnSpan="1" ShowCaption="false" Paddings-PaddingTop="30">
-                                    <%--<ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>--%>
+                                <%--                                <dx:LayoutItem ColumnSpan="1" ShowCaption="false" Paddings-PaddingTop="30">
                                     <LayoutItemNestedControlCollection>
                                         <dx:LayoutItemNestedControlContainer>
                                             <div style="text-align: right;">
@@ -312,6 +315,23 @@
                                                     <ClientSideEvents Click="CancelarEdicion" />
                                                 </dx:ASPxButton>
                                             </div>
+                                        </dx:LayoutItemNestedControlContainer>
+                                    </LayoutItemNestedControlCollection>
+                                </dx:LayoutItem>--%>
+                                <%-- BOTONES DE EDICIÓN POP-CATALOGO --%>
+                                <dx:LayoutItem ColumnSpan="2" ShowCaption="false" Paddings-PaddingTop="40" HorizontalAlign="Right">
+                                    <LayoutItemNestedControlCollection>
+                                        <dx:LayoutItemNestedControlContainer>
+
+                                            <dx:ASPxButton ID="btnGuardar" runat="server" Text="Guardar" Width="120px" AutoPostBack="false"
+                                                BackColor="Teal" ForeColor="White" Font-Bold="true">
+                                                <ClientSideEvents Click="GuardarContratista" />
+                                            </dx:ASPxButton>
+
+                                            <dx:ASPxButton ID="btnCancelar" runat="server" Text="Cancelar" Width="120px" AutoPostBack="false"
+                                                BackColor="DarkRed" ForeColor="White" Font-Bold="true" Style="margin-left: 8%;">
+                                                <ClientSideEvents Click="CancelarEdicion" />
+                                            </dx:ASPxButton>
                                         </dx:LayoutItemNestedControlContainer>
                                     </LayoutItemNestedControlCollection>
                                 </dx:LayoutItem>
@@ -327,7 +347,7 @@
             <EditForm Modal="true"
                 Width="800"
                 HorizontalAlign="WindowCenter"
-                VerticalAlign="WindowCenter" ShowCloseButton="false">
+                VerticalAlign="WindowCenter" ShowCloseButton="true">
             </EditForm>
         </SettingsPopup>
         <StylesPopup>

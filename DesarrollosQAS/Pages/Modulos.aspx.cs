@@ -3,6 +3,7 @@ using DataAccessDesarrollos.Repositorios;
 using DevExpress.Web;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 
 namespace DesarrollosQAS.Pages
@@ -20,7 +21,7 @@ namespace DesarrollosQAS.Pages
         private void BindGrid()
         {
             var repo = new ModuloCatalogoRepository();
-            List<ModuloCatalogo> lista = repo.ObtenerTodos();
+            List<ModuloCatalogo> lista = repo.ObtenerTodos().OrderBy(p => p.id_modulo_catalogo).ToList();
             gridModulo.DataSource = lista;
             gridModulo.DataBind();
         }
@@ -28,7 +29,7 @@ namespace DesarrollosQAS.Pages
         protected void gridModulo_DataBinding(object sender, EventArgs e)
         {
             var repo = new ModuloCatalogoRepository();
-            gridModulo.DataSource = repo.ObtenerTodos();
+            gridModulo.DataSource = repo.ObtenerTodos().OrderBy(p => p.id_modulo_catalogo).ToList();
         }
 
         private Control FindControlRecursive(Control root, string id)
@@ -202,19 +203,19 @@ namespace DesarrollosQAS.Pages
 
         protected void gridModulo_HtmlEditFormCreated(object sender, ASPxGridViewEditFormEventArgs e)
         {
-            ASPxFormLayout formLayout = gridModulo.FindEditFormTemplateControl("FormLayoutModulo") as ASPxFormLayout;
-            if (formLayout != null)
-            {
-                LayoutItem layoutItem = formLayout.FindItemByFieldName("layoutItemActivo");
-                if (gridModulo.IsNewRowEditing)
-                {
-                    layoutItem.Visible = false;
-                }
-                else
-                {
-                    layoutItem.Visible = true;
-                }
-            }
+            //ASPxFormLayout formLayout = gridModulo.FindEditFormTemplateControl("FormLayoutModulo") as ASPxFormLayout;
+            //if (formLayout != null)
+            //{
+            //    LayoutItem layoutItem = formLayout.FindItemByFieldName("layoutItemActivo");
+            //    if (gridModulo.IsNewRowEditing)
+            //    {
+            //        layoutItem.Visible = false;
+            //    }
+            //    else
+            //    {
+            //        layoutItem.Visible = true;
+            //    }
+            //}
         }
 
         #region Métodos de Mensajes

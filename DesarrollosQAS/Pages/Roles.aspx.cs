@@ -1,9 +1,10 @@
 ﻿using DataAccessDesarrollos;
 using DataAccessDesarrollos.Repositorios;
-using DevExpress.Web;
 using DesarrollosQAS.Model;
+using DevExpress.Web;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 
 namespace DesarrollosQAS.Pages
@@ -29,7 +30,7 @@ namespace DesarrollosQAS.Pages
         protected void gridRoles_DataBinding(object sender, EventArgs e)
         {
             var repo = new RolesRepository();
-            gridRoles.DataSource = repo.ObtenerRoles();
+            gridRoles.DataSource = repo.ObtenerRoles().OrderBy(p => p.id_rol).ToList();
         }
 
         private Control FindControlRecursive(Control root, string id)
