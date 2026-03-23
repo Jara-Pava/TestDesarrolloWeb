@@ -91,7 +91,7 @@ namespace DesarrollosQAS.Pages
                 if (repo.ExisteTipoVisitaConNombre(tipoFormulario.Visita, idTipoVisita))
                 {
                     e.Cancel = true;
-                    MostrarError($"Proceso no exitoso, ya existe el Tipo de Visita con el nombre \"{tipoFormulario.Visita}\".");
+                    MostrarError($"Ya existe el Tipo de Visita con el nombre \"{tipoFormulario.Visita}\".");
                     return;
                 }
 
@@ -108,7 +108,7 @@ namespace DesarrollosQAS.Pages
 
                 e.Cancel = true;
                 gridTiposVisita.DataBind();
-                MostrarExitoConCierre($"Proceso exitoso, se ha actualizado el tipo de visita {tipoActualizado.Visita}.");
+                MostrarExitoConCierre($"Se ha actualizado el tipo de visita {tipoActualizado.Visita}.");
             }
             catch (Exception ex)
             {
@@ -142,7 +142,7 @@ namespace DesarrollosQAS.Pages
                 if (repo.ExisteTipoVisitaConNombre(tipoFormulario.Visita))
                 {
                     e.Cancel = true;
-                    MostrarError($"Proceso no exitoso, ya existe el Tipo de Visita con el nombre \"{tipoFormulario.Visita}\".");
+                    MostrarError($"Ya existe el Tipo de Visita con el nombre \"{tipoFormulario.Visita}\".");
                     return;
                 }
 
@@ -157,7 +157,7 @@ namespace DesarrollosQAS.Pages
 
                 e.Cancel = true;
                 gridTiposVisita.DataBind();
-                MostrarExitoConCierre($"Proceso exitoso, se ha creado el tipo de visita {nuevoTipo.Visita}.");
+                MostrarExitoConCierre($"Se ha creado el tipo de visita {nuevoTipo.Visita}.");
             }
             catch (Exception ex)
             {
@@ -180,12 +180,12 @@ namespace DesarrollosQAS.Pages
                     var repo = new SolicitudRHRepository();
                     repo.EliminarTipoVisita(id);
                     gridTiposVisita.DataBind();
-                    MostrarExito($"Proceso exitoso al eliminar el Tipo de Visita {nombre}.");
+                    MostrarExito($"Se ha eliminado el Tipo de Visita {nombre}.");
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Trace.TraceError("Error al eliminar TipoVisita: {0}", ex);
-                    MostrarError($"Proceso no exitoso al eliminar el Tipo de Visita {nombre}: {ex.Message}");
+                    MostrarError($"No se ha podido eliminar el Tipo de Visita {nombre}: {ex.Message}");
                 }
             }
         }

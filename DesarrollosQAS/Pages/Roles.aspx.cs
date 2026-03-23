@@ -76,7 +76,7 @@ namespace DesarrollosQAS.Pages
                 if (string.IsNullOrWhiteSpace(nombre))
                 {
                     e.Cancel = true;
-                    MostrarError("Error el nombre del rol es requerido.");
+                    MostrarError("Error el nombre del Rol es requerido.");
                     return;
                 }
 
@@ -87,7 +87,7 @@ namespace DesarrollosQAS.Pages
                 if (repo.ExisteRolConNombre(nombre, idRol))
                 {
                     e.Cancel = true;
-                    MostrarError($"Ya existe otro rol con el nombre \"{nombre}\".");
+                    MostrarError($"Ya existe el rol con el nombre \"{nombre}\".");
                     return;
                 }
 
@@ -174,13 +174,13 @@ namespace DesarrollosQAS.Pages
 
                 e.Cancel = true;
                 gridRoles.DataBind();
-                MostrarExitoConCierre($"Proceso exitoso al crear el rol {nombre}.");
+                MostrarExitoConCierre($"Proceso exitoso al crear el Rol {nombre}.");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Error en RowInserting Rol: {0}", ex);
                 e.Cancel = true;
-                MostrarError($"Proceso no exitoso al crear el rol: {ex.Message}");
+                MostrarError($"Proceso no exitoso al crear el Rol: {ex.Message}");
             }
         }
 
@@ -203,12 +203,12 @@ namespace DesarrollosQAS.Pages
                     repo.EliminarRol(id);
 
                     gridRoles.DataBind();
-                    MostrarExito($"Proceso exitoso al eliminar el rol {nombre}.");
+                    MostrarExito($"Proceso exitoso al eliminar el Rol {nombre}.");
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Trace.TraceError("Error al eliminar rol: {0}", ex);
-                    MostrarError($"Proceso no exitoso al eliminar el rol {nombre}: {ex.Message}");
+                    MostrarError($"Proceso no exitoso al eliminar el Rol {nombre}: {ex.Message}");
                 }
             }
         }

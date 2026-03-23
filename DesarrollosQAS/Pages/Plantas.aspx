@@ -61,15 +61,10 @@
 
         // Manejar botón personalizado de eliminar
         function OnCustomButtonClickPlantas(s, e) {
-            if (e.buttonID === 'btnDeleteRol') {
+            if (e.buttonID === 'btnDeletePlanta') {
                 e.processOnServer = false;
                 currentDeleteIndex = e.visibleIndex;
                 pcConfirmarEliminacion.Show();
-            }
-            else if (e.buttonID == "btnAsignarModulo") {
-                e.processOnServer = false;
-                var idRol = s.GetRowKey(e.visibleIndex);
-                window.location.href = 'Modulo.aspx?idRol=' + idRol;
             }
         }
 
@@ -110,7 +105,7 @@
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">
                 <div style="padding: 30px; text-align: center;">
-                    <dx:ASPxLabel runat="server" Text="¿Está seguro que desea eliminar este rol?" Font-Size="16px" Font-Bold="true" />
+                    <dx:ASPxLabel runat="server" Text="¿Está seguro que desea eliminar esta Planta?" Font-Size="16px" Font-Bold="true" />
                     <br />
                     <br />
                 </div>
@@ -197,7 +192,7 @@
                 ShowEditButton="true"
                 ButtonRenderMode="Image">
                 <CustomButtons>
-                    <dx:GridViewCommandColumnCustomButton ID="btnDeleteRol" Text="Eliminar">
+                    <dx:GridViewCommandColumnCustomButton ID="btnDeletePlanta" Text="Eliminar">
                         <Image Url="~/Images/delete.png" Width="18px" Height="18px" ToolTip="Eliminar" />
                     </dx:GridViewCommandColumnCustomButton>
                 </CustomButtons>

@@ -116,7 +116,7 @@ namespace DesarrollosQAS.Pages
                 if (repo.ExisteContratistaConNombre(plantaFormulario.NombrePlanta, idPlanta))
                 {
                     e.Cancel = true;
-                    MostrarError($"Proceso no exitoso, ya existe la Planta con el nombre\"{plantaFormulario.NombrePlanta}\". ");
+                    MostrarError($"Ya existe la Planta con el nombre\"{plantaFormulario.NombrePlanta}\". ");
                     return;
                 }
 
@@ -127,12 +127,12 @@ namespace DesarrollosQAS.Pages
 
                 e.Cancel = true;
                 gridPlantas.DataBind();
-                MostrarExitoConCierre($"Proceso Exitoso se ha actualizado la planta {plantaActualizado.NombrePlanta}");
+                MostrarExitoConCierre($"Se ha actualizado la planta {plantaActualizado.NombrePlanta}");
             }
             catch (Exception ex)
             {
                 e.Cancel = true;
-                MostrarError("Ocurrió un error al actualizar el contratista: " + ex.Message);
+                MostrarError("Ocurrió un error al actualizar la planta: " + ex.Message);
             }
         }
 
@@ -162,7 +162,7 @@ namespace DesarrollosQAS.Pages
                 if (repo.ExistePlantaConNombre(plantaFormulario.NombrePlanta))
                 {
                     e.Cancel = true;
-                    MostrarError($"Proceso no exitoso, ya existe la Planta con el nombre\"{plantaFormulario.NombrePlanta}\". ");
+                    MostrarError($"Ya existe la Planta con el nombre\"{plantaFormulario.NombrePlanta}\". ");
                     return;
                 }
 
@@ -174,12 +174,12 @@ namespace DesarrollosQAS.Pages
 
                 if (!repo.CrearPlanta(nuevaPlanta))
                 {
-                    throw new ApplicationException("No se ha podido crear el contratista.");
+                    throw new ApplicationException("No se ha podido crear la Planta.");
                 }
 
                 e.Cancel = true;
                 gridPlantas.DataBind();
-                MostrarExitoConCierre($"Proceso exitoso se ha creado la Planta {nuevaPlanta.NombrePlanta}.");
+                MostrarExitoConCierre($"Se ha creado la Planta {nuevaPlanta.NombrePlanta}.");
 
             }
             catch (Exception ex)
@@ -204,7 +204,7 @@ namespace DesarrollosQAS.Pages
                     repo.EliminarPlanta(id);
 
                     gridPlantas.DataBind();
-                    MostrarExito($"Proceso exitoso al eliminar la Planta {nombre}.");
+                    MostrarExito($"Se ha eliminado la Planta {nombre}.");
                 }
                 catch (Exception ex)
                 {

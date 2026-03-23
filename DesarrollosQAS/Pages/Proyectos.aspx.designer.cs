@@ -78,12 +78,12 @@ namespace DesarrollosQAS.Pages
         protected global::DevExpress.Web.ASPxGridView gridProyectos;
 
         /// <summary>
-        /// btnDeleteRol control.
+        /// btnDeleteProyecto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.GridViewCommandColumnCustomButton btnDeleteRol;
+        protected global::DevExpress.Web.GridViewCommandColumnCustomButton btnDeleteProyecto;
     }
 }

@@ -84,7 +84,7 @@ namespace DesarrollosQAS.Pages
                 if (repo.ExisteProyectoConNombre(proyectoFormulario.NombreProyecto, idProyecto))
                 {
                     e.Cancel = true;
-                    MostrarError($"Proceso no exitoso, ya existe el Proyecto con el nombre \"{proyectoFormulario.NombreProyecto}\".");
+                    MostrarError($"Ya existe el Proyecto con el nombre \"{proyectoFormulario.NombreProyecto}\".");
                     return;
                 }
 
@@ -100,7 +100,7 @@ namespace DesarrollosQAS.Pages
 
                 e.Cancel = true;
                 gridProyectos.DataBind();
-                MostrarExitoConCierre($"Proceso exitoso, se ha actualizado el proyecto {proyectoActualizado.NombreProyecto}.");
+                MostrarExitoConCierre($"Se ha actualizado el proyecto {proyectoActualizado.NombreProyecto}.");
             }
             catch (Exception ex)
             {
@@ -134,7 +134,7 @@ namespace DesarrollosQAS.Pages
                 if (repo.ExisteProyectoConNombre(proyectoFormulario.NombreProyecto))
                 {
                     e.Cancel = true;
-                    MostrarError($"Proceso no exitoso, ya existe el Proyecto con el nombre \"{proyectoFormulario.NombreProyecto}\".");
+                    MostrarError($"Ya existe el Proyecto con el nombre \"{proyectoFormulario.NombreProyecto}\".");
                     return;
                 }
 
@@ -148,7 +148,7 @@ namespace DesarrollosQAS.Pages
 
                 e.Cancel = true;
                 gridProyectos.DataBind();
-                MostrarExitoConCierre($"Proceso exitoso, se ha creado el proyecto {nuevoProyecto.NombreProyecto}.");
+                MostrarExitoConCierre($"Se ha creado el proyecto {nuevoProyecto.NombreProyecto}.");
             }
             catch (Exception ex)
             {
@@ -171,7 +171,7 @@ namespace DesarrollosQAS.Pages
                     var repo = new SolicitudRHRepository();
                     repo.EliminarProyecto(id);
                     gridProyectos.DataBind();
-                    MostrarExito($"Proceso exitoso al eliminar el Proyecto {nombre}.");
+                    MostrarExito($"Se ha eliminado el Proyecto {nombre}.");
                 }
                 catch (Exception ex)
                 {
