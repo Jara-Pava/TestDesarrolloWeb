@@ -26,7 +26,9 @@ namespace DataAccessDesarrollos.Repositorios
                         nombre = rdr["nombre"] != DBNull.Value ? rdr["nombre"].ToString() : string.Empty,
                         sigla_red = rdr["sigla_red"] != DBNull.Value ? rdr["sigla_red"].ToString() : string.Empty,
                         activo = rdr["activo"] != DBNull.Value && Convert.ToBoolean(rdr["activo"]),
-                        Email = rdr["Email"] != DBNull.Value ? rdr["Email"].ToString() : string.Empty
+                        Email = rdr["Email"] != DBNull.Value ? rdr["Email"].ToString() : string.Empty,
+                        creado_por = rdr["creado_por"] != DBNull.Value ? rdr["creado_por"].ToString() : string.Empty,
+                        modificado_por = rdr["modificado_por"] != DBNull.Value ? rdr["modificado_por"].ToString() : string.Empty
                     });
 
                     return lista ?? new List<Usuario>();
@@ -53,6 +55,7 @@ namespace DataAccessDesarrollos.Repositorios
                         cmd.Parameters.AddWithValue("@sigla_red", usuario.sigla_red ?? string.Empty);
                         cmd.Parameters.AddWithValue("@activo", usuario.activo);
                         cmd.Parameters.AddWithValue("@Email", usuario.Email ?? string.Empty);
+                        cmd.Parameters.AddWithValue("@creado_por", (object)usuario.creado_por ?? DBNull.Value);
                     });
 
                     return true;
@@ -80,6 +83,7 @@ namespace DataAccessDesarrollos.Repositorios
                         cmd.Parameters.AddWithValue("@sigla_red", usuario.sigla_red ?? string.Empty);
                         cmd.Parameters.AddWithValue("@activo", usuario.activo);
                         cmd.Parameters.AddWithValue("@Email", usuario.Email ?? string.Empty);
+                        cmd.Parameters.AddWithValue("@modificado_por", (object)usuario.modificado_por ?? DBNull.Value);
                     });
 
                     return rows > 0;
@@ -131,7 +135,7 @@ namespace DataAccessDesarrollos.Repositorios
             {
                 Trace.TraceError("Error en ExisteUsuario: {0}", ex);
                 mensajeError = "Error al validar la existencia del usuario.";
-                return true; // Por seguridad, retornamos true para evitar duplicados en caso de error
+                return true;
             }
         }
 
@@ -160,7 +164,7 @@ namespace DataAccessDesarrollos.Repositorios
             {
                 Trace.TraceError("Error en ExisteUsuarioEmail: {0}", ex);
                 mensajeError = "Proceso no exitoso ha ocurrido un error en el servicio ExisteUsuarioEmail.";
-                return true; // Por seguridad, retornamos true para evitar duplicados en caso de error
+                return true;
             }
         }
 
@@ -172,7 +176,6 @@ namespace DataAccessDesarrollos.Repositorios
             {
                 using (var da = new DataAccess())
                 {
-                    // Eliminación lógica: desactivar el usuario en lugar de borrarlo
                     int rows = da.ExecuteNonQueryByCode("usp_SoftDeleteUser", cmd =>
                     {
                         cmd.Parameters.AddWithValue("@id_usuario", id);

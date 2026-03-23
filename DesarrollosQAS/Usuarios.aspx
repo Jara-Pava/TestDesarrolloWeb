@@ -188,7 +188,7 @@
             gridUsuarios.PerformCallback('FILTER|' + s.GetValue());
         }
 
-</script>
+    </script>
 
     <div style="padding-top: 8px">
         <dx:ASPxLabel runat="server" ID="ASPxLabel1" Text="Usuarios" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
@@ -196,7 +196,7 @@
     <br />
 
     <!-- Filtro de estado -->
-    <div style="margin-bottom: 3%; display: flex; align-items:center; flex-direction:row; justify-content:flex-end">
+    <div style="margin-bottom: 3%; display: flex; align-items: center; flex-direction: row; justify-content: flex-end">
         <dx:ASPxLabel runat="server" Text="Estatus:" Font-Bold="true" Style="margin-right: 8px;" />
         <dx:ASPxComboBox ID="cmbFiltroEstado" runat="server" Width="200px"
             ClientInstanceName="cmbFiltroEstado"
@@ -326,8 +326,10 @@
                 </PropertiesTextEdit>
             </dx:GridViewDataTextColumn>
             <dx:GridViewDataCheckColumn FieldName="activo" Caption="Activo" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="creado_por" Caption="Creado Por" HeaderStyle-HorizontalAlign="Center" ReadOnly="true" CellStyle-HorizontalAlign="Center"/>
+            <dx:GridViewDataTextColumn FieldName="modificado_por" Caption="Modificado Por" HeaderStyle-HorizontalAlign="Center" ReadOnly="true" CellStyle-HorizontalAlign="Center" />
         </Columns>
-        <Settings/>
+        <Settings />
         <Templates>
             <EditForm>
                 <div style="padding: 20px;">

@@ -8,12 +8,12 @@ namespace DesarrollosQAS.Model
     public class ApplicationUser
     {
         public int IdUsuario { get; set; }
-        public string UserName { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string AvatarUrl { get; set; }
+        public string Nombre { get;set; }
+        public string Sigla_red { get; set; }
         public bool Activo { get; set; }
+        public string Email { get; set; }
+        public string Creado_por { get; set; }
+        public string Modificado_por { get; set; }
     }
 
     public static class AuthHelper
@@ -44,12 +44,12 @@ namespace DesarrollosQAS.Model
                 HttpContext.Current.Session["User"] = new ApplicationUser
                 {
                     IdUsuario = usuario.id_usuario,
-                    UserName = usuario.sigla_red,
-                    FirstName = usuario.nombre,
-                    LastName = string.Empty,
+                    Nombre = usuario.nombre,
+                    Sigla_red = usuario.sigla_red,
                     Email = usuario.Email,
-                    AvatarUrl = "~/Content/Photo/default.jpg",
-                    Activo = usuario.activo
+                    Activo = usuario.activo,
+                    Creado_por = usuario.creado_por,
+                    Modificado_por = usuario.modificado_por
                 };
 
                 return true;

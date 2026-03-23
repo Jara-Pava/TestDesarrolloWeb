@@ -15,6 +15,8 @@ namespace DataAccessDesarrollos
         public string sigla_red { get; set; }
         public bool activo { get; set; }
         public string Email { get; set; }
+        public string creado_por { get; set; }
+        public string modificado_por { get; set; }
     }
 
     public class UsuarioRol

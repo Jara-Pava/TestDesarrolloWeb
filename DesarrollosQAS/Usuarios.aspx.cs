@@ -1,5 +1,6 @@
 ﻿using DataAccessDesarrollos;
 using DataAccessDesarrollos.Repositorios;
+using DesarrollosQAS.Model;
 using DevExpress.Web;
 using DevExpress.XtraExport.Helpers;
 using System;
@@ -29,6 +30,15 @@ namespace DesarrollosQAS
             gridUsuarios.StylesPopup.EditForm.Header.BackColor = System.Drawing.ColorTranslator.FromHtml("#353943");
             gridUsuarios.StylesPopup.EditForm.Header.ForeColor = System.Drawing.Color.White;
             gridUsuarios.StylesPopup.EditForm.Header.Font.Bold = true;
+        }
+
+        /// <summary>
+        /// Obtiene la sigla de red del usuario logueado actualmente
+        /// </summary>
+        private string ObtenerUsuarioActual()
+        {
+            var user = AuthHelper.GetLoggedInUserInfo();
+            return user?.Sigla_red ?? "Sistema";
         }
 
         private void BindGrid()
@@ -202,7 +212,8 @@ namespace DesarrollosQAS
                     nombre = nombre,
                     sigla_red = siglaRed,
                     Email = email,
-                    activo = activo
+                    activo = activo,
+                    creado_por = ObtenerUsuarioActual()
                 };
 
                 if (!repo.CrearUsuario(usuario))
@@ -258,7 +269,8 @@ namespace DesarrollosQAS
                     nombre = nombre,
                     sigla_red = siglaRedOriginal,
                     Email = email,
-                    activo = activo
+                    activo = activo,
+                    modificado_por = ObtenerUsuarioActual()
                 };
 
                 var repo = new UsuarioSistemaRepository();
