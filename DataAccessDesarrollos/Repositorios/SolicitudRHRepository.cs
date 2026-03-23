@@ -275,6 +275,182 @@ namespace DataAccessDesarrollos.Repositorios
             }
         }
 
+        // Validar si existe una planta con el mismo nombre (excluyendo un ID específico para actualizaciones)
+        public bool ExistePlantaConNombre(string nombre, int? idPlanta = null)
+        {
+            try
+            {
+                var plantas = ObtenerPlantas();
+                return plantas.Any(p =>
+                    p.NombrePlanta.Equals(nombre, StringComparison.OrdinalIgnoreCase) &&
+                    (!idPlanta.HasValue || p.ID_Planta != idPlanta.Value));
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error ExistePlantaConNombre: {0}", ex);
+                return false;
+            }
+        }
+
+        // Stored Procedure Crear planta
+        public bool CrearPlanta(Planta item)
+        {
+            if (item == null) return false;
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    var result = da.ExecuteScalarByCode("rhsp_InsertPlanta", cmd =>
+                    {
+                        cmd.Parameters.AddWithValue("@Planta", item.NombrePlanta ?? string.Empty);
+                    });
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        item.ID_Planta = Convert.ToInt32(result);
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error CrearPlanta: {0}", ex);
+                return false;
+            }
+        }
+
+        // Stored Procedure Actualizar planta
+        public bool ActualizarPlanta(Planta planta)
+        {
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    int result = da.ExecuteNonQueryByCode("rhsp_UpdatePlanta", cmd =>
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@ID_Planta", planta.ID_Planta));
+                        cmd.Parameters.Add(new SqlParameter("@Planta", planta.NombrePlanta));
+                        cmd.Parameters.Add(new SqlParameter("@Activo", planta.Activo));
+                    });
+                    return result > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error ActualizarPlanta: {0}", ex);
+                return false;
+            }
+        }
+
+        // Stored Procedure Eliminar planta
+        public bool EliminarPlanta(int idPlanta)
+        {
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    int result = da.ExecuteNonQueryByCode("rhsp_DeletePlanta", cmd =>
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@ID_Planta", idPlanta));
+                    });
+                    return result > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error EliminarPlanta: {0}", ex);
+                return false;
+            }
+        }
+
+        public bool ExisteProyectoConNombre(string nombre, int? idProyecto = null)
+        {
+            try
+            {
+                var proyectos = ObtenerProyectos();
+                return proyectos.Any(p =>
+                    p.NombreProyecto.Equals(nombre, StringComparison.OrdinalIgnoreCase) &&
+                    (!idProyecto.HasValue || p.ID_Proyecto != idProyecto.Value));
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error ExisteProyectoConNombre: {0}", ex);
+                return false;
+            }
+        }
+
+        // Stored Procedure Crear proyecto
+        public bool CrearProyecto(Proyecto item)
+        {
+            if (item == null) return false;
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    var result = da.ExecuteScalarByCode("rhsp_InsertProyecto", cmd =>
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@Proyecto", item.NombreProyecto ?? string.Empty));
+                    });
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        item.ID_Proyecto = Convert.ToInt32(result);
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error CrearProyecto: {0}", ex);
+                return false;
+            }
+        }
+
+        // Stored Procedure Actualizar proyecto
+        public bool ActualizarProyecto(Proyecto proyecto)
+        {
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    int result = da.ExecuteNonQueryByCode("rhsp_UpdateProyecto", cmd =>
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@ID_Proyecto", proyecto.ID_Proyecto));
+                        cmd.Parameters.Add(new SqlParameter("@Proyecto", proyecto.NombreProyecto));
+                        cmd.Parameters.Add(new SqlParameter("@Activo", proyecto.Activo));
+                    });
+                    return result > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error ActualizarProyecto: {0}", ex);
+                return false;
+            }
+        }
+
+        // Stored Procedure Eliminar proyecto
+        public bool EliminarProyecto(int idProyecto)
+        {
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    int result = da.ExecuteNonQueryByCode("rhsp_DeleteProyecto", cmd =>
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@ID_Proyecto", idProyecto));
+                    });
+                    return result > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error EliminarProyecto: {0}", ex);
+                return false;
+            }
+        }
         public List<Proyecto> ObtenerProyectos()
         {
             try
@@ -294,6 +470,96 @@ namespace DataAccessDesarrollos.Repositorios
             {
                 Trace.TraceError("Error ObtenerProyectos: {0}", ex);
                 return new List<Proyecto>();
+            }
+        }
+
+        public bool ExisteTipoVisitaConNombre(string nombre, int? idTipoVisita = null)
+        {
+            try
+            {
+                var tipos = ObtenerTiposSolicitud();
+                return tipos.Any(t =>
+                    t.Visita.Equals(nombre, StringComparison.OrdinalIgnoreCase) &&
+                    (!idTipoVisita.HasValue || t.ID_TipoVisita != idTipoVisita.Value));
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error ExisteTipoVisitaConNombre: {0}", ex);
+                return false;
+            }
+        }
+
+        // Stored Procedure Crear tipo de visita
+        public bool CrearTipoVisita(TipoVisitante item)
+        {
+            if (item == null) return false;
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    var result = da.ExecuteScalarByCode("rhsp_InsertTipoVisita", cmd =>
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@Visita", item.Visita ?? string.Empty));
+                        cmd.Parameters.Add(new SqlParameter("@Estancia", (object)item.Estancia ?? DBNull.Value));
+                    });
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        item.ID_TipoVisita = Convert.ToInt32(result);
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error CrearTipoVisita: {0}", ex);
+                return false;
+            }
+        }
+
+        // Stored Procedure Actualizar tipo de visita
+        public bool ActualizarTipoVisita(TipoVisitante item)
+        {
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    int result = da.ExecuteNonQueryByCode("rhsp_UpdateTipoVisita", cmd =>
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@ID_TipoVisita", item.ID_TipoVisita));
+                        cmd.Parameters.Add(new SqlParameter("@Visita", item.Visita ?? string.Empty));
+                        cmd.Parameters.Add(new SqlParameter("@Activo", item.Activo));
+                        cmd.Parameters.Add(new SqlParameter("@Estancia", (object)item.Estancia ?? DBNull.Value));
+                    });
+                    return result > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error ActualizarTipoVisita: {0}", ex);
+                return false;
+            }
+        }
+
+        // Stored Procedure Eliminar tipo de visita
+        public bool EliminarTipoVisita(int idTipoVisita)
+        {
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    int result = da.ExecuteNonQueryByCode("rhsp_DeleteTipoVisita", cmd =>
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@ID_TipoVisita", idTipoVisita));
+                    });
+                    return result > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error EliminarTipoVisita: {0}", ex);
+                return false;
             }
         }
 

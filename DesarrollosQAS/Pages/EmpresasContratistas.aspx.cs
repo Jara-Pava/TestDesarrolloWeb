@@ -262,7 +262,19 @@ namespace DesarrollosQAS.Pages
 
         protected void gridContratistas_HtmlEditFormCreated(object sender, DevExpress.Web.ASPxGridViewEditFormEventArgs e)
         {
-
+            ASPxFormLayout formLayout = gridContratistas.FindEditFormTemplateControl("FormLayoutContratistas") as ASPxFormLayout;
+            if (formLayout != null)
+            {
+                LayoutItem layoutItem = formLayout.FindItemByFieldName("layoutItemActivo");
+                if (gridContratistas.IsNewRowEditing)
+                {
+                    layoutItem.Visible = false;
+                }
+                else
+                {
+                    layoutItem.Visible = true;
+                }
+            }
         }
         #region Métodos de Mensajes
 

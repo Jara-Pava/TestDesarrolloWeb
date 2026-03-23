@@ -254,7 +254,7 @@
                                 </dx:LayoutItem>
 
                                 <%-- TextBox Email--%>
-                                <dx:LayoutItem Caption="Email" ColumnSpan="2">
+                                <dx:LayoutItem Caption="Email" ColumnSpan="1">
                                     <%--<ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>--%>
                                     <LayoutItemNestedControlCollection>
                                         <dx:LayoutItemNestedControlContainer runat="server">
@@ -266,7 +266,6 @@
 
                                 <%-- TextBox telefono--%>
                                 <dx:LayoutItem Caption="Telefono" ColumnSpan="1">
-                                    <%--<ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>--%>
                                     <LayoutItemNestedControlCollection>
                                         <dx:LayoutItemNestedControlContainer runat="server">
                                             <dx:ASPxTextBox ID="txtTelefono" runat="server" Width="100%" ClientInstanceName="txtTelefono"
@@ -276,7 +275,7 @@
                                 </dx:LayoutItem>
 
                                 <%-- Activo --%>
-                                <dx:LayoutItem ColumnSpan="1" FieldName="layoutItemActivo" Caption="Activo" CaptionSettings-Location="Left">
+                                <dx:LayoutItem ColumnSpan="2" FieldName="layoutItemActivo" Caption="Activo" CaptionSettings-Location="Left">
                                     <%--<CaptionSettings Location="Top"/>--%>
                                     <%--<ParentContainerStyle Paddings-PaddingRight="12"></ParentContainerStyle>--%>
                                     <LayoutItemNestedControlCollection>
