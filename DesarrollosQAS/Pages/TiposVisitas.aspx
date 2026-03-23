@@ -189,6 +189,10 @@
             <dx:GridViewDataTextColumn FieldName="Visita" Caption="Tipo de Visita" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataTextColumn FieldName="Estancia" Caption="Estancia" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataCheckColumn FieldName="Activo" Caption="Activo" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="creado_por" Visible="false" ReadOnly="True" />
+            <dx:GridViewDataTextColumn FieldName="nombre_creador" Caption="Creado por" ReadOnly="True" Width="150" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="modificado_por" Visible="false" ReadOnly="True" />
+            <dx:GridViewDataTextColumn FieldName="nombre_modificador" Caption="Modificado por" ReadOnly="True" Width="150" HeaderStyle-HorizontalAlign="Center" />
         </Columns>
 
         <Templates>

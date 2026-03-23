@@ -78,6 +78,7 @@ namespace DesarrollosQAS.Pages
                 }
 
                 int idProyecto = Convert.ToInt32(e.Keys["ID_Proyecto"]);
+                int idUsuarioActual = Model.AuthHelper.GetCurrentUserId();
 
                 var repo = new SolicitudRHRepository();
 
@@ -92,7 +93,8 @@ namespace DesarrollosQAS.Pages
                 {
                     ID_Proyecto = idProyecto,
                     NombreProyecto = proyectoFormulario.NombreProyecto,
-                    Activo = proyectoFormulario.Activo
+                    Activo = proyectoFormulario.Activo,
+                    modificado_por = idUsuarioActual > 0 ? (int?)idUsuarioActual : null
                 };
 
                 if (!repo.ActualizarProyecto(proyectoActualizado))
@@ -138,9 +140,12 @@ namespace DesarrollosQAS.Pages
                     return;
                 }
 
+                int idUsuarioActual = Model.AuthHelper.GetCurrentUserId();
+
                 Proyecto nuevoProyecto = new Proyecto
                 {
-                    NombreProyecto = proyectoFormulario.NombreProyecto
+                    NombreProyecto = proyectoFormulario.NombreProyecto,
+                    creado_por = idUsuarioActual > 0 ? (int?)idUsuarioActual : null
                 };
 
                 if (!repo.CrearProyecto(nuevoProyecto))

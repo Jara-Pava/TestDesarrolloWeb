@@ -40,13 +40,20 @@ namespace DataAccessDesarrollos
         public string Visita { get; set; }
         public bool Activo { get; set; }
         public string Estancia { get; set; }
+        public int? creado_por { get; set; }
+        public string nombre_creador { get; set; }
+        public int? modificado_por { get; set; }
+        public string nombre_modificador { get; set; }
     }
-
     public class Proyecto
     {
         public int ID_Proyecto { get; set; }
         public string NombreProyecto { get; set; }
         public bool Activo { get; set; }
+        public int? creado_por { get; set; }
+        public string nombre_creador { get; set; }
+        public int? modificado_por { get; set; }
+        public string nombre_modificador { get; set; }
     }
 
     public class Planta
@@ -54,6 +61,10 @@ namespace DataAccessDesarrollos
         public int ID_Planta { get; set; }
         public string NombrePlanta { get; set; }
         public bool Activo { get; set; }
+        public int? creado_por { get; set; }
+        public string nombre_creador { get; set; }
+        public int? modificado_por { get; set; }
+        public string nombre_modificador { get; set; }
     }
 
     public class EmpresaContratista
@@ -65,5 +76,9 @@ namespace DataAccessDesarrollos
         public string Email { get; set; }
         public string Telefono { get; set; }
         public bool Activo { get; set; }
+        public int? creado_por { get; set; }
+        public string nombre_creador { get; set; }
+        public int? modificado_por { get; set; }
+        public string nombre_modificador { get; set; }
     }
 }

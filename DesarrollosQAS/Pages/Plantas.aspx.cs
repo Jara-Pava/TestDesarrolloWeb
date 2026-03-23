@@ -92,7 +92,6 @@ namespace DesarrollosQAS.Pages
             {
                 Planta plantaFormulario = ObtenerValoresFormulario();
 
-                // Validar formulario
                 if (!ValidarFormulario(plantaFormulario, out List<string> errores))
                 {
                     e.Cancel = true;
@@ -100,15 +99,16 @@ namespace DesarrollosQAS.Pages
                     MostrarError(mensajeError);
                     return;
                 }
+
                 int idPlanta = Convert.ToInt32(e.Keys["ID_Planta"]);
+                int idUsuarioActual = Model.AuthHelper.GetCurrentUserId();
 
-
-                // Crear objeto con datos actualizados
                 Planta plantaActualizado = new Planta
                 {
                     ID_Planta = idPlanta,
                     NombrePlanta = plantaFormulario.NombrePlanta,
-                    Activo = plantaFormulario.Activo
+                    Activo = plantaFormulario.Activo,
+                    modificado_por = idUsuarioActual > 0 ? (int?)idUsuarioActual : null
                 };
 
                 var repo = new SolicitudRHRepository();
@@ -149,7 +149,6 @@ namespace DesarrollosQAS.Pages
 
             try
             {
-                // Validar formulario
                 if (!ValidarFormulario(plantaFormulario, out List<string> errores))
                 {
                     e.Cancel = true;
@@ -166,10 +165,12 @@ namespace DesarrollosQAS.Pages
                     return;
                 }
 
-                // Crear objeto con datos del nuevo contratista
+                int idUsuarioActual = Model.AuthHelper.GetCurrentUserId();
+
                 Planta nuevaPlanta = new Planta
                 {
-                    NombrePlanta = plantaFormulario.NombrePlanta
+                    NombrePlanta = plantaFormulario.NombrePlanta,
+                    creado_por = idUsuarioActual > 0 ? (int?)idUsuarioActual : null
                 };
 
                 if (!repo.CrearPlanta(nuevaPlanta))
@@ -180,7 +181,6 @@ namespace DesarrollosQAS.Pages
                 e.Cancel = true;
                 gridPlantas.DataBind();
                 MostrarExitoConCierre($"Se ha creado la Planta {nuevaPlanta.NombrePlanta}.");
-
             }
             catch (Exception ex)
             {

@@ -131,7 +131,6 @@ namespace DataAccessDesarrollos.Repositorios
             }
         }
 
-        //SP valido
         public List<EmpresaContratista> ObtenerContratistas()
         {
             try
@@ -146,7 +145,11 @@ namespace DataAccessDesarrollos.Repositorios
                         Responsable = rdr["Responsable"] != DBNull.Value ? rdr["Responsable"].ToString() : string.Empty,
                         Email = rdr["Email"] != DBNull.Value ? rdr["Email"].ToString() : string.Empty,
                         Telefono = rdr["Telefono"] != DBNull.Value ? rdr["Telefono"].ToString() : string.Empty,
-                        Activo = rdr["Activo"] != DBNull.Value ? Convert.ToBoolean(rdr["Activo"]) : false
+                        Activo = rdr["Activo"] != DBNull.Value ? Convert.ToBoolean(rdr["Activo"]) : false,
+                        creado_por = rdr["creado_por"] != DBNull.Value ? Convert.ToInt32(rdr["creado_por"]) : (int?)null,
+                        nombre_creador = rdr["nombre_creador"] != DBNull.Value ? rdr["nombre_creador"].ToString() : null,
+                        modificado_por = rdr["modificado_por"] != DBNull.Value ? Convert.ToInt32(rdr["modificado_por"]) : (int?)null,
+                        nombre_modificador = rdr["nombre_modificador"] != DBNull.Value ? rdr["nombre_modificador"].ToString() : null
                     });
                     return lista ?? new List<EmpresaContratista>();
                 }
@@ -188,6 +191,7 @@ namespace DataAccessDesarrollos.Repositorios
                         cmd.Parameters.Add(new SqlParameter("@Responsable", contratista.Responsable));
                         cmd.Parameters.Add(new SqlParameter("@Email", contratista.Email));
                         cmd.Parameters.Add(new SqlParameter("@Telefono", contratista.Telefono));
+                        cmd.Parameters.Add(new SqlParameter("@creado_por", (object)contratista.creado_por ?? DBNull.Value));
                     });
                     if (result != null && result != DBNull.Value)
                     {
@@ -221,6 +225,7 @@ namespace DataAccessDesarrollos.Repositorios
                         cmd.Parameters.Add(new SqlParameter("@Email", contratista.Email));
                         cmd.Parameters.Add(new SqlParameter("@Telefono", contratista.Telefono));
                         cmd.Parameters.Add(new SqlParameter("@Activo", contratista.Activo));
+                        cmd.Parameters.Add(new SqlParameter("@modificado_por", (object)contratista.modificado_por ?? DBNull.Value));
                     });
                     return result > 0;
                 }
@@ -263,7 +268,11 @@ namespace DataAccessDesarrollos.Repositorios
                     {
                         ID_Planta = rdr["ID_Planta"] != DBNull.Value ? Convert.ToInt32(rdr["ID_Planta"]) : 0,
                         NombrePlanta = rdr["Planta"] != DBNull.Value ? rdr["Planta"].ToString() : string.Empty,
-                        Activo = rdr["Activo"] != DBNull.Value ? Convert.ToBoolean(rdr["Activo"]) : false
+                        Activo = rdr["Activo"] != DBNull.Value ? Convert.ToBoolean(rdr["Activo"]) : false,
+                        creado_por = rdr["creado_por"] != DBNull.Value ? Convert.ToInt32(rdr["creado_por"]) : (int?)null,
+                        nombre_creador = rdr["nombre_creador"] != DBNull.Value ? rdr["nombre_creador"].ToString() : null,
+                        modificado_por = rdr["modificado_por"] != DBNull.Value ? Convert.ToInt32(rdr["modificado_por"]) : (int?)null,
+                        nombre_modificador = rdr["nombre_modificador"] != DBNull.Value ? rdr["nombre_modificador"].ToString() : null
                     });
                     return lista ?? new List<Planta>();
                 }
@@ -274,6 +283,7 @@ namespace DataAccessDesarrollos.Repositorios
                 return new List<Planta>();
             }
         }
+
 
         // Validar si existe una planta con el mismo nombre (excluyendo un ID específico para actualizaciones)
         public bool ExistePlantaConNombre(string nombre, int? idPlanta = null)
@@ -303,6 +313,7 @@ namespace DataAccessDesarrollos.Repositorios
                     var result = da.ExecuteScalarByCode("rhsp_InsertPlanta", cmd =>
                     {
                         cmd.Parameters.AddWithValue("@Planta", item.NombrePlanta ?? string.Empty);
+                        cmd.Parameters.Add(new SqlParameter("@creado_por", (object)item.creado_por ?? DBNull.Value));
                     });
 
                     if (result != null && result != DBNull.Value)
@@ -332,6 +343,7 @@ namespace DataAccessDesarrollos.Repositorios
                         cmd.Parameters.Add(new SqlParameter("@ID_Planta", planta.ID_Planta));
                         cmd.Parameters.Add(new SqlParameter("@Planta", planta.NombrePlanta));
                         cmd.Parameters.Add(new SqlParameter("@Activo", planta.Activo));
+                        cmd.Parameters.Add(new SqlParameter("@modificado_por", (object)planta.modificado_por ?? DBNull.Value));
                     });
                     return result > 0;
                 }
@@ -391,6 +403,7 @@ namespace DataAccessDesarrollos.Repositorios
                     var result = da.ExecuteScalarByCode("rhsp_InsertProyecto", cmd =>
                     {
                         cmd.Parameters.Add(new SqlParameter("@Proyecto", item.NombreProyecto ?? string.Empty));
+                        cmd.Parameters.Add(new SqlParameter("@creado_por", (object)item.creado_por ?? DBNull.Value));
                     });
 
                     if (result != null && result != DBNull.Value)
@@ -420,6 +433,7 @@ namespace DataAccessDesarrollos.Repositorios
                         cmd.Parameters.Add(new SqlParameter("@ID_Proyecto", proyecto.ID_Proyecto));
                         cmd.Parameters.Add(new SqlParameter("@Proyecto", proyecto.NombreProyecto));
                         cmd.Parameters.Add(new SqlParameter("@Activo", proyecto.Activo));
+                        cmd.Parameters.Add(new SqlParameter("@modificado_por", (object)proyecto.modificado_por ?? DBNull.Value));
                     });
                     return result > 0;
                 }
@@ -461,7 +475,11 @@ namespace DataAccessDesarrollos.Repositorios
                     {
                         ID_Proyecto = rdr["ID_Proyecto"] != DBNull.Value ? Convert.ToInt32(rdr["ID_Proyecto"]) : 0,
                         NombreProyecto = rdr["Proyecto"] != DBNull.Value ? rdr["Proyecto"].ToString() : string.Empty,
-                        Activo = rdr["Activo"] != DBNull.Value ? Convert.ToBoolean(rdr["Activo"]) : false
+                        Activo = rdr["Activo"] != DBNull.Value ? Convert.ToBoolean(rdr["Activo"]) : false,
+                        creado_por = rdr["creado_por"] != DBNull.Value ? Convert.ToInt32(rdr["creado_por"]) : (int?)null,
+                        nombre_creador = rdr["nombre_creador"] != DBNull.Value ? rdr["nombre_creador"].ToString() : null,
+                        modificado_por = rdr["modificado_por"] != DBNull.Value ? Convert.ToInt32(rdr["modificado_por"]) : (int?)null,
+                        nombre_modificador = rdr["nombre_modificador"] != DBNull.Value ? rdr["nombre_modificador"].ToString() : null
                     });
                     return lista ?? new List<Proyecto>();
                 }
@@ -490,6 +508,7 @@ namespace DataAccessDesarrollos.Repositorios
         }
 
         // Stored Procedure Crear tipo de visita
+        // Stored Procedure Crear tipo de visita
         public bool CrearTipoVisita(TipoVisitante item)
         {
             if (item == null) return false;
@@ -501,6 +520,7 @@ namespace DataAccessDesarrollos.Repositorios
                     {
                         cmd.Parameters.Add(new SqlParameter("@Visita", item.Visita ?? string.Empty));
                         cmd.Parameters.Add(new SqlParameter("@Estancia", (object)item.Estancia ?? DBNull.Value));
+                        cmd.Parameters.Add(new SqlParameter("@creado_por", (object)item.creado_por ?? DBNull.Value));
                     });
 
                     if (result != null && result != DBNull.Value)
@@ -531,6 +551,7 @@ namespace DataAccessDesarrollos.Repositorios
                         cmd.Parameters.Add(new SqlParameter("@Visita", item.Visita ?? string.Empty));
                         cmd.Parameters.Add(new SqlParameter("@Activo", item.Activo));
                         cmd.Parameters.Add(new SqlParameter("@Estancia", (object)item.Estancia ?? DBNull.Value));
+                        cmd.Parameters.Add(new SqlParameter("@modificado_por", (object)item.modificado_por ?? DBNull.Value));
                     });
                     return result > 0;
                 }
@@ -659,8 +680,12 @@ namespace DataAccessDesarrollos.Repositorios
                     {
                         ID_TipoVisita = rdr["ID_TipoVisita"] != DBNull.Value ? Convert.ToInt32(rdr["ID_TipoVisita"]) : 0,
                         Visita = rdr["Visita"] != DBNull.Value ? rdr["Visita"].ToString() : string.Empty,
-                        Activo = true,
-                        Estancia = rdr["Estancia"] != DBNull.Value ? rdr["Estancia"].ToString() : string.Empty
+                        Activo = rdr["Activo"] != DBNull.Value ? Convert.ToBoolean(rdr["Activo"]) : true,
+                        Estancia = rdr["Estancia"] != DBNull.Value ? rdr["Estancia"].ToString() : string.Empty,
+                        creado_por = rdr["creado_por"] != DBNull.Value ? Convert.ToInt32(rdr["creado_por"]) : (int?)null,
+                        nombre_creador = rdr["nombre_creador"] != DBNull.Value ? rdr["nombre_creador"].ToString() : null,
+                        modificado_por = rdr["modificado_por"] != DBNull.Value ? Convert.ToInt32(rdr["modificado_por"]) : (int?)null,
+                        nombre_modificador = rdr["nombre_modificador"] != DBNull.Value ? rdr["nombre_modificador"].ToString() : null
                     });
                     return lista ?? new List<TipoVisitante>();
                 }
@@ -671,6 +696,7 @@ namespace DataAccessDesarrollos.Repositorios
                 return new List<TipoVisitante>();
             }
         }
+
 
         public List<SolicitudRH> ObtenerTodasSolicitudesRH()
         {

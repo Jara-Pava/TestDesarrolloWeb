@@ -58,7 +58,6 @@ namespace DesarrollosQAS.Pages
             {
                 EmpresaContratista contratistaFormulario = ObtenerValoresFormulario();
 
-                // Validar formulario
                 if (!ValidarFormulario(contratistaFormulario, out List<string> errores))
                 {
                     e.Cancel = true;
@@ -66,10 +65,10 @@ namespace DesarrollosQAS.Pages
                     MostrarError(mensajeError);
                     return;
                 }
+
                 int idContratista = Convert.ToInt32(e.Keys["id_contratista"]);
+                int idUsuarioActual = Model.AuthHelper.GetCurrentUserId();
 
-
-                // Crear objeto con datos actualizados
                 EmpresaContratista contratistaActualizado = new EmpresaContratista
                 {
                     id_contratista = idContratista,
@@ -78,7 +77,8 @@ namespace DesarrollosQAS.Pages
                     Responsable = contratistaFormulario.Responsable,
                     Telefono = contratistaFormulario.Telefono,
                     Email = contratistaFormulario.Email,
-                    Activo = contratistaFormulario.Activo
+                    Activo = contratistaFormulario.Activo,
+                    modificado_por = idUsuarioActual > 0 ? (int?)idUsuarioActual : null
                 };
 
                 var repo = new SolicitudRHRepository();
@@ -191,7 +191,6 @@ namespace DesarrollosQAS.Pages
 
             try
             {
-                // Validar formulario
                 if (!ValidarFormulario(contratistaFormulario, out List<string> errores))
                 {
                     e.Cancel = true;
@@ -208,7 +207,8 @@ namespace DesarrollosQAS.Pages
                     return;
                 }
 
-                // Crear objeto con datos del nuevo contratista
+                int idUsuarioActual = Model.AuthHelper.GetCurrentUserId();
+
                 EmpresaContratista nuevoContratista = new EmpresaContratista
                 {
                     Nombre = contratistaFormulario.Nombre,
@@ -216,6 +216,7 @@ namespace DesarrollosQAS.Pages
                     Responsable = contratistaFormulario.Responsable,
                     Telefono = contratistaFormulario.Telefono,
                     Email = contratistaFormulario.Email,
+                    creado_por = idUsuarioActual > 0 ? (int?)idUsuarioActual : null
                 };
 
                 if (!repo.CrearContratista(nuevoContratista))
@@ -226,7 +227,6 @@ namespace DesarrollosQAS.Pages
                 e.Cancel = true;
                 gridContratistas.DataBind();
                 MostrarExitoConCierre($"Proceso exitoso se ha creado al contratista {nuevoContratista.Nombre}.");
-
             }
             catch (Exception ex)
             {

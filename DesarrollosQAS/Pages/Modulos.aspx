@@ -167,7 +167,7 @@
         </FooterContentTemplate>
     </dx:ASPxPopupControl>
 
-    <div style="padding-top: 8px">
+    <div style="padding-top: 8px; margin-left:4%;">
         <dx:ASPxLabel runat="server" ID="lblTitulo" Text="Módulos / Catálogos" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
     </div>
     <br />
@@ -180,7 +180,7 @@
         OnDataBinding="gridModulo_DataBinding"
         OnCustomCallback="gridModulo_CustomCallback"
         OnHtmlEditFormCreated="gridModulo_HtmlEditFormCreated"
-        Width="100%">
+        Width="100%" Paddings-PaddingLeft="4%" Paddings-PaddingRight="4%">
         <ClientSideEvents
             EndCallback="OnGridModuloEndCallback"
             CustomButtonClick="OnCustomButtonClickModulo" />

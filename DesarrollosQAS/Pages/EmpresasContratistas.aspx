@@ -207,13 +207,17 @@
                     </dx:GridViewCommandColumnCustomButton>
                 </CustomButtons>
             </dx:GridViewCommandColumn>
-            <dx:GridViewDataTextColumn FieldName="id_contratista" Visible="False" ReadOnly="True" />
+                        <dx:GridViewDataTextColumn FieldName="id_contratista" Visible="False" ReadOnly="True" />
             <dx:GridViewDataTextColumn FieldName="Nombre" Caption="Nombre" />
             <dx:GridViewDataTextColumn FieldName="RFC" Caption="RFC" />
             <dx:GridViewDataTextColumn FieldName="Responsable" Caption="Responsable" />
             <dx:GridViewDataTextColumn FieldName="Email" Caption="Email" />
             <dx:GridViewDataTextColumn FieldName="Telefono" Caption="Teléfono" />
             <dx:GridViewDataCheckColumn FieldName="Activo" Caption="Activo" />
+            <dx:GridViewDataTextColumn FieldName="creado_por" Visible="false" ReadOnly="True" />
+            <dx:GridViewDataTextColumn FieldName="nombre_creador" Caption="Creado por" ReadOnly="True" Width="150" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="modificado_por" Visible="false" ReadOnly="True" />
+            <dx:GridViewDataTextColumn FieldName="nombre_modificador" Caption="Modificado por" ReadOnly="True" Width="150" HeaderStyle-HorizontalAlign="Center" />
         </Columns>
 
         <Templates>

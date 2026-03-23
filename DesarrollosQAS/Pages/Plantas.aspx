@@ -205,6 +205,10 @@
             <dx:GridViewDataTextColumn FieldName="ID_Planta" Visible="False" ReadOnly="True" />
             <dx:GridViewDataTextColumn FieldName="NombrePlanta" Caption="Nombre" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataCheckColumn FieldName="Activo" Caption="Activo" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="creado_por" Visible="false" ReadOnly="True" />
+            <dx:GridViewDataTextColumn FieldName="nombre_creador" Caption="Creado por" ReadOnly="True" Width="150" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="modificado_por" Visible="false" ReadOnly="True" />
+            <dx:GridViewDataTextColumn FieldName="nombre_modificador" Caption="Modificado por" ReadOnly="True" Width="150" HeaderStyle-HorizontalAlign="Center" />
         </Columns>
 
         <Templates>
@@ -261,13 +265,13 @@
                                         <dx:LayoutItemNestedControlContainer>
 
                                             <dx:ASPxButton ID="btnGuardar" runat="server" Text="Guardar" Width="120px" AutoPostBack="false"
-                                                BackColor="Teal" ForeColor="White" Font-Bold="true" >
+                                                BackColor="Teal" ForeColor="White" Font-Bold="true">
                                                 <ClientSideEvents Click="GuardarPlanta" />
                                             </dx:ASPxButton>
 
                                             <dx:ASPxButton ID="btnCancelar" runat="server" Text="Cancelar" Width="120px" AutoPostBack="false"
                                                 BackColor="DarkRed" ForeColor="White" Font-Bold="true" Style="margin-left: 8%;">
-                                                <ClientSideEvents Click="CancelarEdicion"/>
+                                                <ClientSideEvents Click="CancelarEdicion" />
                                             </dx:ASPxButton>
                                         </dx:LayoutItemNestedControlContainer>
                                     </LayoutItemNestedControlCollection>

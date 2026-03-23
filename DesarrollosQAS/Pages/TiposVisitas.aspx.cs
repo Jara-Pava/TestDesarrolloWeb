@@ -86,6 +86,7 @@ namespace DesarrollosQAS.Pages
                 }
 
                 int idTipoVisita = Convert.ToInt32(e.Keys["ID_TipoVisita"]);
+                int idUsuarioActual = Model.AuthHelper.GetCurrentUserId();
 
                 var repo = new SolicitudRHRepository();
 
@@ -101,7 +102,8 @@ namespace DesarrollosQAS.Pages
                     ID_TipoVisita = idTipoVisita,
                     Visita = tipoFormulario.Visita,
                     Estancia = tipoFormulario.Estancia,
-                    Activo = tipoFormulario.Activo
+                    Activo = tipoFormulario.Activo,
+                    modificado_por = idUsuarioActual > 0 ? (int?)idUsuarioActual : null
                 };
 
                 if (!repo.ActualizarTipoVisita(tipoActualizado))
@@ -117,7 +119,6 @@ namespace DesarrollosQAS.Pages
                 MostrarError("Ocurrió un error al actualizar el tipo de visita: " + ex.Message);
             }
         }
-
         protected void gridTiposVisita_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
         {
             TipoVisitante tipoFormulario = ObtenerValoresFormulario();
@@ -147,10 +148,13 @@ namespace DesarrollosQAS.Pages
                     return;
                 }
 
+                int idUsuarioActual = Model.AuthHelper.GetCurrentUserId();
+
                 TipoVisitante nuevoTipo = new TipoVisitante
                 {
                     Visita = tipoFormulario.Visita,
-                    Estancia = tipoFormulario.Estancia
+                    Estancia = tipoFormulario.Estancia,
+                    creado_por = idUsuarioActual > 0 ? (int?)idUsuarioActual : null
                 };
 
                 if (!repo.CrearTipoVisita(nuevoTipo))
@@ -166,7 +170,6 @@ namespace DesarrollosQAS.Pages
                 MostrarError($"Proceso no exitoso al crear el tipo de visita {tipoFormulario.Visita}: {ex.Message}");
             }
         }
-
         protected void gridTiposVisita_CustomCallback(object sender, DevExpress.Web.ASPxGridViewCustomCallbackEventArgs e)
         {
             if (e.Parameters.StartsWith("DELETE|"))
