@@ -15,5 +15,7 @@ namespace DataAccessDesarrollos
         public DateTime fecha_creacion { get; set; }
         public int? creado_por { get; set; }
         public string nombre_creador { get; set; }
+        public int? modificado_por { get; set; }
+        public string nombre_modificador { get; set; }
     }
 }

@@ -36,7 +36,7 @@ namespace DesarrollosQAS
             var user = AuthHelper.GetLoggedInUserInfo();
             if (user != null)
             {
-                lblUsuario.Text = user.UserName;
+                lblUsuario.Text = user.Sigla_red;
             }
             else
             {

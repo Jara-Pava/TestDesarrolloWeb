@@ -224,13 +224,15 @@ background-color: teal;
                     </dx:GridViewCommandColumnCustomButton>
                 </CustomButtons>
             </dx:GridViewCommandColumn>
-            <dx:GridViewDataTextColumn FieldName="id_rol" Visible="False" ReadOnly="True" HeaderStyle-HorizontalAlign="Center" />
+                        <dx:GridViewDataTextColumn FieldName="id_rol" Visible="False" ReadOnly="True" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataTextColumn FieldName="nombre" Caption="Nombre del rol" CellStyle-HorizontalAlign="Center" Width="100" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataTextColumn FieldName="descripcion" Caption="Descripcion" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataCheckColumn FieldName="activo" Caption="Activo" Width="100" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataDateColumn AdaptivePriority="1" FieldName="fecha_creacion" Caption="Fecha de creación" ReadOnly="True" CellStyle-HorizontalAlign="Center" Width="100" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataTextColumn FieldName="creado_por" Visible="false" Caption="Creado por" ReadOnly="True" Width="100" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataTextColumn FieldName="nombre_creador" Caption="Creado por" ReadOnly="True" Width="150" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="modificado_por" Visible="false" Caption="Modificado por (ID)" ReadOnly="True" Width="100" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="nombre_modificador" Caption="Modificado por" ReadOnly="True" Width="150" HeaderStyle-HorizontalAlign="Center" />
         </Columns>
 
         <Templates>

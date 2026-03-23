@@ -83,7 +83,6 @@ namespace DesarrollosQAS.Pages
 
                 int idRol = Convert.ToInt32(e.Keys["id_rol"]);
 
-                // Validar nombre duplicado en code-behind
                 var repo = new RolesRepository();
                 if (repo.ExisteRolConNombre(nombre, idRol))
                 {
@@ -94,12 +93,16 @@ namespace DesarrollosQAS.Pages
 
                 bool activo = chkActivo != null ? chkActivo.Checked : false;
 
+                // Obtener el ID del usuario logueado
+                int idUsuarioActual = AuthHelper.GetCurrentUserId();
+
                 var rol = new Rol
                 {
                     id_rol = idRol,
                     nombre = nombre,
                     descripcion = descripcion,
-                    activo = activo
+                    activo = activo,
+                    modificado_por = idUsuarioActual > 0 ? (int?)idUsuarioActual : null
                 };
 
                 if (!repo.ActualizarRol(rol))

@@ -43,6 +43,7 @@ namespace DataAccessDesarrollos.Repositorios
                         cmd.Parameters.AddWithValue("@nombre_rol", rol.nombre ?? string.Empty);
                         cmd.Parameters.AddWithValue("@descripcion", (object)rol.descripcion ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@activo", rol.activo);
+                        cmd.Parameters.AddWithValue("@modificado_por", (object)rol.modificado_por ?? DBNull.Value);
                     });
 
                     return rows > 0;
@@ -115,7 +116,9 @@ namespace DataAccessDesarrollos.Repositorios
                         activo = Convert.ToBoolean(rdr["activo"]),
                         fecha_creacion = Convert.ToDateTime(rdr["fecha_creacion"]),
                         creado_por = rdr["creado_por"] != DBNull.Value ? Convert.ToInt32(rdr["creado_por"]) : (int?)null,
-                        nombre_creador = rdr["nombre_creador"] != DBNull.Value ? rdr["nombre_creador"].ToString() : null
+                        nombre_creador = rdr["nombre_creador"] != DBNull.Value ? rdr["nombre_creador"].ToString() : null,
+                        modificado_por = rdr["modificado_por"] != DBNull.Value ? Convert.ToInt32(rdr["modificado_por"]) : (int?)null,
+                        nombre_modificador = rdr["nombre_modificador"] != DBNull.Value ? rdr["nombre_modificador"].ToString() : null
                     }).ToList();
                     return lista ?? new List<Rol>();
                 }
