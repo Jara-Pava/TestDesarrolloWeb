@@ -333,7 +333,7 @@
     <Content Include="Pages\Plantas.aspx" />
     <Content Include="Pages\Proyectos.aspx" />
     <Content Include="Pages\Roles.aspx" />
-    <Content Include="Pages\RolModulo.aspx" />
+    <Content Include="Pages\RolModulos.aspx" />
     <Content Include="Pages\SinAcceso.aspx" />
     <Content Include="Pages\TiposVisitas.aspx" />
     <Content Include="SolicitudesEspeciales.aspx" />
@@ -418,12 +418,12 @@
     <Compile Include="Pages\Roles.aspx.designer.cs">
       <DependentUpon>Roles.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\RolModulo.aspx.cs">
-      <DependentUpon>RolModulo.aspx</DependentUpon>
+    <Compile Include="Pages\RolModulos.aspx.cs">
+      <DependentUpon>RolModulos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\RolModulo.aspx.designer.cs">
-      <DependentUpon>RolModulo.aspx</DependentUpon>
+    <Compile Include="Pages\RolModulos.aspx.designer.cs">
+      <DependentUpon>RolModulos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\SinAcceso.aspx.cs">
       <DependentUpon>SinAcceso.aspx</DependentUpon>

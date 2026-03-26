@@ -168,7 +168,7 @@
     </dx:ASPxPopupControl>
 
     <div style="padding-top: 8px; margin-left:4%;">
-        <dx:ASPxLabel runat="server" ID="lblTitulo" Text="Módulos / Catálogos" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
+        <dx:ASPxLabel runat="server" ID="lblTitulo" Text="Módulos" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
     </div>
     <br />
 

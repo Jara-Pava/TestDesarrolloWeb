@@ -51,10 +51,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QASConfig.cs" />
     <Compile Include="Repositorios\ModuloCatalagoReporitory.cs" />
+    <Compile Include="Repositorios\RolCatalogosRepository.cs" />
     <Compile Include="Repositorios\RolesRepository.cs" />
     <Compile Include="Repositorios\SolicitudRHRepository.cs" />
     <Compile Include="Repositorios\UsuarioSistemaRepository.cs" />
     <Compile Include="Rol.cs" />
+    <Compile Include="RolModulo.cs" />
     <Compile Include="SolicitudRH.cs" />
     <Compile Include="StoreProcedure.cs" />
     <Compile Include="StoreProcedureCollection.cs" />

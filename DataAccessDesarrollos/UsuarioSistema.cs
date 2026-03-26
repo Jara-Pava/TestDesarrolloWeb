@@ -40,16 +40,4 @@ namespace DataAccessDesarrollos
         public int orden { get; set; }
         public bool activo { get; set; }
     }
-
-    public class RolCatalogo
-    {
-        public int id_catalogo { get; set; }
-        public string nombre_catalogo { get; set; }
-        public string descripcion { get; set; }
-        public string url { get; set; }
-        public bool puede_ver { get; set; }
-        public bool puede_crear { get; set; }
-        public bool puede_editar { get; set; }
-        public bool puede_eliminar { get; set; }
-    }
 }

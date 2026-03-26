@@ -7,65 +7,83 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DesarrollosQAS
+namespace DesarrollosQAS.Pages
 {
 
 
-    public partial class Root
+    public partial class RolModulos
     {
 
         /// <summary>
-        /// ContentHead control.
+        /// GlobalEvents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentHead;
+        protected global::DevExpress.Web.ASPxGlobalEvents GlobalEvents;
 
         /// <summary>
-        /// form1 control.
+        /// lbModulosDisponibles control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::DevExpress.Web.ASPxListBox lbModulosDisponibles;
 
         /// <summary>
-        /// lblUsuario control.
+        /// btnMoveSelectedItemsToRight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxLabel lblUsuario;
+        protected global::DevExpress.Web.ASPxButton btnMoveSelectedItemsToRight;
 
         /// <summary>
-        /// NavigationPanel control.
+        /// btnMoveAllItemsToRight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxPanel NavigationPanel;
+        protected global::DevExpress.Web.ASPxButton btnMoveAllItemsToRight;
 
         /// <summary>
-        /// Navigation control.
+        /// btnMoveSelectedItemsToLeft control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DesarrollosQAS.UserControls.Navigation Navigation;
+        protected global::DevExpress.Web.ASPxButton btnMoveSelectedItemsToLeft;
 
         /// <summary>
-        /// Content control.
+        /// btnMoveAllItemsToLeft control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder Content;
+        protected global::DevExpress.Web.ASPxButton btnMoveAllItemsToLeft;
+
+        /// <summary>
+        /// btnGuardar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxButton btnGuardar;
+
+        /// <summary>
+        /// lbModulosAsignados control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxListBox lbModulosAsignados;
     }
 }

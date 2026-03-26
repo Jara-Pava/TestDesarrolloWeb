@@ -9,6 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=11" />
     <title>DESARROLLO TEST</title>
     <link rel="shortcut icon" href="~/Images/techint.ico" type="image/vnd.microsoft.icon" />
+    <asp:ContentPlaceHolder ID="ContentHead" runat="server">
+    </asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -72,7 +74,6 @@
                 </dx:PanelContent>
             </PanelCollection>
         </dx:ASPxPanel>
-
         <asp:ContentPlaceHolder ID="Content" runat="server">
         </asp:ContentPlaceHolder>
     </form>

@@ -88,7 +88,7 @@ background-color: teal;
             else if (e.buttonID == "btnAsignarModulo") {
                 e.processOnServer = false;
                 var idRol = s.GetRowKey(e.visibleIndex);
-                window.location.href = 'Modulo.aspx?idRol=' + idRol;
+                window.location.href = 'RolModulos.aspx?idRol=' + idRol;
             }
         }
 
@@ -226,7 +226,7 @@ background-color: teal;
             </dx:GridViewCommandColumn>
                         <dx:GridViewDataTextColumn FieldName="id_rol" Visible="False" ReadOnly="True" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataTextColumn FieldName="nombre" Caption="Nombre" CellStyle-HorizontalAlign="Center" Width="140" HeaderStyle-HorizontalAlign="Center" />
-            <dx:GridViewDataTextColumn FieldName="descripcion" Caption="Descripcion" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="descripcion" Caption="Descripcion" HeaderStyle-HorizontalAlign="Center" Width="200" />
             <dx:GridViewDataCheckColumn FieldName="activo" Caption="Activo" Width="100" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataDateColumn AdaptivePriority="1" FieldName="fecha_creacion" Caption="Fecha de creación" ReadOnly="True" CellStyle-HorizontalAlign="Center" Width="100" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataTextColumn FieldName="creado_por" Visible="false" Caption="Creado por" ReadOnly="True" Width="100" HeaderStyle-HorizontalAlign="Center" />
