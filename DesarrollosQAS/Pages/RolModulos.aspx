@@ -54,13 +54,11 @@
             console.log("Colección de modulos seleccionados -> ", result);
             return result;
         }
-
+        
         // Reconstruye completamente un cuadro de lista dado un nuevo conjunto de elementos, asegurando que el DOM se actualice correctamente.
         function RebuildListBox(listBox, items) {
             listBox.BeginUpdate();
-            console.log("ListBox -> ", listBox);
             listBox.ClearItems();
-            console.log("ListBoxNuevo -> ", listBox);
             for (var i = 0; i < items.length; i++) {
                 listBox.AddItem(items[i].text, items[i].value);
             }
@@ -109,6 +107,7 @@
 
             // Rebuild ambos cuadros de lista para reflejar los cambios
             RebuildListBox(srcListBox, remainingItems);
+
             RebuildListBox(dstListBox, dstItems);
 
             UpdateButtonState();
@@ -154,6 +153,7 @@
                 Width="300" Height="400" SelectionMode="CheckColumn" Caption="Modulos Disponibles" EnableSynchronization="True">
                 <CaptionSettings Position="Top" HorizontalAlign="Center" />
                 <ClientSideEvents SelectedIndexChanged="OnSelectedIndexChanged" />
+                <FilteringSettings ShowSearchUI="true" EditorNullText="Ingrese el modulo a buscar ..." />
             </dx:ASPxListBox>
         </div>
         <div class="contentButtons">
@@ -202,6 +202,7 @@
                 Height="400" SelectionMode="CheckColumn" Caption="Módulos Asignados">
                 <CaptionSettings Position="Top" HorizontalAlign="Center" />
                 <ClientSideEvents SelectedIndexChanged="OnSelectedIndexChanged"></ClientSideEvents>
+                <FilteringSettings ShowSearchUI="true" EditorNullText="Ingrese el modulo a buscar ..." />
             </dx:ASPxListBox>
         </div>
     </div>
