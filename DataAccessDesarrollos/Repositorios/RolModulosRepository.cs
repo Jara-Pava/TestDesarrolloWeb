@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace DataAccessDesarrollos.Repositorios
 {
-    public class RolCatalogosRepository
+    public class RolModulosRepository
     {
         public List<RolModulo> ObtenerModulosDisponiblesPorRol(int idRol)
         {
@@ -57,7 +57,7 @@ namespace DataAccessDesarrollos.Repositorios
             }
         }
 
-        public bool Crear(RolModulo item)
+        public bool CrearRolModuloPorIdRol(RolModulo item)
         {
             if (item == null) return false;
 
@@ -65,15 +65,10 @@ namespace DataAccessDesarrollos.Repositorios
             {
                 using (var da = new DataAccess())
                 {
-                    var result = da.ExecuteScalarByCode("rhsp_InsertRolCatalogo", cmd =>
+                    var result = da.ExecuteScalarByCode("rhsp_InsertRolCatalogoByIdRol", cmd =>
                     {
                         cmd.Parameters.AddWithValue("@id_rol", item.id_rol);
                         cmd.Parameters.AddWithValue("@id_modulo_catalogo", item.id_modulo_catalogo);
-                        cmd.Parameters.AddWithValue("@puede_ver", item.puede_ver);
-                        cmd.Parameters.AddWithValue("@puede_crear", item.puede_crear);
-                        cmd.Parameters.AddWithValue("@puede_editar", item.puede_editar);
-                        cmd.Parameters.AddWithValue("@puede_eliminar", item.puede_eliminar);
-                        cmd.Parameters.AddWithValue("@puede_aprobar", item.puede_aprobar);
                         cmd.Parameters.AddWithValue("@creado_por", (object)item.creado_por ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@modificado_por", (object)item.modificado_por ?? DBNull.Value);
                     });
@@ -119,17 +114,17 @@ namespace DataAccessDesarrollos.Repositorios
             }
         }
 
-        public void Eliminar(int idRolCatalogo)
+        public void Eliminar(int idRol)
         {
-            if (idRolCatalogo <= 0) return;
+            if (idRol <= 0) return;
 
             try
             {
                 using (var da = new DataAccess())
                 {
-                    da.ExecuteNonQueryByCode("rhsp_DeleteRolCatalogo", cmd =>
+                    da.ExecuteNonQueryByCode("rhsp_DeleteRolCatalogoByIdRol", cmd =>
                     {
-                        cmd.Parameters.AddWithValue("@id_rol_catalogo", idRolCatalogo);
+                        cmd.Parameters.AddWithValue("@id_rol", idRol);
                     });
                 }
             }

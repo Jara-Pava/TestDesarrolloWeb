@@ -38,11 +38,11 @@ namespace DesarrollosQAS.Pages
                 IdRol = Convert.ToInt32(Request.QueryString["idRol"]);
 
                 // Cargar los módulos disponibles y asignados para el rol
-                List<RolModulo> listaDisponibles = new RolCatalogosRepository().ObtenerModulosDisponiblesPorRol(IdRol);
+                List<RolModulo> listaDisponibles = new RolModulosRepository().ObtenerModulosDisponiblesPorRol(IdRol);
                 lbModulosDisponibles.DataSource = listaDisponibles;
 
                 // Cargar los módulos asignados para el rol
-                List<RolModulo> listaAsignados = new RolCatalogosRepository().ObtenerModulosAsignadosPorIdRol(IdRol);
+                List<RolModulo> listaAsignados = new RolModulosRepository().ObtenerModulosAsignadosPorIdRol(IdRol);
                 lbModulosAsignados.DataSource = listaAsignados;
 
                 // Enlazar los datos a los controles ListBox

@@ -44,83 +44,101 @@
 
     <script type="text/javascript">
 
-        var _updateTimer = null;
+        // Recopila todos los elementos actuales de un cuadro de lista como una matriz de {texto, valor}.
+        function CollectItems(listBox) {
+            var result = [];
+            for (var i = 0; i < listBox.GetItemCount(); i++) {
+                var item = listBox.GetItem(i);
+                result.push({ text: item.text, value: item.value });
+            }
+            console.log("Colección de modulos seleccionados -> ", result);
+            return result;
+        }
+
+        // Reconstruye completamente un cuadro de lista dado un nuevo conjunto de elementos, asegurando que el DOM se actualice correctamente.
+        function RebuildListBox(listBox, items) {
+            listBox.BeginUpdate();
+            console.log("ListBox -> ", listBox);
+            listBox.ClearItems();
+            console.log("ListBoxNuevo -> ", listBox);
+            for (var i = 0; i < items.length; i++) {
+                listBox.AddItem(items[i].text, items[i].value);
+            }
+            listBox.EndUpdate();
+        }
 
         function AddSelectedItems() {
             MoveSelectedItems(lbModulosDisponibles, lbModulosAsignados);
-            UpdateButtonState();
         }
         function AddAllItems() {
             MoveAllItems(lbModulosDisponibles, lbModulosAsignados);
-            UpdateButtonState();
         }
         function RemoveSelectedItems() {
             MoveSelectedItems(lbModulosAsignados, lbModulosDisponibles);
-            UpdateButtonState();
         }
         function RemoveAllItems() {
             MoveAllItems(lbModulosAsignados, lbModulosDisponibles);
-            UpdateButtonState();
-        }
-        function MoveSelectedItems(srcListBox, dstListBox) {
-            srcListBox.BeginUpdate();
-            dstListBox.BeginUpdate();
-            var items = srcListBox.GetSelectedItems();
-            for (var i = items.length - 1; i >= 0; i = i - 1) {
-                dstListBox.AddItem(items[i].text, items[i].value);
-                srcListBox.RemoveItem(items[i].index);
-            }
-            srcListBox.EndUpdate();
-            dstListBox.EndUpdate();
-        }
-        function MoveAllItems(srcListBox, dstListBox) {
-            srcListBox.BeginUpdate();
-            var count = srcListBox.GetItemCount();
-            for (var i = 0; i < count; i++) {
-                var item = srcListBox.GetItem(i);
-                dstListBox.AddItem(item.text, item.value);
-            }
-            srcListBox.EndUpdate();
-            srcListBox.ClearItems();
-        }
-        function UpdateButtonState() {
-            if (_updateTimer) {
-                clearTimeout(_updateTimer);
-            }
-            _updateTimer = setTimeout(function () {
-                btnMoveAllItemsToRight.SetEnabled(lbModulosDisponibles.GetItemCount() > 0);
-                btnMoveAllItemsToLeft.SetEnabled(lbModulosAsignados.GetItemCount() > 0);
-                btnMoveSelectedItemsToRight.SetEnabled(lbModulosDisponibles.GetSelectedItems().length > 0);
-                btnMoveSelectedItemsToLeft.SetEnabled(lbModulosAsignados.GetSelectedItems().length > 0);
-                _updateTimer = null;
-            }, 100);
         }
 
-        function RefreshCheckBoxes(listBox) {
-            var mainElement = listBox.GetMainElement();
-            if (!mainElement) return;
-            var checkBoxes = mainElement.querySelectorAll('.dxEditorCell .dxeCheckBoxChecked, .dxEditorCell .dxeCheckBoxUnchecked');
+        function MoveSelectedItems(srcListBox, dstListBox) {
+            var selectedItems = srcListBox.GetSelectedItems();
+            if (selectedItems.length === 0) return;
+
+            // Marcar índices seleccionados para fácil filtrado y recopilar los elementos a mover
             var selectedIndices = {};
-            var selectedItems = listBox.GetSelectedItems();
+            var itemsToMove = [];
             for (var i = 0; i < selectedItems.length; i++) {
                 selectedIndices[selectedItems[i].index] = true;
+                itemsToMove.push({ text: selectedItems[i].text, value: selectedItems[i].value });
             }
-            for (var j = 0; j < listBox.GetItemCount(); j++) {
-                var item = listBox.GetItem(j);
-                var row = mainElement.querySelectorAll('.dxlbd tr.dxeListBoxItem')[j]
-                    || mainElement.querySelectorAll('tr.dxeListBoxItemRow')[j];
-                if (!row) continue;
-                var cb = row.querySelector('[class*="dxeCheckBox"]');
-                if (!cb) continue;
-                if (selectedIndices[j]) {
-                    cb.className = cb.className.replace('dxeCheckBoxUnchecked', 'dxeCheckBoxChecked');
-                } else {
-                    cb.className = cb.className.replace('dxeCheckBoxChecked', 'dxeCheckBoxUnchecked');
+
+            // Recopilar elementos restantes del origen (no seleccionados)
+            var remainingItems = [];
+            for (var i = 0; i < srcListBox.GetItemCount(); i++) {
+                if (!selectedIndices[i]) {
+                    var item = srcListBox.GetItem(i);
+                    remainingItems.push({ text: item.text, value: item.value });
                 }
             }
+
+            // Recopilar elementos actuales del destino y agregar los nuevos
+            var dstItems = CollectItems(dstListBox);
+            for (var i = 0; i < itemsToMove.length; i++) {
+                dstItems.push(itemsToMove[i]);
+            }
+
+            // Rebuild ambos cuadros de lista para reflejar los cambios
+            RebuildListBox(srcListBox, remainingItems);
+            RebuildListBox(dstListBox, dstItems);
+
+            UpdateButtonState();
         }
+
+        function MoveAllItems(srcListBox, dstListBox) {
+            if (srcListBox.GetItemCount() === 0) return;
+
+            // Recopilar todos los elementos del origen y agregarlos al destino
+            var srcItems = CollectItems(srcListBox);
+            var dstItems = CollectItems(dstListBox);
+            for (var i = 0; i < srcItems.length; i++) {
+                dstItems.push(srcItems[i]);
+            }
+
+            // Rebuild ambos cuadros de lista para reflejar los cambios
+            RebuildListBox(srcListBox, []);
+            RebuildListBox(dstListBox, dstItems);
+
+            UpdateButtonState();
+        }
+
+        function UpdateButtonState() {
+            btnMoveAllItemsToRight.SetEnabled(lbModulosDisponibles.GetItemCount() > 0);
+            btnMoveAllItemsToLeft.SetEnabled(lbModulosAsignados.GetItemCount() > 0);
+            btnMoveSelectedItemsToRight.SetEnabled(lbModulosDisponibles.GetSelectedItems().length > 0);
+            btnMoveSelectedItemsToLeft.SetEnabled(lbModulosAsignados.GetSelectedItems().length > 0);
+        }
+
         function OnSelectedIndexChanged(s, e) {
-            RefreshCheckBoxes(s);
             UpdateButtonState();
         }
     </script>
@@ -135,12 +153,7 @@
                 ClientInstanceName="lbModulosDisponibles" ValueField="id_modulo_catalogo" TextField="nombre_catalogo"
                 Width="300" Height="400" SelectionMode="CheckColumn" Caption="Modulos Disponibles" EnableSynchronization="True">
                 <CaptionSettings Position="Top" HorizontalAlign="Center" />
-                <ClientSideEvents SelectedIndexChanged="function(s, e) { 
-                        var index = e.index;
-                        var item = s.GetItem(index);
-                        var isSelected = item.selected;
-                        console.log('Item: ' + item.text + ' | Value: ' + item.value + ' | Seleccionado: ' + isSelected);
-                    UpdateButtonState(); }" />
+                <ClientSideEvents SelectedIndexChanged="OnSelectedIndexChanged" />
             </dx:ASPxListBox>
         </div>
         <div class="contentButtons">
@@ -188,7 +201,7 @@
                 ClientInstanceName="lbModulosAsignados" Width="300" EnableSynchronization="True"
                 Height="400" SelectionMode="CheckColumn" Caption="Módulos Asignados">
                 <CaptionSettings Position="Top" HorizontalAlign="Center" />
-                <ClientSideEvents SelectedIndexChanged="function(s, e) { UpdateButtonState(); }"></ClientSideEvents>
+                <ClientSideEvents SelectedIndexChanged="OnSelectedIndexChanged"></ClientSideEvents>
             </dx:ASPxListBox>
         </div>
     </div>
