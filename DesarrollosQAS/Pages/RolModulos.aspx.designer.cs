@@ -24,6 +24,60 @@ namespace DesarrollosQAS.Pages
         protected global::DevExpress.Web.ASPxGlobalEvents GlobalEvents;
 
         /// <summary>
+        /// cbGuardar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxCallback cbGuardar;
+
+        /// <summary>
+        /// cbRefrescar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxCallback cbRefrescar;
+
+        /// <summary>
+        /// popupResultado control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxPopupControl popupResultado;
+
+        /// <summary>
+        /// lblPopupMensaje control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxLabel lblPopupMensaje;
+
+        /// <summary>
+        /// lblNombreRol control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxLabel lblNombreRol;
+
+        /// <summary>
+        /// btnRegresar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxButton btnRegresar;
+
+        /// <summary>
         /// lbModulosDisponibles control.
         /// </summary>
         /// <remarks>
@@ -69,15 +123,6 @@ namespace DesarrollosQAS.Pages
         protected global::DevExpress.Web.ASPxButton btnMoveAllItemsToLeft;
 
         /// <summary>
-        /// btnGuardar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxButton btnGuardar;
-
-        /// <summary>
         /// lbModulosAsignados control.
         /// </summary>
         /// <remarks>
@@ -85,5 +130,23 @@ namespace DesarrollosQAS.Pages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.ASPxListBox lbModulosAsignados;
+
+        /// <summary>
+        /// LoadingPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxLoadingPanel LoadingPanel;
+
+        /// <summary>
+        /// btnGuardar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxButton btnGuardar;
     }
 }

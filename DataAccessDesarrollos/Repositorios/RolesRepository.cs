@@ -1,6 +1,7 @@
 ﻿using DataAccessDesarrollos.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -132,7 +133,31 @@ namespace DataAccessDesarrollos.Repositorios
 
         public Rol ObtenerRolPorId(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    var rol = da.ExecuteReaderByCode("rhsp_GetRolById", rdr => new Rol
+                    {
+                        id_rol = Convert.ToInt32(rdr["id_rol"]),
+                        nombre = rdr["nombre_rol"].ToString(),
+                        descripcion = rdr["descripcion"] != DBNull.Value ? rdr["descripcion"].ToString() : null,
+                        activo = Convert.ToBoolean(rdr["activo"]),
+                        fecha_creacion = Convert.ToDateTime(rdr["fecha_creacion"]),
+                        creado_por = rdr["creado_por"] != DBNull.Value ? Convert.ToInt32(rdr["creado_por"]) : (int?)null                        
+                    }, cmd =>
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@id_ROL", id));
+                    });
+
+                    return rol != null && rol.Count > 0 ? rol[0] : null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error ObtenerRoles: {0}", ex);
+                return new Rol();
+            }
         }
 
         public Rol ObtenerRolPorUsuario(int idUsuario)

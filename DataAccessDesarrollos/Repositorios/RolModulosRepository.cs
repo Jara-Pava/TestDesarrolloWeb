@@ -69,8 +69,6 @@ namespace DataAccessDesarrollos.Repositorios
                     {
                         cmd.Parameters.AddWithValue("@id_rol", item.id_rol);
                         cmd.Parameters.AddWithValue("@id_modulo_catalogo", item.id_modulo_catalogo);
-                        cmd.Parameters.AddWithValue("@creado_por", (object)item.creado_por ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@modificado_por", (object)item.modificado_por ?? DBNull.Value);
                     });
 
                     return result != null && result != DBNull.Value;
@@ -150,6 +148,36 @@ namespace DataAccessDesarrollos.Repositorios
             catch (Exception ex)
             {
                 Trace.TraceError("Error ExisteModuloEnRol: {0}", ex);
+                return false;
+            }
+        }
+
+        public bool GuardarModulosPorRol(int idRol, List<int> idsModulos)
+        {
+            try
+            {
+                // 1. Eliminar todas las asignaciones actuales del rol
+                Eliminar(idRol);
+
+                // 2. Insertar cada módulo asignado
+                foreach (int idModulo in idsModulos)
+                {
+                    var item = new RolModulo
+                    {
+                        id_rol = idRol,
+                        id_modulo_catalogo = idModulo,
+                    };
+
+                    bool creado = CrearRolModuloPorIdRol(item);
+                    if (!creado)
+                        return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error GuardarModulosPorRol: {0}", ex);
                 return false;
             }
         }
