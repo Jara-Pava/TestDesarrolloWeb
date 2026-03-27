@@ -42,6 +42,10 @@
             margin-top: 3%;
         }
 
+        .buttonGuardarYRegresar{
+            width:100px;
+        }
+
         /* ---- Pantallas medianas (790px – 1199px) ---- */
         @media (min-width: 790px) {
             .container {
@@ -55,7 +59,7 @@
                 min-width: 0;
                 max-width: none;
                 width: auto;
-                height: 260px; /* Medianas */
+                height: 280px; /* Medianas */
             }
 
             .contentButtons {
@@ -72,7 +76,7 @@
             }
 
             .button {
-                width: 170px !important;
+                width: 142px !important;
             }
         }
 
@@ -88,7 +92,7 @@
             .contentEditors {
                 flex: 0 1 550px;
                 max-width: 550px;
-                height: 500px; /* Grandes */
+                height: calc(60vh); /* Grandes */
             }
 
             .contentButtons {
@@ -101,7 +105,6 @@
         .action-row {
             display: flex;
             justify-content: flex-end;
-            margin-top: 2%;
         }
     </style>
 
@@ -276,12 +279,12 @@
     </dx:ASPxPopupControl>
 
     <div class="page-wrapper">
-        <div style="padding-top: 8px; text-align: center; margin-top: 2%;">
+        <div style=" text-align: center;">
             <dx:ASPxLabel runat="server" ID="lblNombreRol" Text="" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
         </div>
         <div class="action-row">
             <dx:ASPxButton runat="server" ID="btnRegresar" Text="Regresar"
-                Width="200px" CssClass="btn" BackColor="#353943" ForeColor="White" Font-Bold="true" AutoPostBack="false">
+                Width="100" CssClass="btn" BackColor="#353943" ForeColor="White" Font-Bold="true" AutoPostBack="false">
                 <ClientSideEvents Click="RegresarRoles" />
             </dx:ASPxButton>
         </div>
@@ -311,12 +314,12 @@
                 </div>
                 <div class="TopPadding">
                     <dx:ASPxButton ID="btnMoveAllItemsToRight" runat="server" ClientInstanceName="btnMoveAllItemsToRight" CssClass="button"
-                        AutoPostBack="False" Text="Asignar todos >>" BackColor="#1773cd" ToolTip="Agregar todos los moodulos">
+                        AutoPostBack="False" Text="Asignar Todos >>" BackColor="#1773cd" ToolTip="Agregar todos los moodulos">
                         <ClientSideEvents Click="function(s, e) { AddAllItems(); }" />
                     </dx:ASPxButton>
                 </div>
-                <div style="height: 12px">
-                </div>
+<%--                <div style="height: 12px">
+                </div>--%>
                 <div>
                     <dx:ASPxButton ID="btnMoveSelectedItemsToLeft" runat="server" ClientInstanceName="btnMoveSelectedItemsToLeft" CssClass="button"
                         AutoPostBack="False" Text="< Quitar" BackColor="DarkRed"
@@ -351,7 +354,7 @@
     </dx:ASPxLoadingPanel>
     <div class="page-wrapper">
         <div class="action-row" style="margin-top: 2%; padding-bottom: 20px;">
-            <dx:ASPxButton ID="btnGuardar" runat="server" ClientInstanceName="btnGuardar" CssClass="button"
+            <dx:ASPxButton ID="btnGuardar" runat="server" ClientInstanceName="btnGuardar" CssClass="buttonGuardarYRegresar"
                 AutoPostBack="False" Text="Guardar" ClientEnabled="True" BackColor="Teal"
                 ToolTip="Guarda los modulos asignados al rol">
                 <ClientSideEvents Click="function(s, e) { GuardarModulosAsignados(); }" />

@@ -196,7 +196,7 @@
     <br />
 
     <!-- Filtro de estado -->
-    <div style="margin-bottom: 3%; margin-right:4%; display: flex; align-items: center; flex-direction: row; justify-content: flex-end">
+    <div style="margin-bottom: 3%; margin-right:4%; display: flex; align-items: center; flex-direction: row; justify-content: flex-end; display:none">
         <dx:ASPxLabel runat="server" Text="Estatus:" Font-Bold="true" Style="margin-right: 8px;" />
         <dx:ASPxComboBox ID="cmbFiltroEstado" runat="server" Width="200px"
             ClientInstanceName="cmbFiltroEstado"
