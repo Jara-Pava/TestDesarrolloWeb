@@ -45,6 +45,7 @@
     <Compile Include="DataAccess.cs" />
     <Compile Include="Interfaces\IModuloCatalago.cs" />
     <Compile Include="Interfaces\IRoles.cs" />
+    <Compile Include="Interfaces\IRolesUsuarios.cs" />
     <Compile Include="Interfaces\ISolicitudRHRepository.cs" />
     <Compile Include="Interfaces\UsuarioSistema.cs" />
     <Compile Include="ModuloCatalago.cs" />
@@ -53,10 +54,12 @@
     <Compile Include="Repositorios\ModuloCatalagoReporitory.cs" />
     <Compile Include="Repositorios\RolModulosRepository.cs" />
     <Compile Include="Repositorios\RolesRepository.cs" />
+    <Compile Include="Repositorios\RolUsuariosRepository.cs" />
     <Compile Include="Repositorios\SolicitudRHRepository.cs" />
     <Compile Include="Repositorios\UsuarioSistemaRepository.cs" />
     <Compile Include="Rol.cs" />
     <Compile Include="RolModulo.cs" />
+    <Compile Include="RolUsuario.cs" />
     <Compile Include="SolicitudRH.cs" />
     <Compile Include="StoreProcedure.cs" />
     <Compile Include="StoreProcedureCollection.cs" />

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RolModulos.aspx.cs" Inherits="DesarrollosQAS.Pages.RolModulos" MasterPageFile="~/Root.master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RolUsuarios.aspx.cs" Inherits="DesarrollosQAS.Pages.RolUsuarios" MasterPageFile="~/Root.master"%>
 
 <asp:Content ContentPlaceHolderID="Content" runat="server">
     <style>
@@ -131,16 +131,16 @@
         }
 
         function AddSelectedItems() {
-            MoveSelectedItems(lbModulosDisponibles, lbModulosAsignados);
+            MoveSelectedItems(lbRolesDisponibles, lbRolesAsignados);
         }
         function AddAllItems() {
-            MoveAllItems(lbModulosDisponibles, lbModulosAsignados);
+            MoveAllItems(lbRolesDisponibles, lbRolesAsignados);
         }
         function RemoveSelectedItems() {
-            MoveSelectedItems(lbModulosAsignados, lbModulosDisponibles);
+            MoveSelectedItems(lbRolesAsignados, lbRolesDisponibles);
         }
         function RemoveAllItems() {
-            MoveAllItems(lbModulosAsignados, lbModulosDisponibles);
+            MoveAllItems(lbRolesAsignados, lbRolesDisponibles);
         }
 
         function MoveSelectedItems(srcListBox, dstListBox) {
@@ -187,9 +187,9 @@
 
             UpdateButtonState();
         }
-        // Redirigir a nueva solicitud
+        // Redirigir a la página de Usuarios
         function RegresarRoles() {
-            window.location.href = 'Roles.aspx';
+            window.location.href = '<%= ResolveUrl("~/Usuarios.aspx") %>';
         }
 
 
@@ -205,8 +205,8 @@
         }
 
         // Recopila los IDs de los módulos asignados y los envía al servidor vía callback
-        function GuardarModulosAsignados() {
-            var items = CollectItems(lbModulosAsignados);
+        function GuardarRolesAsignados() {
+            var items = CollectItems(lbRolesAsignados);
             var ids = [];
             for (var i = 0; i < items.length; i++) {
                 ids.push(items[i].value);
@@ -219,9 +219,9 @@
         function OnGuardarCallbackComplete(s, e) {
             var resultado = e.result;
             if (resultado === 'OK') {
-                lblPopupMensaje.SetText('Proceso exitoso, se han asignado los modulos');
+                lblPopupMensaje.SetText('Proceso exitoso, se ha asignado los roles');
             } else {
-                lblPopupMensaje.SetText('Proceso no exitoso, no se han asignado los modulos');
+                lblPopupMensaje.SetText('Proceso no exitoso, no se ha asignado los roles');
             }
             LoadingPanel.Hide();
             popupResultado.Show();
@@ -236,8 +236,8 @@
         // Callback de refresco completado: reconstruir ambos ListBox
         function OnRefrescarCallbackComplete(s, e) {
             var data = JSON.parse(e.result);
-            RebuildListBox(lbModulosDisponibles, data.disponibles);
-            RebuildListBox(lbModulosAsignados, data.asignados);
+            RebuildListBox(lbRolesDisponibles, data.disponibles);
+            RebuildListBox(lbRolesAsignados, data.asignados);
             UpdateButtonState();
         }
     </script>
@@ -280,7 +280,7 @@
 
     <div class="page-wrapper">
         <div style=" text-align: center;">
-            <dx:ASPxLabel runat="server" ID="lblNombreRol" Text="" Font-Bold="true" Font-Size="X-Large" ClientInstanceName="lblNombreRol"></dx:ASPxLabel>
+            <dx:ASPxLabel runat="server" ID="lblNombreUsuario" Text="" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
         </div>
         <div class="action-row">
             <dx:ASPxButton runat="server" ID="btnRegresar" Text="Regresar"
@@ -293,9 +293,9 @@
     <div class="page-wrapper">
         <div class="container">
             <div class="contentEditors">
-                <dx:ASPxListBox ID="lbModulosDisponibles" runat="server"
-                    ClientInstanceName="lbModulosDisponibles" ValueField="id_modulo_catalogo" TextField="nombre_catalogo"
-                    Width="100%" Height="100%" SelectionMode="CheckColumn" Caption="Modulos Disponibles" EnableSynchronization="True"
+                <dx:ASPxListBox ID="lbRolesDisponibles" runat="server"
+                    ClientInstanceName="lbRolesDisponibles" ValueField="id_rol" TextField="nombre_rol"
+                    Width="100%" Height="100%" SelectionMode="CheckColumn" Caption="Roles Disponibles" EnableSynchronization="True"
                     Font-Bold="true" Font-Size="Large" CaptionStyle-ForeColor="#666666"
                     ItemStyle-Font-Bold="false" ItemStyle-Font-Size="Medium">
                     <CaptionSettings Position="Top" HorizontalAlign="Center" />
@@ -308,7 +308,7 @@
                 <div>
                     <dx:ASPxButton ID="btnMoveSelectedItemsToRight" runat="server" ClientInstanceName="btnMoveSelectedItemsToRight" CssClass="button"
                         AutoPostBack="False" Text="Asignar >" BackColor="#1773cd"
-                        ToolTip="Agregar Modulos Seleccionados">
+                        ToolTip="Agregar roles seleccionados">
                         <ClientSideEvents Click="function(s, e) { AddSelectedItems(); }" />
                     </dx:ASPxButton>
                 </div>
@@ -323,27 +323,27 @@
                 <div>
                     <dx:ASPxButton ID="btnMoveSelectedItemsToLeft" runat="server" ClientInstanceName="btnMoveSelectedItemsToLeft" CssClass="button"
                         AutoPostBack="False" Text="< Quitar" BackColor="DarkRed"
-                        ToolTip="Quitar modulos seleccionados">
+                        ToolTip="Quitar roles seleccionados">
                         <ClientSideEvents Click="function(s, e) { RemoveSelectedItems(); }" />
                     </dx:ASPxButton>
                 </div>
                 <div class="TopPadding">
                     <dx:ASPxButton ID="btnMoveAllItemsToLeft" runat="server" ClientInstanceName="btnMoveAllItemsToLeft" CssClass="button"
                         AutoPostBack="False" Text="<< Quitar todos" BackColor="DarkRed"
-                        ToolTip="Quitar todos los modulos">
+                        ToolTip="Quitar todos los roles">
                         <ClientSideEvents Click="function(s, e) { RemoveAllItems(); }" />
                     </dx:ASPxButton>
                 </div>
             </div>
             <div class="contentEditors">
-                <dx:ASPxListBox ID="lbModulosAsignados" runat="server" ValueField="id_modulo_catalogo" TextField="nombre_catalogo"
-                    ClientInstanceName="lbModulosAsignados" Width="100%" EnableSynchronization="True"
-                    Height="100%" SelectionMode="CheckColumn" Caption="Módulos Asignados"
+                <dx:ASPxListBox ID="lbRolesAsignados" runat="server" ValueField="id_rol" TextField="nombre_rol"
+                    ClientInstanceName="lbRolesAsignados" Width="100%" EnableSynchronization="True"
+                    Height="100%" SelectionMode="CheckColumn" Caption="Roles Asignados"
                     Font-Bold="true" Font-Size="Large" CaptionStyle-ForeColor="#666666"
                     ItemStyle-Font-Bold="false" ItemStyle-Font-Size="Medium">
                     <CaptionSettings Position="Top" HorizontalAlign="Center" />
                     <ClientSideEvents SelectedIndexChanged="OnSelectedIndexChanged"></ClientSideEvents>
-<%--                    <FilteringSettings ShowSearchUI="true" EditorNullText="Ingrese el modulo a buscar ..." />
+<%--                    <FilteringSettings ShowSearchUI="true" EditorNullText="Ingrese el rol a buscar ..." />
                     <FilterEditorStyle Font-Bold="false" Font-Size="Small" ></FilterEditorStyle>--%>
                 </dx:ASPxListBox>
             </div>
@@ -356,8 +356,8 @@
         <div class="action-row" style="margin-top: 2%; padding-bottom: 20px;">
             <dx:ASPxButton ID="btnGuardar" runat="server" ClientInstanceName="btnGuardar" CssClass="buttonGuardarYRegresar"
                 AutoPostBack="False" Text="Guardar" ClientEnabled="True" BackColor="Teal"
-                ToolTip="Guarda los modulos asignados al rol">
-                <ClientSideEvents Click="function(s, e) { GuardarModulosAsignados(); }" />
+                ToolTip="Guarda los roles asignados al usuario">
+                <ClientSideEvents Click="function(s, e) { GuardarRolesAsignados(); }" />
             </dx:ASPxButton>
         </div>
     </div>

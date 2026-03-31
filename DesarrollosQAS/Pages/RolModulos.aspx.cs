@@ -36,7 +36,7 @@ namespace DesarrollosQAS.Pages
             {
                 IdRol = Convert.ToInt32(Request.QueryString["idRol"]);
                 Rol rol = new RolesRepository().ObtenerRolPorId(IdRol);
-                lblNombreRol.Text = "Rol "+rol.nombre;
+                lblNombreRol.Text = "Rol " + rol.nombre;
                 var repo = new RolModulosRepository();
 
                 List<RolModulo> listaDisponibles = repo.ObtenerModulosDisponiblesPorRol(IdRol);

@@ -288,6 +288,7 @@
     <Content Include="Images\returnColor.png" />
     <Content Include="Images\returnNegro.png" />
     <Content Include="Images\right-arrow.png" />
+    <Content Include="Images\roles.png" />
     <Content Include="Images\roles.svg" />
     <Content Include="Images\RolesColor.png" />
     <Content Include="Images\save.png" />
@@ -334,6 +335,7 @@
     <Content Include="Pages\Proyectos.aspx" />
     <Content Include="Pages\Roles.aspx" />
     <Content Include="Pages\RolModulos.aspx" />
+    <Content Include="Pages\RolUsuarios.aspx" />
     <Content Include="Pages\SinAcceso.aspx" />
     <Content Include="Pages\TiposVisitas.aspx" />
     <Content Include="SolicitudesEspeciales.aspx" />
@@ -424,6 +426,13 @@
     </Compile>
     <Compile Include="Pages\RolModulos.aspx.designer.cs">
       <DependentUpon>RolModulos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\RolUsuarios.aspx.cs">
+      <DependentUpon>RolUsuarios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\RolUsuarios.aspx.designer.cs">
+      <DependentUpon>RolUsuarios.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\SinAcceso.aspx.cs">
       <DependentUpon>SinAcceso.aspx</DependentUpon>

@@ -140,6 +140,10 @@
                 e.processOnServer = false; // Cancelar el proceso del servidor
                 currentDeleteIndex = e.visibleIndex; // Guardar el índice de la fila
                 pcConfirmarEliminacion.Show(); // Mostrar popup de confirmación
+            } else if (e.buttonID === 'btnAsignarRoles') {
+                e.processOnServer = false; // Cancelar el proceso del servidor
+                var idUsuario = s.GetRowKey(e.visibleIndex);
+                window.location.href = '<%= ResolveUrl("~/Pages/RolUsuarios.aspx") %>?idUsuario=' + idUsuario;
             }
         }
 
@@ -190,13 +194,13 @@
 
     </script>
 
-    <div style="padding-top: 8px; margin-left:4%;">
+    <div style="padding-top: 8px; margin-left: 4%;">
         <dx:ASPxLabel runat="server" ID="ASPxLabel1" Text="Usuarios" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
     </div>
     <br />
 
     <!-- Filtro de estado -->
-    <div style="margin-bottom: 3%; margin-right:4%; display: flex; align-items: center; flex-direction: row; justify-content: flex-end; display:none">
+    <div style="margin-bottom: 3%; margin-right: 4%; display: flex; align-items: center; flex-direction: row; justify-content: flex-end; display: none">
         <dx:ASPxLabel runat="server" Text="Estatus:" Font-Bold="true" Style="margin-right: 8px;" />
         <dx:ASPxComboBox ID="cmbFiltroEstado" runat="server" Width="200px"
             ClientInstanceName="cmbFiltroEstado"
@@ -309,6 +313,11 @@
                         <Image Url="~/Images/delete.png" Width="18px" Height="18px" ToolTip="Eliminar" />
                     </dx:GridViewCommandColumnCustomButton>
                 </CustomButtons>
+                <CustomButtons>
+                    <dx:GridViewCommandColumnCustomButton ID="btnAsignarRoles" Text="Asignar Rol">
+                        <Image Url="~/Images/roles.png" Width="18px" Height="18px" ToolTip="Asignar Rol" />
+                    </dx:GridViewCommandColumnCustomButton>
+                </CustomButtons>
             </dx:GridViewCommandColumn>
             <dx:GridViewDataTextColumn FieldName="id_usuario" Caption="ID" Visible="false" ReadOnly="true" />
             <dx:GridViewDataTextColumn FieldName="sigla_red" Caption="Sigla Red" HeaderStyle-HorizontalAlign="Center">
@@ -327,7 +336,7 @@
                 </PropertiesTextEdit>
             </dx:GridViewDataTextColumn>
             <dx:GridViewDataCheckColumn FieldName="activo" Caption="Activo" HeaderStyle-HorizontalAlign="Center" />
-            <dx:GridViewDataTextColumn FieldName="creado_por" Caption="Creado Por" HeaderStyle-HorizontalAlign="Center" ReadOnly="true" CellStyle-HorizontalAlign="Center"/>
+            <dx:GridViewDataTextColumn FieldName="creado_por" Caption="Creado Por" HeaderStyle-HorizontalAlign="Center" ReadOnly="true" CellStyle-HorizontalAlign="Center" />
             <dx:GridViewDataTextColumn FieldName="modificado_por" Caption="Modificado Por" HeaderStyle-HorizontalAlign="Center" ReadOnly="true" CellStyle-HorizontalAlign="Center" />
         </Columns>
         <Settings />

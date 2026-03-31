@@ -112,7 +112,7 @@ namespace DataAccessDesarrollos.Repositorios
             }
         }
 
-        public void Eliminar(int idRol)
+        public void EliminarModulosAsignadosPorIdRol(int idRol)
         {
             if (idRol <= 0) return;
 
@@ -157,7 +157,7 @@ namespace DataAccessDesarrollos.Repositorios
             try
             {
                 // 1. Eliminar todas las asignaciones actuales del rol
-                Eliminar(idRol);
+                EliminarModulosAsignadosPorIdRol(idRol);
 
                 // 2. Insertar cada módulo asignado
                 foreach (int idModulo in idsModulos)
