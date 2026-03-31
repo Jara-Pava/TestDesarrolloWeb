@@ -86,6 +86,7 @@
     </Content>
     <Content Include="App_Data\Overview.html" />
     <Content Include="App_Data\OverviewContents.xml" />
+    <Content Include="casa.png" />
     <Content Include="Content\Content.css" />
     <Content Include="Content\GridView.css" />
     <Content Include="Content\GridView.js" />
@@ -131,6 +132,7 @@
     <Content Include="Content\Images\priority2.svg" />
     <Content Include="Content\Images\priority3-white.svg" />
     <Content Include="Content\Images\priority3.svg" />
+    <Content Include="Images\casa.png" />
     <Content Include="Images\catalogo.png" />
     <Content Include="Images\circulo-asginacion.png" />
     <Content Include="Images\circulo-asig.png" />

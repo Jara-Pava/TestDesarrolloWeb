@@ -49,9 +49,12 @@
     <Compile Include="Interfaces\ISolicitudRHRepository.cs" />
     <Compile Include="Interfaces\UsuarioSistema.cs" />
     <Compile Include="ModuloCatalago.cs" />
+    <Compile Include="PageModuleMap.cs" />
+    <Compile Include="PermisoModulo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QASConfig.cs" />
     <Compile Include="Repositorios\ModuloCatalagoReporitory.cs" />
+    <Compile Include="Repositorios\PermisosRepository.cs" />
     <Compile Include="Repositorios\RolModulosRepository.cs" />
     <Compile Include="Repositorios\RolesRepository.cs" />
     <Compile Include="Repositorios\RolUsuariosRepository.cs" />

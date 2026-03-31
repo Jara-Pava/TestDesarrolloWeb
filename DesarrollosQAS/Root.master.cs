@@ -32,6 +32,9 @@ namespace DesarrollosQAS
                 }
             }
 
+            // Verificar permisos de acceso a la página actual
+            ValidarAccesoPagina();
+
             // Mostrar el nombre del usuario autenticado
             var user = AuthHelper.GetLoggedInUserInfo();
             if (user != null)
@@ -46,6 +49,29 @@ namespace DesarrollosQAS
             int collapseAtWindowInnerWidth = 1200;
             NavigationPanel.SettingsAdaptivity.CollapseAtWindowInnerWidth = collapseAtWindowInnerWidth;
             NavigationPanel.JSProperties["cpCollapseAtWindowInnerWidth"] = collapseAtWindowInnerWidth;
+        }
+
+        /// <summary>
+        /// Verifica si el usuario tiene permiso de ver la página actual usando id_modulo_catalogo.
+        /// Si la página no está mapeada, se permite el acceso (páginas sin restricción).
+        /// </summary>
+        private void ValidarAccesoPagina()
+        {
+            string currentPage = System.IO.Path.GetFileName(Request.Path);
+
+            // Obtener el id_modulo_catalogo asociado a esta página
+            int? idModulo = PageModuleMap.GetIdModulo(currentPage);
+
+            // Si la página no está mapeada, no requiere permisos (ej: SinAcceso.aspx, Home.aspx)
+            if (!idModulo.HasValue)
+                return;
+
+            // Verificar si el usuario tiene permiso de ver este módulo por ID
+            if (!AuthHelper.TienePermisoVer(idModulo.Value))
+            {
+                Response.Redirect("~/Pages/SinAcceso.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
         }
 
         protected void Page_PreRender(object sender, EventArgs e)

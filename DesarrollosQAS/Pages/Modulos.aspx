@@ -200,7 +200,7 @@
             </dx:GridViewCommandColumn>
             <dx:GridViewDataTextColumn FieldName="id_modulo_catalogo" Visible="False" ReadOnly="True" />
             <dx:GridViewDataTextColumn FieldName="nombre" Caption="Nombre" CellStyle-HorizontalAlign="Center" Width="200" HeaderStyle-HorizontalAlign="Center" />
-            <dx:GridViewDataTextColumn FieldName="descripcion" Caption="Descripción" HeaderStyle-HorizontalAlign="Center" />
+            <dx:GridViewDataTextColumn FieldName="descripcion" Caption="Descripción" HeaderStyle-HorizontalAlign="Center"  Width="200"/>
             <dx:GridViewDataCheckColumn FieldName="activo" Caption="Activo" Width="100" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataDateColumn FieldName="fecha_creacion" Caption="Fecha de creación" ReadOnly="True" CellStyle-HorizontalAlign="Center" Width="150" HeaderStyle-HorizontalAlign="Center" />
             <dx:GridViewDataTextColumn FieldName="creado_por" Visible="false" ReadOnly="True" />

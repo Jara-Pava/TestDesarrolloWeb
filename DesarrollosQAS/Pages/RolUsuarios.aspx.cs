@@ -62,12 +62,20 @@ namespace DesarrollosQAS.Pages
             int asignado_por = Model.AuthHelper.GetCurrentUserId();
             var repo = new RolUsuariosRepository();
             bool resultado = repo.AsignarRolesPorUsuario(IdUsuario, idsRoles, asignado_por);
+
+            // Si se modificaron los roles del usuario logueado, refrescar sus permisos en sesión
+            if (resultado && IdUsuario == Model.AuthHelper.GetCurrentUserId())
+            {
+                Model.AuthHelper.RefrescarPermisos();
+            }
+
             e.Result = resultado ? "OK" : "ERROR";
         }
 
         protected void cbRefrescar_Callback(object source, DevExpress.Web.CallbackEventArgs e)
         {
-            try {
+            try
+            {
                 var repo = new RolUsuariosRepository();
                 List<RolUsuario> listaDisponibles = repo.ObtenerRolesDisponiblesPorUsuario(IdUsuario);
                 lbRolesDisponibles.DataSource = listaDisponibles;
@@ -76,7 +84,8 @@ namespace DesarrollosQAS.Pages
                 lbRolesDisponibles.DataBind();
                 lbRolesAsignados.DataBind();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 System.Diagnostics.Trace.TraceError("Error en cbRefrescar_Callback: {0}", ex);
                 e.Result = "{}";
             }

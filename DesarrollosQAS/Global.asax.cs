@@ -22,10 +22,10 @@ namespace DesarrollosQAS
             if (path.Contains("sinacceso.aspx"))
                 return;
 
-            // Redirigir a Usuarios.aspx si se accede a la raíz
+            // Redirigir a Default.aspx si se accede a la raíz
             if (path == "/" || path == "/desarrollosqas" || path == "/desarrollosqas/")
             {
-                Response.Redirect("~/Usuarios.aspx", false);
+                Response.Redirect("~/Default.aspx", false);
                 Context.ApplicationInstance.CompleteRequest();
             }
         }
