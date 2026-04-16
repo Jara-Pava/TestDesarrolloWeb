@@ -73,6 +73,12 @@ namespace DesarrollosQAS.Pages
                 var repo = new RolModulosRepository();
                 bool resultado = repo.GuardarModulosPorRol(IdRol, idsModulos);
 
+                // Refrescar permisos del usuario logueado si tiene este rol asignado
+                if (resultado)
+                {
+                    AuthHelper.RefrescarPermisos();
+                }
+
                 e.Result = resultado ? "OK" : "ERROR";
             }
             catch (Exception ex)

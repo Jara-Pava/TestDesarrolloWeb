@@ -17,11 +17,6 @@ namespace DesarrollosQAS
         void Application_BeginRequest(object sender, EventArgs e)
         {
             string path = Request.Path.ToLower();
-
-            // No redirigir si es la página de sin acceso
-            if (path.Contains("sinacceso.aspx"))
-                return;
-
             // Redirigir a Default.aspx si se accede a la raíz
             if (path == "/" || path == "/desarrollosqas" || path == "/desarrollosqas/")
             {

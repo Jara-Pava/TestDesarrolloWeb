@@ -83,7 +83,6 @@
 
     <div class="welcome-wrapper">
         <div class="welcome-card">
-            <div class="welcome-icon">🏗️</div>
             <h1 class="welcome-title">Bienvenido</h1>
             <p class="welcome-subtitle">Desarrollo Aplicaciones - Techint E&C</p>
 

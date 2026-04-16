@@ -140,6 +140,7 @@
     <Content Include="Images\empresa_contra.png" />
     <Content Include="Images\industria.png" />
     <Content Include="Images\proyecto.png" />
+    <Content Include="Images\rol-circulo-azul.png" />
     <Content Include="Images\rol-de-usuario.png" />
     <Content Include="Content\Images\Scheduler-white.svg" />
     <Content Include="Content\Images\Scheduler.svg" />

@@ -46,6 +46,25 @@ namespace DataAccessDesarrollos.Repositorios
             }
         }
 
+        public void EliminarAsignacionesRolesPorIdRol(int id)
+        {
+            if (id <= 0) return;
+            try
+            {
+                using (var da = new DataAccess())
+                {
+                    da.ExecuteNonQueryByCode("rhsp_DeleteRolesUsuarioByIdRol", cmd => {
+                        cmd.Parameters.AddWithValue("@id_rol", id);
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error al Eliminar Asignaciones de Roles por id_rol: {0}", ex);
+                throw new Exception("Proceso no exitoso, error en EliminarAsignacionesRolesPorIdRol: " + ex.Message);
+            }
+        }
+
         public void EliminarAsignacionesRolesPorUsuario(int id)
         {
             if(id <= 0) return;
@@ -107,6 +126,7 @@ namespace DataAccessDesarrollos.Repositorios
                 throw new Exception(" Proceso no exitoso, error en ObtenerRolesDisponiblesPorUsuario: " + ex.Message);
             }
         }
+
         //id_usuario_rol id_usuario  id_rol fecha_asignacion    asignado_por
     }
 }

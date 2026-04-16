@@ -315,7 +315,7 @@
                 </CustomButtons>
                 <CustomButtons>
                     <dx:GridViewCommandColumnCustomButton ID="btnAsignarRoles" Text="Asignar Rol">
-                        <Image Url="~/Images/roles.png" Width="18px" Height="18px" ToolTip="Asignar Rol" />
+                        <Image Url="~/Images/rol-circulo-azul.png" Width="18px" Height="18px" ToolTip="Asignar Rol" />
                     </dx:GridViewCommandColumnCustomButton>
                 </CustomButtons>
             </dx:GridViewCommandColumn>

@@ -206,6 +206,9 @@ namespace DesarrollosQAS.Pages
                     var repoRolModulo = new RolModulosRepository();
                     repoRolModulo.EliminarModulosAsignadosPorIdRol(id);
 
+                    var repoUsuarioRol = new RolUsuariosRepository();
+                    repoUsuarioRol.EliminarAsignacionesRolesPorIdRol(id);
+
                     var repo = new RolesRepository();
                     repo.EliminarRol(id);
 

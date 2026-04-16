@@ -219,9 +219,9 @@
         function OnGuardarCallbackComplete(s, e) {
             var resultado = e.result;
             if (resultado === 'OK') {
-                lblPopupMensaje.SetText('Proceso exitoso, se han asignado los modulos');
+                lblPopupMensaje.SetText('Proceso exitoso, se han actualizado los modulos');
             } else {
-                lblPopupMensaje.SetText('Proceso no exitoso, no se han asignado los modulos');
+                lblPopupMensaje.SetText('Proceso no exitoso, no se han actualizado los modulos');
             }
             LoadingPanel.Hide();
             popupResultado.Show();
@@ -230,7 +230,7 @@
         // Al cerrar el popup, refrescar ambos ListBox desde el servidor
         function OnPopupOkClick() {
             popupResultado.Hide();
-            cbRefrescar.PerformCallback('');
+            window.location.reload();
         }
 
         // Callback de refresco completado: reconstruir ambos ListBox

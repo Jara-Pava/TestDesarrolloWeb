@@ -1,25 +1,16 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SinAcceso.aspx.cs" Inherits="DesarrollosQAS.SinAcceso" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Root.master" CodeBehind="SinAcceso.aspx.cs" Inherits="DesarrollosQAS.SinAcceso" Title="Sin Acceso" %>
 
-<!DOCTYPE html>
-<html lang="es">
-<head runat="server">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sin Acceso</title>
-    <link rel="shortcut icon" href="~/Images/techint.ico" type="image/vnd.microsoft.icon" />
+<asp:Content ContentPlaceHolderID="Content" runat="server">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
+        .sinacceso-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            min-height: calc(100vh - 80px);
+            padding: 20px;
         }
 
-        .container {
+        .sinacceso-card {
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -29,26 +20,27 @@
             width: 90%;
         }
 
-        .icon-lock {
+        .sinacceso-icon {
             font-size: 64px;
             color: #dc3545;
             margin-bottom: 20px;
         }
 
-        h1 {
+        .sinacceso-title {
             color: #353943;
             font-size: 28px;
+            font-weight: bold;
             margin-bottom: 10px;
         }
 
-        .message {
+        .sinacceso-message {
             color: #666;
             font-size: 16px;
             line-height: 1.6;
             margin-bottom: 10px;
         }
 
-        .user-info {
+        .sinacceso-user {
             background-color: #f8f9fa;
             border: 1px solid #e9ecef;
             border-radius: 4px;
@@ -58,30 +50,26 @@
             font-weight: bold;
         }
 
-        .footer-text {
+        .sinacceso-footer {
             color: #999;
             font-size: 13px;
             margin-top: 30px;
         }
     </style>
-</head>
-<body>
-    <form id="form1" runat="server">
-        <div class="container">
-            <div class="icon-lock">&#128274;</div>
-            <h1>Acceso Denegado</h1>
-            <p class="message">
-                Su usuario de red no se encuentra registrado o activo en el sistema.
-                <br />
-                Contacte al administrador para solicitar acceso.
+
+    <div class="sinacceso-wrapper">
+        <div class="sinacceso-card">
+            <div class="sinacceso-icon">&#128274;</div>
+            <h1 class="sinacceso-title">Acceso Denegado</h1>
+            <p class="sinacceso-message">
+                Su usuario no tiene permisos, contacte con el administrador
             </p>
-            <div class="user-info">
+            <div class="sinacceso-user">
                 Usuario: <asp:Label ID="lblUsuario" runat="server" />
             </div>
-            <p class="footer-text">
-                Si cree que esto es un error, comuníquese con el área de sistemas.
+            <p class="sinacceso-footer">
+                
             </p>
         </div>
-    </form>
-</body>
-</html>
+    </div>
+</asp:Content>

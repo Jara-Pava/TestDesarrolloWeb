@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RolUsuarios.aspx.cs" Inherits="DesarrollosQAS.Pages.RolUsuarios" MasterPageFile="~/Root.master"%>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RolUsuarios.aspx.cs" Inherits="DesarrollosQAS.Pages.RolUsuarios" MasterPageFile="~/Root.master" %>
 
 <asp:Content ContentPlaceHolderID="Content" runat="server">
     <style>
@@ -42,8 +42,8 @@
             margin-top: 3%;
         }
 
-        .buttonGuardarYRegresar{
-            width:100px;
+        .buttonGuardarYRegresar {
+            width: 100px;
         }
 
         /* ---- Pantallas medianas (790px – 1199px) ---- */
@@ -82,13 +82,14 @@
 
         /* ---- Pantallas grandes (1200px+) ---- */
         @media (min-width: 1400px) {
-                    /* Wrapper que alinea título, botones Regresar/Guardar y el container al mismo ancho */
-        .page-wrapper {
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 0 3%;
-            box-sizing: border-box;
-        }
+            /* Wrapper que alinea título, botones Regresar/Guardar y el container al mismo ancho */
+            .page-wrapper {
+                max-width: 100%;
+                margin: 0 auto;
+                padding: 0 3%;
+                box-sizing: border-box;
+            }
+
             .contentEditors {
                 flex: 0 1 550px;
                 max-width: 550px;
@@ -219,18 +220,18 @@
         function OnGuardarCallbackComplete(s, e) {
             var resultado = e.result;
             if (resultado === 'OK') {
-                lblPopupMensaje.SetText('Proceso exitoso, se ha asignado los roles');
+                lblPopupMensaje.SetText('Proceso exitoso, se han actualizado los roles');
             } else {
-                lblPopupMensaje.SetText('Proceso no exitoso, no se ha asignado los roles');
+                lblPopupMensaje.SetText('Proceso no exitoso, no se han actualizado los roles');
             }
             LoadingPanel.Hide();
             popupResultado.Show();
         }
 
-        // Al cerrar el popup, refrescar ambos ListBox desde el servidor
+        // Al cerrar el popup, recargar la página para refrescar el menú de navegación y los ListBox
         function OnPopupOkClick() {
             popupResultado.Hide();
-            cbRefrescar.PerformCallback('');
+            window.location.reload();
         }
 
         // Callback de refresco completado: reconstruir ambos ListBox
@@ -279,8 +280,8 @@
     </dx:ASPxPopupControl>
 
     <div class="page-wrapper">
-        <div style=" text-align: center;">
-            <dx:ASPxLabel runat="server" ID="lblNombreUsuario" Text="" Font-Bold="true" Font-Size="X-Large"></dx:ASPxLabel>
+        <div style="text-align: center;">
+            <dx:ASPxLabel runat="server" ID="lblNombreUsuario" Text="" Font-Bold="true" Font-Size="X-Large" ClientInstanceName="lblNombreUsuario"></dx:ASPxLabel>
         </div>
         <div class="action-row">
             <dx:ASPxButton runat="server" ID="btnRegresar" Text="Regresar"
@@ -300,7 +301,7 @@
                     ItemStyle-Font-Bold="false" ItemStyle-Font-Size="Medium">
                     <CaptionSettings Position="Top" HorizontalAlign="Center" />
                     <ClientSideEvents SelectedIndexChanged="OnSelectedIndexChanged" />
-<%--                    <FilterEditorStyle Font-Bold="false" Font-Size="Small" ></FilterEditorStyle>
+                    <%--                    <FilterEditorStyle Font-Bold="false" Font-Size="Small" ></FilterEditorStyle>
                     <FilteringSettings ShowSearchUI="true" EditorNullText="Ingrese el modulo a buscar ..."/>--%>
                 </dx:ASPxListBox>
             </div>
@@ -318,7 +319,7 @@
                         <ClientSideEvents Click="function(s, e) { AddAllItems(); }" />
                     </dx:ASPxButton>
                 </div>
-<%--                <div style="height: 12px">
+                <%--                <div style="height: 12px">
                 </div>--%>
                 <div>
                     <dx:ASPxButton ID="btnMoveSelectedItemsToLeft" runat="server" ClientInstanceName="btnMoveSelectedItemsToLeft" CssClass="button"
@@ -343,7 +344,7 @@
                     ItemStyle-Font-Bold="false" ItemStyle-Font-Size="Medium">
                     <CaptionSettings Position="Top" HorizontalAlign="Center" />
                     <ClientSideEvents SelectedIndexChanged="OnSelectedIndexChanged"></ClientSideEvents>
-<%--                    <FilteringSettings ShowSearchUI="true" EditorNullText="Ingrese el rol a buscar ..." />
+                    <%--                    <FilteringSettings ShowSearchUI="true" EditorNullText="Ingrese el rol a buscar ..." />
                     <FilterEditorStyle Font-Bold="false" Font-Size="Small" ></FilterEditorStyle>--%>
                 </dx:ASPxListBox>
             </div>

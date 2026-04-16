@@ -18,6 +18,9 @@ namespace DesarrollosQAS
             Thread.CurrentThread.CurrentCulture = new CultureInfo(language);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
 
+            string currentPage = System.IO.Path.GetFileName(Request.Path);
+            bool esPaginaSinAcceso = currentPage.Equals("SinAcceso.aspx", StringComparison.OrdinalIgnoreCase);
+
             // Autenticar al usuario de Windows automáticamente (solo una vez por sesión)
             if (!AuthHelper.IsAuthenticated())
             {
@@ -25,15 +28,31 @@ namespace DesarrollosQAS
 
                 if (!AuthHelper.SignIn(windowsUser, null))
                 {
-                    // El usuario de Windows no existe en SEC_Usuarios, redirigir
-                    Response.Redirect("Pages/SinAcceso.aspx", false);
-                    Context.ApplicationInstance.CompleteRequest();
+                    // Si ya estamos en SinAcceso.aspx, no redirigir (evitar loop infinito)
+                    if (!esPaginaSinAcceso)
+                    {
+                        if (Page.IsCallback)
+                        {
+                            ASPxWebControl.RedirectOnCallback("~/Pages/SinAcceso.aspx");
+                        }
+                        else
+                        {
+                            Response.Redirect("~/Pages/SinAcceso.aspx", false);
+                            Context.ApplicationInstance.CompleteRequest();
+                        }
+                    }
                     return;
                 }
             }
 
-            // Verificar permisos de acceso a la página actual
-            ValidarAccesoPagina();
+            // Refrescar permisos en cada request para reflejar cambios de roles en tiempo real
+            AuthHelper.RefrescarPermisos();
+
+            // Verificar permisos de acceso a la página actual (no aplica para SinAcceso)
+            if (!esPaginaSinAcceso)
+            {
+                ValidarAccesoPagina();
+            }
 
             // Mostrar el nombre del usuario autenticado
             var user = AuthHelper.GetLoggedInUserInfo();
@@ -58,19 +77,22 @@ namespace DesarrollosQAS
         private void ValidarAccesoPagina()
         {
             string currentPage = System.IO.Path.GetFileName(Request.Path);
-
-            // Obtener el id_modulo_catalogo asociado a esta página
             int? idModulo = PageModuleMap.GetIdModulo(currentPage);
 
-            // Si la página no está mapeada, no requiere permisos (ej: SinAcceso.aspx, Home.aspx)
             if (!idModulo.HasValue)
                 return;
 
-            // Verificar si el usuario tiene permiso de ver este módulo por ID
             if (!AuthHelper.TienePermisoVer(idModulo.Value))
             {
-                Response.Redirect("~/Pages/SinAcceso.aspx", false);
-                Context.ApplicationInstance.CompleteRequest();
+                if (Page.IsCallback)
+                {
+                    ASPxWebControl.RedirectOnCallback("~/Pages/SinAcceso.aspx");
+                }
+                else
+                {
+                    Response.Redirect("~/Pages/SinAcceso.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
+                }
             }
         }
 

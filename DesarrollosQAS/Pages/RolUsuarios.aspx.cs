@@ -1,5 +1,6 @@
 ﻿using DataAccessDesarrollos;
 using DataAccessDesarrollos.Repositorios;
+using DesarrollosQAS.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,11 @@ namespace DesarrollosQAS.Pages
         {
             if (!string.IsNullOrEmpty(Request.QueryString["idUsuario"]))
             {
+                var user = AuthHelper.GetLoggedInUserInfo();
+                if (user != null)
+                {
+                    lblNombreUsuario.Text = "Usuario: " + user.Sigla_red;
+                }
                 IdUsuario = Convert.ToInt32(Request.QueryString["idUsuario"]);
                 var repo = new RolUsuariosRepository();
                 List<RolUsuario> listaDisponibles = repo.ObtenerRolesDisponiblesPorUsuario(IdUsuario);
@@ -63,8 +69,8 @@ namespace DesarrollosQAS.Pages
             var repo = new RolUsuariosRepository();
             bool resultado = repo.AsignarRolesPorUsuario(IdUsuario, idsRoles, asignado_por);
 
-            // Si se modificaron los roles del usuario logueado, refrescar sus permisos en sesión
-            if (resultado && IdUsuario == Model.AuthHelper.GetCurrentUserId())
+            // Refrescar permisos del usuario logueado para reflejar cambios en tiempo real
+            if (resultado)
             {
                 Model.AuthHelper.RefrescarPermisos();
             }
@@ -78,11 +84,17 @@ namespace DesarrollosQAS.Pages
             {
                 var repo = new RolUsuariosRepository();
                 List<RolUsuario> listaDisponibles = repo.ObtenerRolesDisponiblesPorUsuario(IdUsuario);
-                lbRolesDisponibles.DataSource = listaDisponibles;
                 List<RolUsuario> listaAsignados = repo.ObtenerRolesAsignadosPorUsuario(IdUsuario);
-                lbRolesAsignados.DataSource = listaAsignados;
-                lbRolesDisponibles.DataBind();
-                lbRolesAsignados.DataBind();
+
+                // Serializar ambas listas como JSON para que el cliente reconstruya los ListBox
+                var data = new
+                {
+                    disponibles = listaDisponibles.Select(r => new { text = r.nombre_rol, value = r.id_rol }),
+                    asignados = listaAsignados.Select(r => new { text = r.nombre_rol, value = r.id_rol })
+                };
+
+                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                e.Result = serializer.Serialize(data);
             }
             catch (Exception ex)
             {

@@ -29,7 +29,8 @@ namespace DesarrollosQAS
             { "rolmodulos.aspx",          30 },  // Sub-página de Modulos
 
             // ===== Operación =====
-            { "solicitudesespeciales.aspx", 12 },
+            { "solicitudesespeciales.aspx", 32 },
+            { "solicitudespecial.aspx",    32 }   // Sub-página de Solicitudes Especiales (mismo permiso)
         };
 
         /// <summary>

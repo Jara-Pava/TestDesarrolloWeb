@@ -1,15 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <namespace Url="javascript:void(0);" Title="DevExpress.Web.ASPxCallback Namespace">
 	<!--<page Url="../Default.aspx" Title="Home" Image="../Images/home.svg" Name="home"/>-->
-	<page Url="../Default.aspx" Title="Home" Image="../Images/casa.png" Name="home"/>
-	<page Url="../SolicitudesEspeciales.aspx" Title="Solicitudes" Image="../Images/solicitud.png" Name="solicitudesEspeciales" IdModulo="12"/>
+	<page Url="../SolicitudesEspeciales.aspx" Title="Solicitudes" Image="../Images/solicitud.png" Name="solicitudesEspeciales" IdModulo="32"/>
 	<group Title="Catalogos" Image="../Images/catalogo.png" Name="catalogos" IdModulo="16">
 		<page Url="../Pages/EmpresasContratistas.aspx" Title="Empresa Contratista" Image="../Images/empresa_contra.png" Name="empresasContratista" IdModulo="17"/>
 		<page Url="../Pages/Plantas.aspx" Title="Plantas" Image="../Images/industria.png" Name="plantas" IdModulo="18"/>
 		<page Url="../Pages/Proyectos.aspx" Title="Proyectos" Image="../Images/proyecto.png" Name="proyectos" IdModulo="20"/>
 		<page Url="../Pages/TiposVisitas.aspx" Title="Tipos Visitas" Image="../Images/tipo_visita.png" Name="tipoVisita" IdModulo="21"/>
 	</group>
-	<group Title="Seguridad" Image="../Images/proteger.png" Name="seguridad" IdModulo="11">
+	<group Title="Seguridad" Image="../Images/proteger.png" Name="seguridad">
 		<page Url="../Usuarios.aspx" Title="Usuarios" Image="../Images/usuarios.svg" Name="usuarios" IdModulo="14"/>
 		<page Url="../Pages/Roles.aspx" Title="Roles" Image="../Images/rol-de-usuario.png" Name="roles" IdModulo="15"/>
 		<page Url="../Pages/Modulos.aspx" Title="Modulos" Image="../Images/cubitos.png" Name="Modulos" IdModulo="28"/>
